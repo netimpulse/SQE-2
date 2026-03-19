@@ -1,0 +1,542 @@
+{%- style -%}
+  .sqe-about {
+    padding: 60px 20px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  .sqe-about__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sqe-about__header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .sqe-about__header-subheading {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #C75B12;
+    margin-bottom: 10px;
+  }
+
+  .sqe-about__header-heading {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  @media (max-width: 768px) {
+    .sqe-about__header-heading {
+      font-size: 32px;
+    }
+  }
+
+  .sqe-about__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  @media (max-width: 768px) {
+    .sqe-about__content {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  }
+
+  .sqe-about__content--reverse {
+    direction: rtl;
+  }
+
+  .sqe-about__content--reverse > * {
+    direction: ltr;
+  }
+
+  .sqe-about__image-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sqe-about__image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .sqe-about__image--bordered {
+    border: 8px solid #1F3A5F;
+  }
+
+  .sqe-about__image--shadowed {
+    box-shadow: 0 10px 40px rgba(31, 58, 95, 0.15);
+  }
+
+  .sqe-about__image--both {
+    border: 8px solid #1F3A5F;
+    box-shadow: 0 10px 40px rgba(31, 58, 95, 0.15);
+  }
+
+  .sqe-about__text-content h2 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0 0 20px 0;
+    line-height: 1.3;
+  }
+
+  .sqe-about__description {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333333;
+    margin-bottom: 30px;
+  }
+
+  .sqe-about__description p {
+    margin: 0 0 15px 0;
+  }
+
+  .sqe-about__description p:last-child {
+    margin-bottom: 0;
+  }
+
+  .sqe-about__description strong {
+    color: #1F3A5F;
+    font-weight: 600;
+  }
+
+  .sqe-about__description em {
+    color: #C75B12;
+  }
+
+  .sqe-about__credentials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 768px) {
+    .sqe-about__credentials {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+  }
+
+  .sqe-about__credential {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background-color: #F2F4F7;
+    border-radius: 8px;
+    border-left: 4px solid #F2B705;
+  }
+
+  .sqe-about__credential-icon {
+    font-size: 32px;
+    min-width: 40px;
+    text-align: center;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .sqe-about__credential-content h3 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F3A5F;
+    margin: 0 0 5px 0;
+  }
+
+  .sqe-about__credential-content p {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #666666;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .sqe-about__experience {
+    margin-top: 40px;
+    padding: 30px;
+    background-color: #1F3A5F;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .sqe-about__experience-number {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #F2B705;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .sqe-about__experience-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #F2F4F7;
+    margin: 10px 0 0 0;
+  }
+
+  .sqe-about__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+  }
+
+  .sqe-about__stat-block {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .sqe-about__stat-number {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #F2B705;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .sqe-about__stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #333333;
+    margin: 10px 0 0 0;
+    font-weight: 500;
+  }
+{%- endstyle -%}
+
+<div class="sqe-about">
+  <div class="sqe-about__container">
+    {%- if section.settings.show_header -%}
+      <div class="sqe-about__header">
+        {%- if section.settings.header_subheading != blank -%}
+          <p class="sqe-about__header-subheading">{{ section.settings.header_subheading }}</p>
+        {%- endif -%}
+        <h2 class="sqe-about__header-heading">{{ section.settings.header_heading }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="sqe-about__content {% if section.settings.image_position == 'right' %}sqe-about__content--reverse{% endif %}">
+      <div class="sqe-about__image-wrapper">
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 600 }}"
+            alt="{{ section.settings.image.alt | escape }}"
+            class="sqe-about__image sqe-about__image--{{ section.settings.image_style }}"
+            loading="lazy"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+          >
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      <div class="sqe-about__text-content">
+        {%- if section.settings.section_heading != blank -%}
+          <h2>{{ section.settings.section_heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <div class="sqe-about__description">
+            {{ section.settings.description }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <div class="sqe-about__credentials">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'credential' -%}
+                <div class="sqe-about__credential" {{ block.shopify_attributes }}>
+                  <div class="sqe-about__credential-icon">{{ block.settings.icon }}</div>
+                  <div class="sqe-about__credential-content">
+                    <h3>{{ block.settings.credential_title }}</h3>
+                    <p>{{ block.settings.credential_text }}</p>
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_experience -%}
+          <div class="sqe-about__experience">
+            <p class="sqe-about__experience-number">{{ section.settings.years_of_experience }}+</p>
+            <p class="sqe-about__experience-label">{{ section.settings.experience_label }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.show_stats -%}
+      <div class="sqe-about__stats">
+        {%- for i in (1..3) -%}
+          {%- assign stat_number = 'stat_' | append: i | append: '_number' -%}
+          {%- assign stat_label = 'stat_' | append: i | append: '_label' -%}
+          {%- if section.settings[stat_number] != blank -%}
+            <div class="sqe-about__stat-block">
+              <p class="sqe-about__stat-number">{{ section.settings[stat_number] }}</p>
+              <p class="sqe-about__stat-label">{{ section.settings[stat_label] }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SQE About Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show section header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "header_subheading",
+      "label": "Header subheading",
+      "default": "About Us",
+      "info": "Small text above main heading"
+    },
+    {
+      "type": "text",
+      "id": "header_heading",
+      "label": "Header heading",
+      "default": "Trusted Solar PV Engineering Excellence"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section heading",
+      "default": "Our Expertise"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Company description",
+      "default": "<p>SQE Solar Quality Experts Ltd is a UK-based solar PV engineering consultancy dedicated to delivering excellence in renewable energy solutions. With extensive experience and certified expertise, we help businesses transition to sustainable power.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "image_style",
+      "label": "Image style",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "bordered",
+          "label": "Bordered"
+        },
+        {
+          "value": "shadowed",
+          "label": "Shadowed"
+        },
+        {
+          "value": "both",
+          "label": "Bordered & Shadowed"
+        }
+      ],
+      "default": "both"
+    },
+    {
+      "type": "header",
+      "content": "Experience Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_experience",
+      "label": "Show years of experience counter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "years_of_experience",
+      "label": "Years of experience",
+      "default": "15"
+    },
+    {
+      "type": "text",
+      "id": "experience_label",
+      "label": "Experience label",
+      "default": "Years of Industry Excellence"
+    },
+    {
+      "type": "header",
+      "content": "Statistics Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show statistics blocks",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "Statistic 1 - Number",
+      "default": "500+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Statistic 1 - Label",
+      "default": "Projects Completed"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Statistic 2 - Number",
+      "default": "98%"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Statistic 2 - Label",
+      "default": "Client Satisfaction"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Statistic 3 - Number",
+      "default": "12"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Statistic 3 - Label",
+      "default": "Industry Certifications"
+    },
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "credential",
+      "name": "Credential",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon emoji",
+          "default": "✓",
+          "info": "Use emoji or custom icon text"
+        },
+        {
+          "type": "text",
+          "id": "credential_title",
+          "label": "Credential title",
+          "default": "Certified Engineer"
+        },
+        {
+          "type": "textarea",
+          "id": "credential_text",
+          "label": "Credential description",
+          "default": "All team members hold industry-recognized certifications"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SQE About Section",
+      "blocks": [
+        {
+          "type": "credential",
+          "settings": {
+            "icon": "⚡",
+            "credential_title": "ISO Certified",
+            "credential_text": "ISO 9001:2015 Quality Management certified"
+          }
+        },
+        {
+          "type": "credential",
+          "settings": {
+            "icon": "✓",
+            "credential_title": "NICEIC Approved",
+            "credential_text": "NICEIC approved electrical contractor"
+          }
+        },
+        {
+          "type": "credential",
+          "settings": {
+            "icon": "🏆",
+            "credential_title": "MCS Registered",
+            "credential_text": "Microgeneration Certification Scheme registered"
+          }
+        },
+        {
+          "type": "credential",
+          "settings": {
+            "icon": "🔒",
+            "credential_title": "BS 7909 Compliant",
+            "credential_text": "BS 7909 event safety electrical standards compliant"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,479 @@
+{% comment %}
+SQE Partners Section
+Displays partner/client logos in an auto-scrolling carousel
+{% endcomment %}
+
+<section class="sqe-partners" id="sqe-partners-{{ section.id }}">
+  <div class="partners-container">
+    {% if section.settings.show_heading %}
+      <div class="partners-header">
+        {% if section.settings.heading %}
+          <h2 class="partners-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.subheading %}
+          <p class="partners-subheading">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="partners-carousel-wrapper">
+      <div class="partners-carousel" id="partners-carousel-{{ section.id }}">
+        <div class="carousel-track">
+          {% for block in section.blocks %}
+            {% if block.settings.logo %}
+              <div class="partner-logo-item">
+                <div class="partner-logo {% if section.settings.grayscale %}grayscale{% endif %}">
+                  {{ block.settings.logo | image_url: width: 200 | image_tag: alt: block.settings.partner_name }}
+                </div>
+                {% if section.settings.show_partner_name and block.settings.partner_name %}
+                  <p class="partner-name">{{ block.settings.partner_name }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+          <!-- Duplicate for continuous scroll -->
+          {% for block in section.blocks %}
+            {% if block.settings.logo %}
+              <div class="partner-logo-item">
+                <div class="partner-logo {% if section.settings.grayscale %}grayscale{% endif %}">
+                  {{ block.settings.logo | image_url: width: 200 | image_tag: alt: block.settings.partner_name }}
+                </div>
+                {% if section.settings.show_partner_name and block.settings.partner_name %}
+                  <p class="partner-name">{{ block.settings.partner_name }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.show_controls %}
+      <div class="carousel-controls">
+        <button class="carousel-prev" aria-label="Previous">‹</button>
+        <button class="carousel-next" aria-label="Next">›</button>
+        <button class="carousel-play-pause" data-playing="true" aria-label="Pause">⏸</button>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .sqe-partners {
+    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_side }}px {{ section.settings.padding_bottom }}px {{ section.settings.padding_side }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  .partners-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .partners-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .partners-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 16px 0;
+  }
+
+  .partners-subheading {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .partners-carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border-radius: {{ section.settings.carousel_border_radius }}px;
+    padding: 40px 20px;
+  }
+
+  .partners-carousel {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    animation: {% if section.settings.auto_scroll %}scroll{{ section.id }} {{ section.settings.scroll_speed }}s linear infinite{% endif %};
+  }
+
+  {% if section.settings.auto_scroll %}
+    @keyframes scroll{{ section.id }} {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .partners-carousel:hover .carousel-track {
+      animation-play-state: paused;
+    }
+  {% endif %}
+
+  .partner-logo-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .partner-logo {
+    height: {{ section.settings.logo_height }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border-radius: 8px;
+    background: {{ section.settings.logo_background }};
+    transition: all 0.3s ease;
+  }
+
+  .partner-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .partner-logo img {
+    max-height: {{ section.settings.logo_height | minus: 24 }}px;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .partner-logo.grayscale img {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+  }
+
+  .partner-logo:hover.grayscale img {
+    filter: grayscale(0%);
+  }
+
+  .partner-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+    text-align: center;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .carousel-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .carousel-prev,
+  .carousel-next,
+  .carousel-play-pause {
+    background: {{ section.settings.button_color }};
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .carousel-prev:hover,
+  .carousel-next:hover,
+  .carousel-play-pause:hover {
+    background: {{ section.settings.button_hover_color }};
+    transform: scale(1.08);
+  }
+
+  @media (max-width: 768px) {
+    .partners-title {
+      font-size: 32px;
+    }
+
+    .partners-carousel-wrapper {
+      padding: 30px 10px;
+    }
+
+    .carousel-track {
+      gap: 30px;
+    }
+
+    .partner-logo {
+      height: {{ section.settings.logo_height | minus: 20 }}px;
+    }
+
+    .carousel-prev,
+    .carousel-next,
+    .carousel-play-pause {
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.getElementById('sqe-partners-{{ section.id }}');
+    if (!section) return;
+
+    const carousel = section.querySelector('.partners-carousel');
+    const carouselTrack = section.querySelector('.carousel-track');
+    const prevBtn = section.querySelector('.carousel-prev');
+    const nextBtn = section.querySelector('.carousel-next');
+    const playPauseBtn = section.querySelector('.carousel-play-pause');
+
+    if (!carousel || !carouselTrack) return;
+
+    const itemWidth = section.querySelector('.partner-logo-item').offsetWidth + 40; // 40px gap
+    const totalItems = section.querySelectorAll('.partner-logo-item').length / 2;
+    let isPlaying = true;
+
+    if (playPauseBtn) {
+      playPauseBtn.addEventListener('click', function() {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+          playPauseBtn.textContent = '⏸';
+          carouselTrack.style.animationPlayState = 'running';
+        } else {
+          playPauseBtn.textContent = '▶';
+          carouselTrack.style.animationPlayState = 'paused';
+        }
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function() {
+        const currentScroll = carousel.scrollLeft;
+        carousel.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function() {
+        const currentScroll = carousel.scrollLeft;
+        carousel.scrollBy({ left: itemWidth, behavior: 'smooth' });
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Partners",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_heading",
+      "label": "Show heading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Partners & Clients"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Trusted by leading companies"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_scroll",
+      "label": "Auto-scroll carousel",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "label": "Scroll speed (seconds)",
+      "default": 30
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show carousel controls",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "grayscale",
+      "label": "Grayscale logos (hover to color)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_partner_name",
+      "label": "Show partner names",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 60,
+      "max": 120,
+      "step": 10,
+      "label": "Logo height",
+      "default": 80
+    },
+    {
+      "type": "color",
+      "id": "logo_background",
+      "label": "Logo background color",
+      "default": "#F2F4F7"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover color",
+      "default": "#F2B705"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background color",
+      "default": "white"
+    },
+    {
+      "type": "range",
+      "id": "carousel_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "label": "Carousel border radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "label": "Padding top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "label": "Padding bottom",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_side",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "label": "Padding sides",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "partner",
+      "name": "Partner Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Partner logo"
+        },
+        {
+          "type": "text",
+          "id": "partner_name",
+          "label": "Partner name",
+          "default": "Partner Name"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Partners",
+      "blocks": [
+        {
+          "type": "partner",
+          "settings": {
+            "partner_name": "Partner 1"
+          }
+        },
+        {
+          "type": "partner",
+          "settings": {
+            "partner_name": "Partner 2"
+          }
+        },
+        {
+          "type": "partner",
+          "settings": {
+            "partner_name": "Partner 3"
+          }
+        },
+        {
+          "type": "partner",
+          "settings": {
+            "partner_name": "Partner 4"
+          }
+        },
+        {
+          "type": "partner",
+          "settings": {
+            "partner_name": "Partner 5"
+          }
+        },
+        {
+          "type": "partner",
+          "settings": {
+            "partner_name": "Partner 6"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
