@@ -1,0 +1,596 @@
+{% stylesheet %}
+  .sqe-floating-stats-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #0a1929 0%, #1F3A5F 50%, #0f2a47 100%);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    min-height: 600px;
+  }
+
+  /* Animated Background Elements */
+  .sqe-stats-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .sqe-background-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.08;
+    mix-blend-mode: screen;
+    will-change: transform;
+  }
+
+  .sqe-shape-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #F2B705 0%, transparent 70%);
+    top: -300px;
+    left: -300px;
+    animation: float-shape1 20s ease-in-out infinite;
+  }
+
+  .sqe-shape-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #C75B12 0%, transparent 70%);
+    bottom: -250px;
+    right: -250px;
+    animation: float-shape2 25s ease-in-out infinite;
+  }
+
+  .sqe-shape-3 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #F2B705 0%, transparent 70%);
+    top: 50%;
+    right: -200px;
+    animation: float-shape3 30s ease-in-out infinite;
+  }
+
+  @keyframes float-shape1 {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(50px, -50px) scale(1.1);
+    }
+    50% {
+      transform: translate(-30px, 100px) scale(0.95);
+    }
+    75% {
+      transform: translate(80px, 30px) scale(1.05);
+    }
+  }
+
+  @keyframes float-shape2 {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(-50px, 50px) scale(1.08);
+    }
+    66% {
+      transform: translate(30px, -80px) scale(0.92);
+    }
+  }
+
+  @keyframes float-shape3 {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    40% {
+      transform: translate(-60px, -60px) scale(1.1);
+    }
+    80% {
+      transform: translate(40px, 40px) scale(0.9);
+    }
+  }
+
+  /* Geometric Grid Pattern */
+  .sqe-grid-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(0deg, transparent 24%, rgba(242, 183, 5, 0.5) 25%, rgba(242, 183, 5, 0.5) 26%, transparent 27%, transparent 74%, rgba(242, 183, 5, 0.5) 75%, rgba(242, 183, 5, 0.5) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, rgba(242, 183, 5, 0.5) 25%, rgba(242, 183, 5, 0.5) 26%, transparent 27%, transparent 74%, rgba(242, 183, 5, 0.5) 75%, rgba(242, 183, 5, 0.5) 76%, transparent 77%, transparent);
+    background-size: 100px 100px;
+    pointer-events: none;
+  }
+
+  /* Container */
+  .sqe-stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sqe-stats-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .sqe-stats-header h2 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+  }
+
+  .sqe-stats-header p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    font-weight: 400;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Stats Grid */
+  .sqe-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    perspective: 1000px;
+  }
+
+  .sqe-stat-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 40px 30px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(31, 58, 95, 0.1);
+    will-change: transform, opacity;
+  }
+
+  .sqe-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #F2B705 0%, #C75B12 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+
+  .sqe-stat-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sqe-stat-card.visible::before {
+    transform: translateX(0);
+  }
+
+  .sqe-stat-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 30px 60px rgba(31, 58, 95, 0.2);
+    border-color: rgba(242, 183, 5, 0.4);
+  }
+
+  .sqe-stat-card:hover::before {
+    background: linear-gradient(90deg, #C75B12 0%, #F2B705 100%);
+  }
+
+  /* Icon */
+  .sqe-stat-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 25px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #F2B705 0%, #C75B12 100%);
+    border-radius: 14px;
+    font-size: 32px;
+    color: white;
+    font-weight: 700;
+    transition: all 0.4s ease;
+  }
+
+  .sqe-stat-card.visible .sqe-stat-icon {
+    animation: bounce-icon 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes bounce-icon {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .sqe-stat-card:hover .sqe-stat-icon {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 12px 30px rgba(242, 183, 5, 0.3);
+  }
+
+  /* Counter */
+  .sqe-stat-number {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .sqe-stat-counter {
+    display: inline-block;
+    min-width: 60px;
+  }
+
+  .sqe-stat-suffix {
+    font-size: 32px;
+    color: #F2B705;
+    font-weight: 600;
+  }
+
+  .sqe-stat-label {
+    font-size: 14px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* Stagger Animation */
+  {% for i in (1..10) %}
+    .sqe-stat-card:nth-child({{ i }}) {
+      animation-delay: {{ i | times: 0.08 }}s;
+    }
+  {% endfor %}
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .sqe-floating-stats-section {
+      padding: 60px 16px;
+      min-height: auto;
+    }
+
+    .sqe-stats-header h2 {
+      font-size: 32px;
+    }
+
+    .sqe-stats-header p {
+      font-size: 16px;
+    }
+
+    .sqe-stats-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .sqe-stat-card {
+      padding: 30px 20px;
+    }
+
+    .sqe-stat-icon {
+      width: 60px;
+      height: 60px;
+      font-size: 26px;
+    }
+
+    .sqe-stat-number {
+      font-size: 36px;
+    }
+
+    .sqe-stat-suffix {
+      font-size: 24px;
+    }
+
+    .sqe-background-shape {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  class SQEFloatingStats {
+    constructor(container) {
+      this.container = container;
+      this.cards = container.querySelectorAll('.sqe-stat-card');
+      this.counters = container.querySelectorAll('.sqe-stat-counter');
+      this.hasAnimated = false;
+
+      this.init();
+    }
+
+    init() {
+      this.observeCards();
+    }
+
+    observeCards() {
+      const options = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting && !this.hasAnimated) {
+            this.animateCards();
+            this.hasAnimated = true;
+          }
+        });
+      }, options);
+
+      this.cards.forEach(card => observer.observe(card));
+    }
+
+    animateCards() {
+      this.cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.add('visible');
+
+          const counter = card.querySelector('.sqe-stat-counter');
+          if (counter && counter.dataset.target) {
+            this.animateCounter(counter, counter.dataset.target, counter.dataset.duration || 2000);
+          }
+        }, index * 150);
+      });
+    }
+
+    animateCounter(element, target, duration) {
+      const startValue = 0;
+      const endValue = parseInt(target, 10);
+      const increment = endValue / (duration / 50);
+      let currentValue = startValue;
+
+      const timer = setInterval(() => {
+        currentValue += increment;
+        if (currentValue >= endValue) {
+          element.textContent = endValue;
+          clearInterval(timer);
+        } else {
+          element.textContent = Math.floor(currentValue);
+        }
+      }, 50);
+    }
+  }
+
+  document.querySelectorAll('.sqe-floating-stats-section').forEach(section => {
+    new SQEFloatingStats(section);
+  });
+
+  // Parallax effect on scroll
+  window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('.sqe-floating-stats-section');
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const scrollPercent = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+      const shapes = section.querySelectorAll('.sqe-background-shape');
+
+      shapes.forEach((shape, index) => {
+        const offset = scrollPercent * 30 * (index + 1);
+        shape.style.transform = `translateY(${offset}px) scale(${1 + scrollPercent * 0.1})`;
+      });
+    });
+  });
+{% endjavascript %}
+
+<div class="sqe-floating-stats-section">
+  <!-- Background Elements -->
+  <div class="sqe-stats-background">
+    <div class="sqe-background-shape sqe-shape-1"></div>
+    <div class="sqe-background-shape sqe-shape-2"></div>
+    <div class="sqe-background-shape sqe-shape-3"></div>
+    <div class="sqe-grid-pattern"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="sqe-stats-container">
+    {% if section.settings.show_header %}
+      <div class="sqe-stats-header">
+        <h2>{{ section.settings.heading }}</h2>
+        <p>{{ section.settings.subheading }}</p>
+      </div>
+    {% endif %}
+
+    <div class="sqe-stats-grid">
+      {% for block in section.blocks %}
+        <div class="sqe-stat-card" {{ block.shopify_attributes }}>
+          <!-- Icon -->
+          {% if block.settings.icon_type != 'none' %}
+            <div class="sqe-stat-icon">
+              {% case block.settings.icon_type %}
+                {% when 'sun' %}
+                  ☀️
+                {% when 'zap' %}
+                  ⚡
+                {% when 'check' %}
+                  ✓
+                {% when 'trending' %}
+                  📈
+                {% when 'target' %}
+                  🎯
+                {% when 'shield' %}
+                  🛡️
+              {% endcase %}
+            </div>
+          {% endif %}
+
+          <!-- Number -->
+          <div class="sqe-stat-number">
+            <span class="sqe-stat-counter" data-target="{{ block.settings.number }}" data-duration="{{ block.settings.animation_duration }}">0</span>
+            {% if block.settings.suffix != blank %}
+              <span class="sqe-stat-suffix">{{ block.settings.suffix }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Label -->
+          <p class="sqe-stat-label">{{ block.settings.label }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SQE Floating Stats",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The SQE Impact"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Proven expertise and measurable results in solar quality assessment"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "500"
+        },
+        {
+          "type": "text",
+          "id": "suffix",
+          "label": "Suffix (+ , MW, GW, etc)",
+          "default": "+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Projects Inspected"
+        },
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "sun",
+              "label": "Sun"
+            },
+            {
+              "value": "zap",
+              "label": "Zap / Energy"
+            },
+            {
+              "value": "check",
+              "label": "Checkmark"
+            },
+            {
+              "value": "trending",
+              "label": "Trending Up"
+            },
+            {
+              "value": "target",
+              "label": "Target"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            }
+          ],
+          "default": "sun"
+        },
+        {
+          "type": "text",
+          "id": "animation_duration",
+          "label": "Animation duration (ms)",
+          "default": "2000"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SQE Floating Stats",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "number": "500",
+            "suffix": "+",
+            "label": "Projects Inspected",
+            "icon_type": "sun"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "2",
+            "suffix": "GW",
+            "label": "Total Capacity Assessed",
+            "icon_type": "zap"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "98",
+            "suffix": "%",
+            "label": "Client Satisfaction",
+            "icon_type": "check"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "15",
+            "suffix": "+",
+            "label": "Years Experience",
+            "icon_type": "trending"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

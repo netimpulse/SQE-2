@@ -1,0 +1,523 @@
+{% stylesheet %}
+  .sqe-before-after-section {
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f8fafb 0%, #ffffff 100%);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .sqe-before-after-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .sqe-before-after-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .sqe-before-after-header h2 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .sqe-before-after-header p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  /* Main Slider Container */
+  .sqe-comparison-blocks {
+    display: grid;
+    gap: 50px;
+  }
+
+  .sqe-comparison-block {
+    margin-bottom: 20px;
+  }
+
+  .sqe-comparison-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 75%;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #f2f4f7;
+    box-shadow: 0 20px 60px rgba(31, 58, 95, 0.15);
+    margin-bottom: 30px;
+  }
+
+  .sqe-comparison-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .sqe-before-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
+
+  .sqe-before-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .sqe-after-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    clip-path: inset(0 0 0 0);
+  }
+
+  .sqe-after-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Divider */
+  .sqe-divider {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    background: #F2B705;
+    cursor: ew-resize;
+    z-index: 5;
+    transform: translateX(-1.5px);
+    user-select: none;
+    box-shadow: 0 0 20px rgba(242, 183, 5, 0.4);
+  }
+
+  .sqe-divider.dragging {
+    box-shadow: 0 0 30px rgba(242, 183, 5, 0.8);
+  }
+
+  /* Divider Handle */
+  .sqe-divider-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: white;
+    border: 3px solid #F2B705;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(242, 183, 5, 0.3);
+    z-index: 6;
+    transition: all 0.3s ease;
+  }
+
+  .sqe-divider-handle::before,
+  .sqe-divider-handle::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 20px;
+    background: #F2B705;
+  }
+
+  .sqe-divider-handle::before {
+    left: 12px;
+    transform: skewY(-15deg);
+  }
+
+  .sqe-divider-handle::after {
+    right: 12px;
+    transform: skewY(15deg);
+  }
+
+  .sqe-divider:hover .sqe-divider-handle {
+    width: 70px;
+    height: 70px;
+    box-shadow: 0 12px 35px rgba(242, 183, 5, 0.5);
+  }
+
+  /* Labels */
+  .sqe-comparison-labels {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .sqe-label {
+    background: rgba(31, 58, 95, 0.9);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .sqe-label.after {
+    background: rgba(242, 183, 5, 0.95);
+    color: white;
+  }
+
+  /* Caption */
+  .sqe-comparison-caption {
+    padding: 0 10px;
+  }
+
+  .sqe-comparison-caption h3 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0 0 8px 0;
+  }
+
+  .sqe-comparison-caption p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Loading State */
+  .sqe-comparison-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: rgba(242, 183, 5, 0.2);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 3;
+  }
+
+  @keyframes spin {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  /* Auto Animate */
+  .sqe-comparison-wrapper.auto-animate .sqe-after-image {
+    animation: reveal 8s ease-in-out infinite;
+  }
+
+  @keyframes reveal {
+    0%, 10% {
+      clip-path: inset(0 100% 0 0);
+    }
+    45%, 55% {
+      clip-path: inset(0 0 0 0);
+    }
+    100% {
+      clip-path: inset(0 100% 0 0);
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .sqe-before-after-section {
+      padding: 40px 16px;
+    }
+
+    .sqe-before-after-header h2 {
+      font-size: 28px;
+    }
+
+    .sqe-divider-handle {
+      width: 50px;
+      height: 50px;
+    }
+
+    .sqe-divider:hover .sqe-divider-handle {
+      width: 50px;
+      height: 50px;
+    }
+
+    .sqe-label {
+      font-size: 11px;
+      padding: 6px 12px;
+    }
+
+    .sqe-comparison-caption h3 {
+      font-size: 20px;
+    }
+
+    .sqe-comparison-caption p {
+      font-size: 14px;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  class SQEBeforeAfterSlider {
+    constructor(element) {
+      this.wrapper = element.querySelector('.sqe-comparison-wrapper');
+      this.divider = element.querySelector('.sqe-divider');
+      this.afterImage = element.querySelector('.sqe-after-image');
+      this.comparisonInner = element.querySelector('.sqe-comparison-inner');
+
+      this.isDragging = false;
+      this.startX = 0;
+      this.currentX = 50;
+
+      this.init();
+    }
+
+    init() {
+      this.divider.addEventListener('mousedown', (e) => this.startDrag(e));
+      this.divider.addEventListener('touchstart', (e) => this.startDrag(e));
+
+      document.addEventListener('mousemove', (e) => this.moveDivider(e));
+      document.addEventListener('touchmove', (e) => this.moveDivider(e));
+
+      document.addEventListener('mouseup', () => this.stopDrag());
+      document.addEventListener('touchend', () => this.stopDrag());
+
+      this.updatePosition();
+
+      window.addEventListener('resize', () => this.updatePosition());
+    }
+
+    startDrag(e) {
+      this.isDragging = true;
+      this.divider.classList.add('dragging');
+      this.startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      this.startPosition = this.currentX;
+    }
+
+    stopDrag() {
+      this.isDragging = false;
+      this.divider.classList.remove('dragging');
+    }
+
+    moveDivider(e) {
+      if (!this.isDragging) return;
+
+      e.preventDefault();
+
+      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      const rect = this.comparisonInner.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const percent = (x / rect.width) * 100;
+
+      this.currentX = Math.max(0, Math.min(100, percent));
+      this.updatePosition();
+    }
+
+    updatePosition() {
+      this.divider.style.left = this.currentX + '%';
+      this.afterImage.style.clipPath = `inset(0 ${100 - this.currentX}% 0 0)`;
+    }
+  }
+
+  document.querySelectorAll('.sqe-comparison-block').forEach(block => {
+    new SQEBeforeAfterSlider(block);
+  });
+{% endjavascript %}
+
+<div class="sqe-before-after-section">
+  <div class="sqe-before-after-container">
+    {% if section.settings.show_header %}
+      <div class="sqe-before-after-header">
+        <h2>{{ section.settings.heading }}</h2>
+        <p>{{ section.settings.subheading }}</p>
+      </div>
+    {% endif %}
+
+    <div class="sqe-comparison-blocks">
+      {% for block in section.blocks %}
+        <div class="sqe-comparison-block" {{ block.shopify_attributes }}>
+          <div class="sqe-comparison-wrapper {% if block.settings.enable_auto_animate %}auto-animate{% endif %}">
+            <div class="sqe-comparison-inner">
+              <!-- Before Image -->
+              <div class="sqe-before-image">
+                {% if block.settings.before_image %}
+                  {{ block.settings.before_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+                {% else %}
+                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #E8ECEF 0%, #D4DFE8 100%); display: flex; align-items: center; justify-content: center; color: #999; font-weight: 600;">
+                    Before Image
+                  </div>
+                {% endif %}
+              </div>
+
+              <!-- After Image -->
+              <div class="sqe-after-image">
+                {% if block.settings.after_image %}
+                  {{ block.settings.after_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+                {% else %}
+                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #F2B705 0%, #C75B12 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                    After Image
+                  </div>
+                {% endif %}
+              </div>
+
+              <!-- Labels -->
+              <div class="sqe-comparison-labels">
+                {% if block.settings.show_labels %}
+                  <div class="sqe-label before">{{ block.settings.before_label }}</div>
+                  <div class="sqe-label after">{{ block.settings.after_label }}</div>
+                {% endif %}
+              </div>
+
+              <!-- Divider -->
+              <div class="sqe-divider">
+                <div class="sqe-divider-handle"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Caption -->
+          {% if block.settings.title != blank or block.settings.description != blank %}
+            <div class="sqe-comparison-caption">
+              {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.description != blank %}
+                <p>{{ block.settings.description }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SQE Before/After Slider",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show header section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Inspection Results"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Drag the slider to see the difference thermal imaging reveals"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison",
+      "name": "Comparison Pair",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Before Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "After Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_labels",
+          "label": "Show before/after labels",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "before_label",
+          "label": "Before label",
+          "default": "Before"
+        },
+        {
+          "type": "text",
+          "id": "after_label",
+          "label": "After label",
+          "default": "After"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Thermal Image Analysis"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Our advanced thermal imaging technology reveals heat loss patterns and structural issues invisible to the naked eye."
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_auto_animate",
+          "label": "Enable auto-animate effect",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SQE Before/After Slider",
+      "blocks": [
+        {
+          "type": "comparison",
+          "settings": {
+            "title": "Thermal Image Analysis",
+            "description": "Our advanced thermal imaging technology reveals heat loss patterns and structural issues invisible to the naked eye."
+          }
+        },
+        {
+          "type": "comparison",
+          "settings": {
+            "title": "Structural Integrity Check",
+            "description": "High-resolution imaging identifies potential structural concerns before they become costly problems."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
