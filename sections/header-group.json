@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.header.name",
   "type": "header",
@@ -13,7 +22,9 @@
           }
         }
       },
-      "block_order": ["announcement-bar-0"],
+      "block_order": [
+        "announcement-bar-0"
+      ],
       "settings": {
         "auto_rotate": false,
         "change_slides_speed": 5,
@@ -29,28 +40,29 @@
       "settings": {
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
-        "nav_alignment": "center",
-        "sticky_header_type": "on-scroll-up",
-        "background_color": "#FFFFFF",
-        "text_color": "#1F3A5F",
+        "nav_alignment": "left",
+        "sticky_header_type": "always",
+        "background_color": "#ffffff",
+        "text_color": "#1f3a5f",
         "header_height": 80,
         "show_border": true,
         "menu_font_size": 15,
-        "menu_color": "#1F3A5F",
-        "menu_hover_color": "#F2B705",
-        "menu_active_color": "#F2B705",
+        "menu_color": "#1f3a5f",
+        "menu_hover_color": "#f2b705",
+        "menu_active_color": "#f2b705",
         "menu_bold": true,
         "show_cta": true,
         "cta_text": "Get a Quote",
-        "cta_bg_color": "#F2B705",
-        "cta_color": "#1F3A5F",
+        "cta_link": "",
+        "cta_bg_color": "#f2b705",
+        "cta_color": "#1f3a5f",
         "cta_font_size": 14,
         "show_search": true,
         "show_account": true,
         "show_cart": true,
         "logo_pos_x": 2,
         "logo_pos_y": 0,
-        "menu_nudge_x": 0,
+        "menu_pos_x": 50,
         "menu_pos_y": 0,
         "actions_pos_x": 2,
         "actions_pos_y": 0,
@@ -69,5 +81,8 @@
       }
     }
   },
-  "order": ["announcement-bar", "sqe-header"]
+  "order": [
+    "announcement-bar",
+    "sqe-header"
+  ]
 }
