@@ -3,16 +3,8 @@
   assign logo_pos_x = section.settings.logo_pos_x
   assign logo_pos_y = section.settings.logo_pos_y
   assign nav_align = section.settings.nav_alignment
-  assign menu_pos_x = section.settings.menu_pos_x
+  assign menu_nudge_x = section.settings.menu_nudge_x
   assign menu_pos_y = section.settings.menu_pos_y
-  assign search_pos_x = section.settings.search_pos_x
-  assign search_pos_y = section.settings.search_pos_y
-  assign account_pos_x = section.settings.account_pos_x
-  assign account_pos_y = section.settings.account_pos_y
-  assign cart_pos_x = section.settings.cart_pos_x
-  assign cart_pos_y = section.settings.cart_pos_y
-  assign cta_pos_x = section.settings.cta_pos_x
-  assign cta_pos_y = section.settings.cta_pos_y
   assign show_search = section.settings.show_search
   assign show_account = section.settings.show_account
   assign show_cart = section.settings.show_cart
@@ -39,12 +31,18 @@
   assign menu_active_color = section.settings.menu_active_color
   assign menu_hover_color = section.settings.menu_hover_color
   assign menu_bold = section.settings.menu_bold
+  assign search_pos_x = section.settings.search_pos_x
+  assign search_pos_y = section.settings.search_pos_y
+  assign account_pos_x = section.settings.account_pos_x
+  assign account_pos_y = section.settings.account_pos_y
+  assign cart_pos_x = section.settings.cart_pos_x
+  assign cart_pos_y = section.settings.cart_pos_y
+  assign cta_pos_x = section.settings.cta_pos_x
+  assign cta_pos_y = section.settings.cta_pos_y
 
-  assign menu_weight = '600'
+  assign menu_weight = '400'
   if menu_bold
     assign menu_weight = '700'
-  else
-    assign menu_weight = '400'
   endif
 -%}
 
@@ -64,26 +62,27 @@
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
 
 <style>
-  /* ===== SECTION ===== */
-  .sqe-section-header-{{ section.id }} {
-    display: block;
-    z-index: 1000;
-    background-color: {{ bg_color }};
-  }
-
+  /* ===== STICKY ON SHOPIFY SECTION WRAPPER ===== */
   {%- if sticky_type != 'none' -%}
-    .sqe-section-header-{{ section.id }} {
+    .sqe-section-header {
       position: sticky;
       top: 0;
+      z-index: 1000;
     }
-    .sqe-section-header-{{ section.id }}.sqe-header-hidden {
+    .sqe-section-header.sqe-header-hidden {
       transform: translateY(-100%);
     }
-    .sqe-section-header-{{ section.id }}.sqe-header-animate {
+    .sqe-section-header.sqe-header-animate {
       transition: transform 0.35s ease;
+    }
+  {%- else -%}
+    .sqe-section-header {
+      position: relative;
+      z-index: 1000;
     }
   {%- endif -%}
 
+  /* ===== SECTION ===== */
   #sqe-header-{{ section.id }} {
     background-color: {{ bg_color }};
     color: {{ text_color }};
@@ -136,26 +135,28 @@
     white-space: nowrap;
   }
 
-  /* ===== NAVIGATION ===== */
+  /* ===== NAVIGATION - ALIGNMENT BASED ===== */
   #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
     position: absolute;
-    left: {{ menu_pos_x }}%;
     top: 50%;
     z-index: 5;
     display: flex;
   }
 
-  {%- if nav_align == 'center' -%}
+  {%- if nav_align == 'left' -%}
     #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-      transform: translateX(-50%) translateY(-50%) translateY({{ menu_pos_y }}px);
+      left: 2rem;
+      transform: translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
     }
   {%- elsif nav_align == 'right' -%}
     #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-      transform: translateX(-100%) translateY(-50%) translateY({{ menu_pos_y }}px);
+      right: 2rem;
+      transform: translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
     }
   {%- else -%}
     #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-      transform: translateY(-50%) translateY({{ menu_pos_y }}px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
     }
   {%- endif -%}
 
@@ -347,15 +348,6 @@
   }
 
   /* ===== SEARCH - INLINE HEADER BAR ===== */
-  #sqe-header-{{ section.id }} .header__search {
-    display: flex;
-    align-items: center;
-  }
-
-  #sqe-header-{{ section.id }} .header__icon--search {
-    cursor: pointer;
-  }
-
   #sqe-header-{{ section.id }} .sqe-search-bar {
     display: none;
     position: absolute;
@@ -443,7 +435,6 @@
     margin: 0;
   }
 
-  /* ===== DESKTOP DRAWER MODE ===== */
   {%- if menu_type == 'drawer' -%}
     #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
       display: none;
@@ -574,168 +565,162 @@
   }
 </style>
 
-<div
-  class="sqe-section-header-{{ section.id }}"
-  data-sqe-sticky-type="{{ sticky_type }}"
-  data-sqe-header-wrapper
->
-  <section id="sqe-header-{{ section.id }}" class="sqe-header">
-    <div class="sqe-header__inner">
+<section id="sqe-header-{{ section.id }}" class="sqe-header" data-sqe-sticky-type="{{ sticky_type }}">
+  <div class="sqe-header__inner">
 
-      {%- comment -%} Mobile hamburger / drawer {%- endcomment -%}
-      <div class="sqe-header__hamburger-wrap">
-        {%- if menu != blank -%}
-          {%- render 'header-drawer' -%}
-        {%- endif -%}
-      </div>
+    {%- comment -%} Mobile hamburger / drawer {%- endcomment -%}
+    <div class="sqe-header__hamburger-wrap">
+      {%- if menu != blank -%}
+        {%- render 'header-drawer' -%}
+      {%- endif -%}
+    </div>
 
-      {%- comment -%} Logo {%- endcomment -%}
-      <div class="sqe-header__logo-wrap">
-        {%- if request.page_type == 'index' -%}
-          <h1 class="header__heading" style="margin:0">
-        {%- endif -%}
-        <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-          {%- if settings.logo != blank -%}
-            <div class="header__heading-logo-wrapper">
-              {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-              {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-              {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
-              {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
-              {{
-                settings.logo
-                | image_url: width: 600
-                | image_tag:
-                  class: 'header__heading-logo motion-reduce',
-                  widths: widths,
-                  height: logo_height,
-                  width: settings.logo_width,
-                  alt: logo_alt,
-                  sizes: sizes,
-                  preload: true
-              }}
-            </div>
-          {%- else -%}
-            <span class="h2">{{ shop.name }}</span>
-          {%- endif -%}
-        </a>
-        {%- if request.page_type == 'index' -%}
-          </h1>
-        {%- endif -%}
-      </div>
-
-      {%- comment -%} Desktop Navigation {%- endcomment -%}
-      <nav class="sqe-header__nav-wrap" aria-label="Main navigation">
-        {%- if menu != blank -%}
-          <ul class="sqe-header__nav-list" role="list">
-            {%- for link in menu.links -%}
-              <li class="sqe-header__nav-item{% if link.current %} sqe-header__nav-item--active{% endif %}">
-                <a
-                  href="{{ link.url }}"
-                  {% if link.current %} aria-current="page"{% endif %}
-                >
-                  {{ link.title | escape }}
-                </a>
-                {%- if link.links != blank -%}
-                  <ul class="sqe-header__dropdown">
-                    {%- for childlink in link.links -%}
-                      <li>
-                        <a
-                          href="{{ childlink.url }}"
-                          {% if childlink.current %} aria-current="page"{% endif %}
-                        >
-                          {{ childlink.title | escape }}
-                        </a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-        {%- endif -%}
-      </nav>
-
-      {%- comment -%} Actions: Search, Account, Cart, CTA {%- endcomment -%}
-      <div class="sqe-header__actions">
-
-        {%- if show_search -%}
-          <div class="sqe-header__icon-wrap sqe-header__icon-wrap--search">
-            <button class="header__icon header__icon--search link focus-inset" aria-label="Search" data-sqe-search-toggle type="button" style="background:none;border:none;cursor:pointer;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            </button>
+    {%- comment -%} Logo {%- endcomment -%}
+    <div class="sqe-header__logo-wrap">
+      {%- if request.page_type == 'index' -%}
+        <h1 class="header__heading" style="margin:0">
+      {%- endif -%}
+      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+        {%- if settings.logo != blank -%}
+          <div class="header__heading-logo-wrapper">
+            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+            {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+            {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+            {{
+              settings.logo
+              | image_url: width: 600
+              | image_tag:
+                class: 'header__heading-logo motion-reduce',
+                widths: widths,
+                height: logo_height,
+                width: settings.logo_width,
+                alt: logo_alt,
+                sizes: sizes,
+                preload: true
+            }}
           </div>
+        {%- else -%}
+          <span class="h2">{{ shop.name }}</span>
         {%- endif -%}
+      </a>
+      {%- if request.page_type == 'index' -%}
+        </h1>
+      {%- endif -%}
+    </div>
 
-        {%- if show_account and shop.customer_accounts_enabled -%}
-          <div class="sqe-header__icon-wrap sqe-header__icon-wrap--account">
-            <a
-              href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-              class="header__icon header__icon--account link focus-inset"
-              rel="nofollow"
-            >
-              <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
-              <span class="visually-hidden">
-                {%- liquid
-                  if customer
-                    echo 'customer.account_fallback' | t
-                  else
-                    echo 'customer.log_in' | t
-                  endif
-                -%}
-              </span>
-            </a>
-          </div>
-        {%- endif -%}
-
-        {%- if show_cart -%}
-          <div class="sqe-header__icon-wrap sqe-header__icon-wrap--cart">
-            <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
-              <svg class="sqe-header__cart-icon-custom" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                <line x1="3" y1="6" x2="21" y2="6"/>
-                <path d="M16 10a4 4 0 01-8 0"/>
-              </svg>
-              <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
-              {%- if cart != empty -%}
-                <div class="cart-count-bubble">
-                  {%- if cart.item_count < 100 -%}
-                    <span aria-hidden="true">{{ cart.item_count }}</span>
-                  {%- endif -%}
-                  <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
-                </div>
+    {%- comment -%} Desktop Navigation {%- endcomment -%}
+    <nav class="sqe-header__nav-wrap" aria-label="Main navigation">
+      {%- if menu != blank -%}
+        <ul class="sqe-header__nav-list" role="list">
+          {%- for link in menu.links -%}
+            <li class="sqe-header__nav-item{% if link.current %} sqe-header__nav-item--active{% endif %}">
+              <a
+                href="{{ link.url }}"
+                {% if link.current %} aria-current="page"{% endif %}
+              >
+                {{ link.title | escape }}
+              </a>
+              {%- if link.links != blank -%}
+                <ul class="sqe-header__dropdown">
+                  {%- for childlink in link.links -%}
+                    <li>
+                      <a
+                        href="{{ childlink.url }}"
+                        {% if childlink.current %} aria-current="page"{% endif %}
+                      >
+                        {{ childlink.title | escape }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
               {%- endif -%}
-            </a>
-          </div>
-        {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </nav>
 
-        {%- if show_cta and cta_text != blank -%}
-          <div class="sqe-header__cta-wrap">
-            <a href="{{ cta_link }}" class="sqe-header__cta">
-              {{ cta_text | escape }}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-          </div>
-        {%- endif -%}
+    {%- comment -%} Actions: Search, Account, Cart, CTA {%- endcomment -%}
+    <div class="sqe-header__actions">
 
-      </div>
-
-      {%- comment -%} Inline Search Bar {%- endcomment -%}
-      <div class="sqe-search-bar" data-sqe-search-bar>
-        <form action="{{ routes.search_url }}" method="get" role="search">
-          <input type="hidden" name="options[prefix]" value="last">
-          <input type="search" name="q" placeholder="{{ 'general.search.search' | t }}" autocomplete="off" autocorrect="off" autocapitalize="off">
-          <button type="submit" aria-label="{{ 'general.search.search' | t }}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      {%- if show_search -%}
+        <div class="sqe-header__icon-wrap sqe-header__icon-wrap--search">
+          <button class="header__icon header__icon--search link focus-inset" aria-label="Search" data-sqe-search-toggle type="button" style="background:none;border:none;cursor:pointer;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </button>
-        </form>
-        <button class="sqe-search-close" data-sqe-search-close type="button" aria-label="Close search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-      </div>
+        </div>
+      {%- endif -%}
+
+      {%- if show_account and shop.customer_accounts_enabled -%}
+        <div class="sqe-header__icon-wrap sqe-header__icon-wrap--account">
+          <a
+            href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+            class="header__icon header__icon--account link focus-inset"
+            rel="nofollow"
+          >
+            <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+            <span class="visually-hidden">
+              {%- liquid
+                if customer
+                  echo 'customer.account_fallback' | t
+                else
+                  echo 'customer.log_in' | t
+                endif
+              -%}
+            </span>
+          </a>
+        </div>
+      {%- endif -%}
+
+      {%- if show_cart -%}
+        <div class="sqe-header__icon-wrap sqe-header__icon-wrap--cart">
+          <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+            <svg class="sqe-header__cart-icon-custom" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+            <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+            {%- if cart != empty -%}
+              <div class="cart-count-bubble">
+                {%- if cart.item_count < 100 -%}
+                  <span aria-hidden="true">{{ cart.item_count }}</span>
+                {%- endif -%}
+                <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+              </div>
+            {%- endif -%}
+          </a>
+        </div>
+      {%- endif -%}
+
+      {%- if show_cta and cta_text != blank -%}
+        <div class="sqe-header__cta-wrap">
+          <a href="{{ cta_link }}" class="sqe-header__cta">
+            {{ cta_text | escape }}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      {%- endif -%}
 
     </div>
-  </section>
-</div>
+
+    {%- comment -%} Inline Search Bar {%- endcomment -%}
+    <div class="sqe-search-bar" data-sqe-search-bar>
+      <form action="{{ routes.search_url }}" method="get" role="search">
+        <input type="hidden" name="options[prefix]" value="last">
+        <input type="search" name="q" placeholder="{{ 'general.search.search' | t }}" autocomplete="off" autocorrect="off" autocapitalize="off">
+        <button type="submit" aria-label="{{ 'general.search.search' | t }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </form>
+      <button class="sqe-search-close" data-sqe-search-close type="button" aria-label="Close search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+
+  </div>
+</section>
 
 {%- if settings.cart_type == 'notification' -%}
   {%- render 'cart-notification',
@@ -746,10 +731,10 @@
 
 <script>
   (function() {
-    /* === SEARCH TOGGLE === */
     var section = document.getElementById('sqe-header-{{ section.id }}');
     if (!section) return;
 
+    /* === SEARCH TOGGLE === */
     var searchToggle = section.querySelector('[data-sqe-search-toggle]');
     var searchBar = section.querySelector('[data-sqe-search-bar]');
     var searchClose = section.querySelector('[data-sqe-search-close]');
@@ -768,43 +753,33 @@
     }
 
     /* === STICKY HEADER === */
-    var wrapper = section.closest('[data-sqe-header-wrapper]');
+    var stickyType = section.getAttribute('data-sqe-sticky-type');
+    if (!stickyType || stickyType === 'none') return;
+
+    var wrapper = section.closest('.sqe-section-header');
     if (!wrapper) return;
 
-    var stickyType = wrapper.getAttribute('data-sqe-sticky-type');
-    if (stickyType === 'none') return;
-
-    var isAlwaysSticky = (stickyType === 'always' || stickyType === 'reduce-logo-size');
+    var isAlwaysSticky = (stickyType === 'always');
     var currentScroll = 0;
     var headerHeight = wrapper.offsetHeight;
-    var preventReveal = false;
-    var scrollTimer = null;
 
     document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
-
-    if (isAlwaysSticky) {
-      wrapper.classList.add('sqe-header-animate');
-    }
 
     window.addEventListener('scroll', function() {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
+      if (isAlwaysSticky) {
+        currentScroll = scrollTop;
+        return;
+      }
+
       if (scrollTop > currentScroll && scrollTop > headerHeight) {
-        /* Scrolling DOWN past header */
-        if (!isAlwaysSticky) {
-          wrapper.classList.add('sqe-header-animate');
-          wrapper.classList.add('sqe-header-hidden');
-        }
+        wrapper.classList.add('sqe-header-animate', 'sqe-header-hidden');
       } else if (scrollTop < currentScroll && scrollTop > headerHeight) {
-        /* Scrolling UP but below header */
-        if (!isAlwaysSticky) {
-          wrapper.classList.add('sqe-header-animate');
-          wrapper.classList.remove('sqe-header-hidden');
-        }
-      } else if (scrollTop <= 10) {
-        /* Back at top */
+        wrapper.classList.add('sqe-header-animate');
         wrapper.classList.remove('sqe-header-hidden');
-        wrapper.classList.remove('sqe-header-animate');
+      } else if (scrollTop <= 10) {
+        wrapper.classList.remove('sqe-header-hidden', 'sqe-header-animate');
       }
 
       currentScroll = scrollTop;
@@ -887,8 +862,7 @@
         { "value": "right", "label": "Right" }
       ],
       "default": "center",
-      "label": "Menu Alignment",
-      "info": "Left: starts at X. Center: centers at X. Right: ends at X."
+      "label": "Menu Alignment"
     },
     {
       "type": "select",
@@ -896,7 +870,7 @@
       "options": [
         { "value": "none", "label": "None" },
         { "value": "on-scroll-up", "label": "On Scroll Up" },
-        { "value": "always", "label": "Always" }
+        { "value": "always", "label": "Always Sticky" }
       ],
       "default": "on-scroll-up",
       "label": "Sticky Header"
@@ -1062,17 +1036,18 @@
     },
     {
       "type": "header",
-      "content": "Menu Position"
+      "content": "Menu Fine-tune"
     },
     {
       "type": "range",
-      "id": "menu_pos_x",
-      "min": 5,
-      "max": 95,
+      "id": "menu_nudge_x",
+      "min": -60,
+      "max": 60,
       "step": 1,
-      "unit": "%",
-      "label": "Menu X",
-      "default": 50
+      "unit": "px",
+      "label": "Menu X Nudge",
+      "default": 0,
+      "info": "Fine-tune from alignment"
     },
     {
       "type": "range",
