@@ -62,7 +62,7 @@
         "show_cart": true,
         "logo_pos_x": 2,
         "logo_pos_y": 0,
-        "menu_pos_x": 50,
+        "menu_nudge_x": 0,
         "menu_pos_y": 0,
         "actions_pos_x": 2,
         "actions_pos_y": 0,

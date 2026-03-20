@@ -62,96 +62,150 @@
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
 
 <style>
-  /* ===== BASE (always present) ===== */
-  #sqe-header-{{ section.id }} {
+  /*
+   * ============================================================
+   *  SQE HEADER – Complete rewrite v7
+   *
+   *  KEY FIX: Dawn's base.css adds .shopify-section-header-sticky
+   *  with position:sticky to the Shopify wrapper div. This breaks
+   *  our position:fixed. We override the WRAPPER styles here.
+   *
+   *  NO Liquid conditionals in CSS – everything via data-* attrs.
+   * ============================================================
+   */
+
+  /* --- DAWN OVERRIDE: neutralize Shopify wrapper styles --- */
+  #shopify-section-{{ section.id }} {
+    position: relative !important;
+    top: auto !important;
+    z-index: 1000 !important;
+  }
+  #shopify-section-{{ section.id }}.shopify-section-header-sticky {
+    position: relative !important;
+    top: auto !important;
+  }
+  #shopify-section-{{ section.id }}.shopify-section-header-hidden {
+    top: auto !important;
+  }
+  #shopify-section-{{ section.id }}.section-header.animate {
+    transition: none !important;
+  }
+  /* Remove Dawn header-wrapper interference */
+  #shopify-section-{{ section.id }} .header-wrapper {
+    display: contents !important;
+  }
+
+  /* --- SECTION ELEMENT: base styles --- */
+  .sqe-hdr-{{ section.id }} {
     background-color: {{ bg_color }};
     color: {{ text_color }};
-    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  /* ===== STICKY: controlled by data-sticky attribute (NO Liquid conditionals) ===== */
-  #sqe-header-{{ section.id }}[data-sticky="none"] {
+  /* --- STICKY via data-sticky (all rules always present) --- */
+  .sqe-hdr-{{ section.id }}[data-sticky="none"] {
     position: relative !important;
   }
-  #sqe-header-{{ section.id }}[data-sticky="always"],
-  #sqe-header-{{ section.id }}[data-sticky="on-scroll-up"] {
+  .sqe-hdr-{{ section.id }}[data-sticky="always"] {
     position: fixed !important;
-    top: 0; left: 0; right: 0;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1001 !important;
   }
-  #sqe-header-{{ section.id }}.sqe-header-hidden {
-    transform: translateY(-100%);
-  }
-  #sqe-header-{{ section.id }}.sqe-header-animate {
+  .sqe-hdr-{{ section.id }}[data-sticky="on-scroll-up"] {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1001 !important;
     transition: transform 0.35s ease;
   }
+  .sqe-hdr-{{ section.id }}[data-sticky="on-scroll-up"].sqe-hidden {
+    transform: translateY(-110%);
+  }
 
-  /* Spacer: visible only when sticky */
-  .sqe-header-spacer--{{ section.id }}[data-show="true"] { display: block; }
-  .sqe-header-spacer--{{ section.id }}[data-show="false"] { display: none; }
+  /* --- BORDER via data-border --- */
+  .sqe-hdr-{{ section.id }}[data-border="true"] {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .sqe-hdr-{{ section.id }}[data-border="false"] {
+    border-bottom: none;
+  }
 
-  #sqe-header-{{ section.id }} .sqe-header__inner {
+  /* --- SPACER: shown only when sticky --- */
+  .sqe-hdr-spacer-{{ section.id }}[data-show="true"] {
+    display: block;
+    height: {{ header_height }}px;
+  }
+  .sqe-hdr-spacer-{{ section.id }}[data-show="false"] {
+    display: none;
+  }
+
+  /* --- INNER container --- */
+  .sqe-hdr-{{ section.id }} .sqe-h-inner {
     display: flex;
     align-items: center;
-    height: var(--sqe-h-height, 80px);
+    height: {{ header_height }}px;
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
     position: relative;
+    box-sizing: border-box;
   }
 
-  /* ===== LOGO ===== */
-  #sqe-header-{{ section.id }} .sqe-header__logo-wrap {
+  /* --- LOGO --- */
+  .sqe-hdr-{{ section.id }} .sqe-h-logo {
     position: absolute;
-    left: var(--sqe-logo-x, 2%);
+    left: {{ logo_pos_x }}%;
     top: 50%;
-    transform: translateY(-50%) translateY(var(--sqe-logo-y, 0px));
+    transform: translateY(-50%) translateY({{ logo_pos_y }}px);
     z-index: 10;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__logo-wrap a {
-    display: flex; align-items: center; text-decoration: none; color: inherit;
+  .sqe-hdr-{{ section.id }} .sqe-h-logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__logo-wrap img {
-    max-height: calc(var(--sqe-h-height, 80px) - 20px);
+  .sqe-hdr-{{ section.id }} .sqe-h-logo img {
+    max-height: {{ header_height | minus: 20 }}px;
     width: auto;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__logo-wrap .h2 {
+  .sqe-hdr-{{ section.id }} .sqe-h-logo .h2 {
     font-family: 'Source Sans 3', 'Source Sans Pro', sans-serif;
-    font-weight: 700; font-size: 1.4rem; margin: 0; color: inherit; white-space: nowrap;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin: 0;
+    color: inherit;
+    white-space: nowrap;
   }
 
-  /* ===== NAVIGATION: controlled by data-align attribute (NO Liquid conditionals) ===== */
-  #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
+  /* --- NAV ALIGNMENT via data-align (all rules always present) --- */
+  .sqe-hdr-{{ section.id }} .sqe-h-nav {
     position: absolute;
     top: 50%;
     z-index: 5;
     display: flex;
   }
-
-  /* LEFT alignment */
-  #sqe-header-{{ section.id }} .sqe-header__nav-wrap[data-align="left"] {
+  .sqe-hdr-{{ section.id }} .sqe-h-nav[data-align="left"] {
     left: 2rem !important;
     right: auto !important;
-    transform: translateY(-50%) translateX(var(--sqe-nudge-x, 0px)) translateY(var(--sqe-nudge-y, 0px));
+    transform: translateY(-50%) translate({{ menu_nudge_x }}px, {{ menu_pos_y }}px) !important;
   }
-
-  /* CENTER alignment */
-  #sqe-header-{{ section.id }} .sqe-header__nav-wrap[data-align="center"] {
+  .sqe-hdr-{{ section.id }} .sqe-h-nav[data-align="center"] {
     left: 50% !important;
     right: auto !important;
-    transform: translateX(-50%) translateY(-50%) translateX(var(--sqe-nudge-x, 0px)) translateY(var(--sqe-nudge-y, 0px));
+    transform: translateX(-50%) translateY(-50%) translate({{ menu_nudge_x }}px, {{ menu_pos_y }}px) !important;
   }
-
-  /* RIGHT alignment */
-  #sqe-header-{{ section.id }} .sqe-header__nav-wrap[data-align="right"] {
+  .sqe-hdr-{{ section.id }} .sqe-h-nav[data-align="right"] {
     left: auto !important;
     right: 2rem !important;
-    transform: translateY(-50%) translateX(var(--sqe-nudge-x, 0px)) translateY(var(--sqe-nudge-y, 0px));
+    transform: translateY(-50%) translate({{ menu_nudge_x }}px, {{ menu_pos_y }}px) !important;
   }
 
-  #sqe-header-{{ section.id }} .sqe-header__nav-list {
+  .sqe-hdr-{{ section.id }} .sqe-h-nav-list {
     display: flex;
     list-style: none;
     margin: 0;
@@ -159,7 +213,7 @@
     gap: 0.25rem;
   }
 
-  #sqe-header-{{ section.id }} .sqe-header__nav-item a {
+  .sqe-hdr-{{ section.id }} .sqe-h-nav-item a {
     text-decoration: none;
     color: {{ menu_color }};
     font-family: 'Source Sans 3', 'Source Sans Pro', sans-serif;
@@ -172,22 +226,19 @@
     display: block;
     white-space: nowrap;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__nav-item a:hover {
+  .sqe-hdr-{{ section.id }} .sqe-h-nav-item a:hover {
     color: {{ menu_hover_color }};
     background-color: rgba(242, 183, 5, 0.08);
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__nav-item--active a {
+  .sqe-hdr-{{ section.id }} .sqe-h-nav-item--active a {
     color: {{ menu_active_color }};
   }
 
-  /* ===== DROPDOWN SUBMENU ===== */
-  #sqe-header-{{ section.id }} .sqe-header__nav-item {
+  /* --- DROPDOWN SUBMENU --- */
+  .sqe-hdr-{{ section.id }} .sqe-h-nav-item {
     position: relative;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__dropdown {
+  .sqe-hdr-{{ section.id }} .sqe-h-dropdown {
     display: none;
     position: absolute;
     top: 100%;
@@ -202,25 +253,30 @@
     list-style: none;
     margin: 0;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__nav-item:hover .sqe-header__dropdown {
+  .sqe-hdr-{{ section.id }} .sqe-h-nav-item:hover .sqe-h-dropdown {
     display: block;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__dropdown li a {
+  .sqe-hdr-{{ section.id }} .sqe-h-dropdown li a {
     display: block;
     padding: 0.5rem 1.2rem;
     font-size: 0.9rem;
     font-weight: 500;
     color: {{ menu_color }};
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__dropdown li a:hover {
+  .sqe-hdr-{{ section.id }} .sqe-h-dropdown li a:hover {
     color: {{ menu_hover_color }};
   }
 
-  /* ===== ACTIONS GROUP ===== */
-  #sqe-header-{{ section.id }} .sqe-header__actions {
+  /* --- DRAWER MODE via data-menu-type --- */
+  .sqe-hdr-{{ section.id }}[data-menu-type="drawer"] .sqe-h-nav {
+    display: none !important;
+  }
+  .sqe-hdr-{{ section.id }}[data-menu-type="drawer"] .sqe-h-hamburger {
+    display: flex !important;
+  }
+
+  /* --- ACTIONS GROUP --- */
+  .sqe-hdr-{{ section.id }} .sqe-h-actions {
     position: absolute;
     right: {{ actions_pos_x }}%;
     top: 50%;
@@ -231,33 +287,29 @@
     z-index: 10;
   }
 
-  #sqe-header-{{ section.id }} .sqe-header__icon-wrap {
+  .sqe-hdr-{{ section.id }} .sqe-h-icon-wrap {
     position: relative;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__icon-wrap--search {
+  .sqe-hdr-{{ section.id }} .sqe-h-icon-wrap--search {
     top: {{ search_pos_y }}px;
     left: {{ search_pos_x }}px;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__icon-wrap--account {
+  .sqe-hdr-{{ section.id }} .sqe-h-icon-wrap--account {
     top: {{ account_pos_y }}px;
     left: {{ account_pos_x }}px;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__icon-wrap--cart {
+  .sqe-hdr-{{ section.id }} .sqe-h-icon-wrap--cart {
     top: {{ cart_pos_y }}px;
     left: {{ cart_pos_x }}px;
   }
 
-  #sqe-header-{{ section.id }} .sqe-header__cta-wrap {
+  .sqe-hdr-{{ section.id }} .sqe-h-cta-wrap {
     position: relative;
     top: {{ cta_pos_y }}px;
     left: {{ cta_pos_x }}px;
     margin-left: 0.5rem;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__cta {
+  .sqe-hdr-{{ section.id }} .sqe-h-cta {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -273,14 +325,13 @@
     transition: opacity 0.2s ease, transform 0.15s ease;
     white-space: nowrap;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__cta:hover {
+  .sqe-hdr-{{ section.id }} .sqe-h-cta:hover {
     opacity: 0.9;
     transform: translateY(-1px);
   }
 
-  /* ===== ICONS ===== */
-  #sqe-header-{{ section.id }} .header__icon {
+  /* --- ICONS --- */
+  .sqe-hdr-{{ section.id }} .sqe-h-icon {
     color: {{ text_color }};
     width: 44px;
     height: 44px;
@@ -289,19 +340,19 @@
     justify-content: center;
     transition: color 0.2s ease;
     position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
   }
-
-  #sqe-header-{{ section.id }} .header__icon:hover {
+  .sqe-hdr-{{ section.id }} .sqe-h-icon:hover {
     color: {{ menu_hover_color }};
   }
-
-  #sqe-header-{{ section.id }} .header__icon svg,
-  #sqe-header-{{ section.id }} .header__icon .svg-wrapper svg {
+  .sqe-hdr-{{ section.id }} .sqe-h-icon svg {
     width: 22px;
     height: 22px;
   }
-
-  #sqe-header-{{ section.id }} .sqe-header__cart-icon-custom {
+  .sqe-hdr-{{ section.id }} .sqe-h-cart-svg {
     width: 24px;
     height: 24px;
     stroke: currentColor;
@@ -310,8 +361,7 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-
-  #sqe-header-{{ section.id }} .cart-count-bubble {
+  .sqe-hdr-{{ section.id }} .sqe-h-cart-bubble {
     position: absolute;
     top: 4px;
     right: 0;
@@ -328,8 +378,8 @@
     line-height: 1;
   }
 
-  /* ===== HAMBURGER ===== */
-  #sqe-header-{{ section.id }} .sqe-header__hamburger-wrap {
+  /* --- HAMBURGER (hidden by default, shown on mobile or drawer mode) --- */
+  .sqe-hdr-{{ section.id }} .sqe-h-hamburger {
     display: none;
     position: absolute;
     left: {{ hamburger_pos_x }}%;
@@ -338,8 +388,8 @@
     z-index: 10;
   }
 
-  /* ===== SEARCH - INLINE HEADER BAR ===== */
-  #sqe-header-{{ section.id }} .sqe-search-bar {
+  /* --- INLINE SEARCH BAR --- */
+  .sqe-hdr-{{ section.id }} .sqe-h-search-bar {
     display: none;
     position: absolute;
     top: 0;
@@ -352,12 +402,10 @@
     justify-content: center;
     padding: 0 2rem;
   }
-
-  #sqe-header-{{ section.id }} .sqe-search-bar.sqe-search-open {
+  .sqe-hdr-{{ section.id }} .sqe-h-search-bar.sqe-search-open {
     display: flex;
   }
-
-  #sqe-header-{{ section.id }} .sqe-search-bar form {
+  .sqe-hdr-{{ section.id }} .sqe-h-search-bar form {
     display: flex;
     align-items: center;
     width: 100%;
@@ -367,8 +415,7 @@
     overflow: hidden;
     background: #fff;
   }
-
-  #sqe-header-{{ section.id }} .sqe-search-bar input[type="search"] {
+  .sqe-hdr-{{ section.id }} .sqe-h-search-bar input[type="search"] {
     flex: 1;
     border: none;
     outline: none;
@@ -378,8 +425,7 @@
     background: transparent;
     color: {{ text_color }};
   }
-
-  #sqe-header-{{ section.id }} .sqe-search-bar button[type="submit"] {
+  .sqe-hdr-{{ section.id }} .sqe-h-search-bar button[type="submit"] {
     background: none;
     border: none;
     padding: 0.6rem 1rem;
@@ -388,13 +434,11 @@
     display: flex;
     align-items: center;
   }
-
-  #sqe-header-{{ section.id }} .sqe-search-bar button[type="submit"] svg {
+  .sqe-hdr-{{ section.id }} .sqe-h-search-bar button[type="submit"] svg {
     width: 20px;
     height: 20px;
   }
-
-  #sqe-header-{{ section.id }} .sqe-search-close {
+  .sqe-hdr-{{ section.id }} .sqe-h-search-close {
     background: none;
     border: none;
     padding: 0.5rem;
@@ -404,177 +448,157 @@
     display: flex;
     align-items: center;
   }
-
-  #sqe-header-{{ section.id }} .sqe-search-close svg {
+  .sqe-hdr-{{ section.id }} .sqe-h-search-close svg {
     width: 24px;
     height: 24px;
   }
 
-  /* ===== MOBILE DRAWER ===== */
-  #sqe-header-{{ section.id }} header-drawer {
+  /* --- DAWN DRAWER COMPAT --- */
+  .sqe-hdr-{{ section.id }} header-drawer {
     justify-self: start;
     margin-left: -1.2rem;
   }
-
-  #sqe-header-{{ section.id }} .menu-drawer-container {
+  .sqe-hdr-{{ section.id }} .menu-drawer-container {
     display: flex;
   }
-
-  #sqe-header-{{ section.id }} .list-menu {
+  .sqe-hdr-{{ section.id }} .list-menu {
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
-  /* DRAWER MODE: controlled by data-menu-type attribute */
-  #sqe-header-{{ section.id }}[data-menu-type="drawer"] .sqe-header__nav-wrap {
-    display: none !important;
-  }
-  #sqe-header-{{ section.id }}[data-menu-type="drawer"] .sqe-header__hamburger-wrap {
-    display: flex;
-  }
-
-  /* BORDER: controlled by data-border attribute */
-  #sqe-header-{{ section.id }}[data-border="true"] {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  }
-  #sqe-header-{{ section.id }}[data-border="false"] {
-    border-bottom: none;
-  }
-
   /* ===== MOBILE (max-width: 989px) ===== */
   @media screen and (max-width: 989px) {
-    #sqe-header-{{ section.id }} .sqe-header__inner {
+    .sqe-hdr-{{ section.id }} .sqe-h-inner {
       height: 60px;
       padding: 0 1rem;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-      display: none;
+    .sqe-hdr-{{ section.id }} .sqe-h-nav {
+      display: none !important;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__hamburger-wrap {
-      display: flex;
+    .sqe-hdr-{{ section.id }} .sqe-h-hamburger {
+      display: flex !important;
       left: 1%;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__logo-wrap {
+    .sqe-hdr-{{ section.id }} .sqe-h-logo {
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__logo-wrap img {
+    .sqe-hdr-{{ section.id }} .sqe-h-logo img {
       max-height: {{ mobile_logo_size }}px;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__logo-wrap .h2 {
+    .sqe-hdr-{{ section.id }} .sqe-h-logo .h2 {
       font-size: 1.1rem;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__actions {
+    .sqe-hdr-{{ section.id }} .sqe-h-actions {
       right: 1%;
       transform: translateY(-50%);
       gap: 0;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__cta-wrap {
+    .sqe-hdr-{{ section.id }} .sqe-h-cta-wrap {
       display: none;
     }
-
-    #sqe-header-{{ section.id }} .header__icon {
+    .sqe-hdr-{{ section.id }} .sqe-h-icon {
       width: {{ mobile_icon_size }}px;
       height: {{ mobile_icon_size }}px;
     }
-
-    #sqe-header-{{ section.id }} .header__icon svg,
-    #sqe-header-{{ section.id }} .header__icon .svg-wrapper svg {
+    .sqe-hdr-{{ section.id }} .sqe-h-icon svg {
       width: {{ mobile_icon_size | minus: 8 }}px;
       height: {{ mobile_icon_size | minus: 8 }}px;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__cart-icon-custom {
+    .sqe-hdr-{{ section.id }} .sqe-h-cart-svg {
       width: {{ mobile_icon_size | minus: 6 }}px;
       height: {{ mobile_icon_size | minus: 6 }}px;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__icon-wrap--search,
-    #sqe-header-{{ section.id }} .sqe-header__icon-wrap--account,
-    #sqe-header-{{ section.id }} .sqe-header__icon-wrap--cart {
+    .sqe-hdr-{{ section.id }} .sqe-h-icon-wrap--search,
+    .sqe-hdr-{{ section.id }} .sqe-h-icon-wrap--account,
+    .sqe-hdr-{{ section.id }} .sqe-h-icon-wrap--cart {
       top: 0;
       left: 0;
     }
-
-    #sqe-header-{{ section.id }} .cart-count-bubble {
+    .sqe-hdr-{{ section.id }} .sqe-h-cart-bubble {
       width: 16px;
       height: 16px;
       font-size: 0.6rem;
       top: 2px;
       right: -2px;
     }
-
-    #sqe-header-{{ section.id }} .sqe-search-bar {
+    .sqe-hdr-{{ section.id }} .sqe-h-search-bar {
       padding: 0 1rem;
     }
-
-    #sqe-header-{{ section.id }} .sqe-search-bar form {
+    .sqe-hdr-{{ section.id }} .sqe-h-search-bar form {
       max-width: none;
+    }
+    /* Spacer mobile */
+    .sqe-hdr-spacer-{{ section.id }}[data-show="true"] {
+      height: 60px;
     }
   }
 
   /* ===== SMALL MOBILE (max-width: 480px) ===== */
   @media screen and (max-width: 480px) {
-    #sqe-header-{{ section.id }} .sqe-header__inner {
+    .sqe-hdr-{{ section.id }} .sqe-h-inner {
       height: 56px;
       padding: 0 0.75rem;
     }
-
-    #sqe-header-{{ section.id }} .header__icon {
+    .sqe-hdr-{{ section.id }} .sqe-h-icon {
       width: 36px;
       height: 36px;
     }
-
-    #sqe-header-{{ section.id }} .header__icon svg,
-    #sqe-header-{{ section.id }} .header__icon .svg-wrapper svg {
+    .sqe-hdr-{{ section.id }} .sqe-h-icon svg {
       width: 18px;
       height: 18px;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__cart-icon-custom {
+    .sqe-hdr-{{ section.id }} .sqe-h-cart-svg {
       width: 20px;
       height: 20px;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__logo-wrap img {
+    .sqe-hdr-{{ section.id }} .sqe-h-logo img {
       max-height: 30px;
+    }
+    /* Spacer small mobile */
+    .sqe-hdr-spacer-{{ section.id }}[data-show="true"] {
+      height: 56px;
     }
   }
 
   /* ===== TABLET (990-1200px) ===== */
   @media screen and (min-width: 990px) and (max-width: 1200px) {
-    #sqe-header-{{ section.id }} .sqe-header__nav-item a {
+    .sqe-hdr-{{ section.id }} .sqe-h-nav-item a {
       font-size: {{ menu_font_size | minus: 2 }}px;
       padding: 0.4rem 0.5rem;
     }
-
-    #sqe-header-{{ section.id }} .sqe-header__cta {
+    .sqe-hdr-{{ section.id }} .sqe-h-cta {
       padding: 0.5rem 1rem;
       font-size: {{ cta_font_size | minus: 1 }}px;
     }
   }
 </style>
 
-<section id="sqe-header-{{ section.id }}" class="sqe-header" data-sticky="{{ sticky_type }}" data-menu-type="{{ menu_type }}" data-border="{{ show_border }}" style="--sqe-h-height: {{ header_height }}px; --sqe-logo-x: {{ logo_pos_x }}%; --sqe-logo-y: {{ logo_pos_y }}px;">
-  <div class="sqe-header__inner">
+{%- comment -%}
+  ============================================================
+  HTML – completely new class names (sqe-h-*) to avoid Dawn conflicts
+  ============================================================
+{%- endcomment -%}
+
+<section
+  class="sqe-hdr-{{ section.id }}"
+  data-sticky="{{ sticky_type }}"
+  data-menu-type="{{ menu_type }}"
+  data-border="{{ show_border }}"
+  data-sqe-header
+>
+  <div class="sqe-h-inner">
 
     {%- comment -%} Mobile hamburger / drawer {%- endcomment -%}
-    <div class="sqe-header__hamburger-wrap">
+    <div class="sqe-h-hamburger">
       {%- if menu != blank -%}
         {%- render 'header-drawer' -%}
       {%- endif -%}
     </div>
 
     {%- comment -%} Logo {%- endcomment -%}
-    <div class="sqe-header__logo-wrap">
+    <div class="sqe-h-logo">
       {%- if request.page_type == 'index' -%}
         <h1 class="header__heading" style="margin:0">
       {%- endif -%}
@@ -608,11 +632,11 @@
     </div>
 
     {%- comment -%} Desktop Navigation {%- endcomment -%}
-    <nav class="sqe-header__nav-wrap" data-align="{{ nav_align }}" aria-label="Main navigation" style="--sqe-nudge-x: {{ menu_nudge_x }}px; --sqe-nudge-y: {{ menu_pos_y }}px;">
+    <nav class="sqe-h-nav" data-align="{{ nav_align }}" aria-label="Main navigation">
       {%- if menu != blank -%}
-        <ul class="sqe-header__nav-list" role="list">
+        <ul class="sqe-h-nav-list" role="list">
           {%- for link in menu.links -%}
-            <li class="sqe-header__nav-item{% if link.current %} sqe-header__nav-item--active{% endif %}">
+            <li class="sqe-h-nav-item{% if link.current %} sqe-h-nav-item--active{% endif %}">
               <a
                 href="{{ link.url }}"
                 {% if link.current %} aria-current="page"{% endif %}
@@ -620,7 +644,7 @@
                 {{ link.title | escape }}
               </a>
               {%- if link.links != blank -%}
-                <ul class="sqe-header__dropdown">
+                <ul class="sqe-h-dropdown">
                   {%- for childlink in link.links -%}
                     <li>
                       <a
@@ -640,21 +664,21 @@
     </nav>
 
     {%- comment -%} Actions: Search, Account, Cart, CTA {%- endcomment -%}
-    <div class="sqe-header__actions">
+    <div class="sqe-h-actions">
 
       {%- if show_search -%}
-        <div class="sqe-header__icon-wrap sqe-header__icon-wrap--search">
-          <button class="header__icon header__icon--search link focus-inset" aria-label="Search" data-sqe-search-toggle type="button" style="background:none;border:none;cursor:pointer;">
+        <div class="sqe-h-icon-wrap sqe-h-icon-wrap--search">
+          <button class="sqe-h-icon" aria-label="Search" data-sqe-search-toggle type="button">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </button>
         </div>
       {%- endif -%}
 
       {%- if show_account and shop.customer_accounts_enabled -%}
-        <div class="sqe-header__icon-wrap sqe-header__icon-wrap--account">
+        <div class="sqe-h-icon-wrap sqe-h-icon-wrap--account">
           <a
             href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-            class="header__icon header__icon--account link focus-inset"
+            class="sqe-h-icon"
             rel="nofollow"
           >
             <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
@@ -672,16 +696,16 @@
       {%- endif -%}
 
       {%- if show_cart -%}
-        <div class="sqe-header__icon-wrap sqe-header__icon-wrap--cart">
-          <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
-            <svg class="sqe-header__cart-icon-custom" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div class="sqe-h-icon-wrap sqe-h-icon-wrap--cart">
+          <a href="{{ routes.cart_url }}" class="sqe-h-icon" id="cart-icon-bubble">
+            <svg class="sqe-h-cart-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
               <line x1="3" y1="6" x2="21" y2="6"/>
               <path d="M16 10a4 4 0 01-8 0"/>
             </svg>
             <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
             {%- if cart != empty -%}
-              <div class="cart-count-bubble">
+              <div class="sqe-h-cart-bubble">
                 {%- if cart.item_count < 100 -%}
                   <span aria-hidden="true">{{ cart.item_count }}</span>
                 {%- endif -%}
@@ -693,8 +717,8 @@
       {%- endif -%}
 
       {%- if show_cta and cta_text != blank -%}
-        <div class="sqe-header__cta-wrap">
-          <a href="{{ cta_link }}" class="sqe-header__cta">
+        <div class="sqe-h-cta-wrap">
+          <a href="{{ cta_link }}" class="sqe-h-cta">
             {{ cta_text | escape }}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
@@ -704,7 +728,7 @@
     </div>
 
     {%- comment -%} Inline Search Bar {%- endcomment -%}
-    <div class="sqe-search-bar" data-sqe-search-bar>
+    <div class="sqe-h-search-bar" data-sqe-search-bar>
       <form action="{{ routes.search_url }}" method="get" role="search">
         <input type="hidden" name="options[prefix]" value="last">
         <input type="search" name="q" placeholder="{{ 'general.search.search' | t }}" autocomplete="off" autocorrect="off" autocapitalize="off">
@@ -712,7 +736,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
       </form>
-      <button class="sqe-search-close" data-sqe-search-close type="button" aria-label="Close search">
+      <button class="sqe-h-search-close" data-sqe-search-close type="button" aria-label="Close search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </button>
     </div>
@@ -721,7 +745,7 @@
 </section>
 
 {%- comment -%} Spacer compensates for fixed header height {%- endcomment -%}
-<div class="sqe-header-spacer--{{ section.id }}" data-show="{% if sticky_type != 'none' %}true{% else %}false{% endif %}" style="height: {{ header_height }}px;" aria-hidden="true"></div>
+<div class="sqe-hdr-spacer-{{ section.id }}" data-show="{% if sticky_type != 'none' %}true{% else %}false{% endif %}" aria-hidden="true"></div>
 
 {%- if settings.cart_type == 'notification' -%}
   {%- render 'cart-notification',
@@ -732,8 +756,66 @@
 
 <script>
   (function() {
-    var section = document.getElementById('sqe-header-{{ section.id }}');
+    /*
+     * SQE Header JS – v7 rewrite
+     *
+     * KEY: We neutralize Dawn's sticky-header behavior on the
+     * Shopify wrapper so it doesn't compete with our CSS.
+     */
+
+    var section = document.querySelector('[data-sqe-header]');
     if (!section) return;
+
+    var stickyType = section.getAttribute('data-sticky');
+    var sectionId = '{{ section.id }}';
+
+    /* === NEUTRALIZE DAWN STICKY HEADER === */
+    var wrapper = document.getElementById('shopify-section-' + sectionId);
+    if (wrapper) {
+      /* Remove Dawn's sticky classes immediately */
+      wrapper.classList.remove('shopify-section-header-sticky');
+      wrapper.classList.remove('shopify-section-header-hidden');
+      wrapper.style.position = 'relative';
+      wrapper.style.top = 'auto';
+
+      /* Watch for Dawn JS re-adding them */
+      var observer = new MutationObserver(function(mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+          if (mutations[i].attributeName === 'class') {
+            var changed = false;
+            if (wrapper.classList.contains('shopify-section-header-sticky')) {
+              wrapper.classList.remove('shopify-section-header-sticky');
+              changed = true;
+            }
+            if (wrapper.classList.contains('shopify-section-header-hidden')) {
+              wrapper.classList.remove('shopify-section-header-hidden');
+              changed = true;
+            }
+            if (changed) {
+              wrapper.style.position = 'relative';
+              wrapper.style.top = 'auto';
+            }
+          }
+          if (mutations[i].attributeName === 'style') {
+            /* Prevent Dawn from setting inline styles on wrapper */
+            if (wrapper.style.position !== 'relative') {
+              wrapper.style.position = 'relative';
+            }
+            if (wrapper.style.top !== 'auto') {
+              wrapper.style.top = 'auto';
+            }
+          }
+        }
+      });
+      observer.observe(wrapper, { attributes: true, attributeFilter: ['class', 'style'] });
+    }
+
+    /* Also neutralize the section-group wrapper */
+    var groupWrapper = document.getElementById('shopify-section-group-header-group');
+    if (groupWrapper) {
+      groupWrapper.style.position = 'relative';
+      groupWrapper.style.zIndex = '1000';
+    }
 
     /* === SEARCH TOGGLE === */
     var searchToggle = section.querySelector('[data-sqe-search-toggle]');
@@ -753,36 +835,32 @@
       });
     }
 
-    /* === FIXED HEADER (scroll-up / always) === */
-    var stickyType = section.getAttribute('data-sticky');
-    if (!stickyType || stickyType === 'none') return;
+    /* === SCROLL-UP STICKY === */
+    if (stickyType === 'on-scroll-up') {
+      var lastScroll = 0;
+      var headerH = section.offsetHeight;
 
-    var isAlwaysSticky = (stickyType === 'always');
-    var currentScroll = 0;
-    var headerHeight = section.offsetHeight;
+      window.addEventListener('scroll', function() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+        if (scrollTop > lastScroll && scrollTop > headerH) {
+          /* Scrolling DOWN past header → hide */
+          section.classList.add('sqe-hidden');
+        } else if (scrollTop < lastScroll) {
+          /* Scrolling UP → show */
+          section.classList.remove('sqe-hidden');
+        }
 
-    window.addEventListener('scroll', function() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop <= 10) {
+          section.classList.remove('sqe-hidden');
+        }
 
-      if (isAlwaysSticky) {
-        currentScroll = scrollTop;
-        return;
-      }
+        lastScroll = scrollTop;
+      }, { passive: true });
+    }
 
-      /* on-scroll-up: hide when scrolling down, show when scrolling up */
-      if (scrollTop > currentScroll && scrollTop > headerHeight) {
-        section.classList.add('sqe-header-animate', 'sqe-header-hidden');
-      } else if (scrollTop < currentScroll && scrollTop > headerHeight) {
-        section.classList.add('sqe-header-animate');
-        section.classList.remove('sqe-header-hidden');
-      } else if (scrollTop <= 10) {
-        section.classList.remove('sqe-header-hidden', 'sqe-header-animate');
-      }
-
-      currentScroll = scrollTop;
-    }, { passive: true });
+    /* === SET CSS VARIABLE FOR OTHER COMPONENTS === */
+    document.documentElement.style.setProperty('--header-height', section.offsetHeight + 'px');
   })();
 </script>
 
