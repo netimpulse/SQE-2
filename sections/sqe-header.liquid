@@ -2,6 +2,7 @@
   assign menu = section.settings.menu
   assign logo_pos_x = section.settings.logo_pos_x
   assign logo_pos_y = section.settings.logo_pos_y
+  assign nav_align = section.settings.nav_alignment
   assign menu_pos_x = section.settings.menu_pos_x
   assign menu_pos_y = section.settings.menu_pos_y
   assign search_pos_x = section.settings.search_pos_x
@@ -28,10 +29,19 @@
   assign menu_type = section.settings.menu_type_desktop
   assign hamburger_pos_x = section.settings.hamburger_pos_x
   assign hamburger_pos_y = section.settings.hamburger_pos_y
+  assign actions_pos_x = section.settings.actions_pos_x
+  assign actions_pos_y = section.settings.actions_pos_y
 
   assign header_tag = 'div'
   if sticky_type != 'none'
     assign header_tag = 'sticky-header'
+  endif
+
+  assign nav_justify = 'center'
+  if nav_align == 'left'
+    assign nav_justify = 'flex-start'
+  elsif nav_align == 'right'
+    assign nav_justify = 'flex-end'
   endif
 -%}
 
@@ -61,7 +71,6 @@
   #sqe-header-{{ section.id }} .sqe-header__inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     height: {{ header_height }}px;
     max-width: 1400px;
     margin: 0 auto;
@@ -69,10 +78,12 @@
     position: relative;
   }
 
+  /* ===== LOGO ===== */
   #sqe-header-{{ section.id }} .sqe-header__logo-wrap {
-    position: relative;
-    top: {{ logo_pos_y }}px;
-    left: {{ logo_pos_x }}px;
+    position: absolute;
+    left: {{ logo_pos_x }}%;
+    top: 50%;
+    transform: translateY(-50%) translateY({{ logo_pos_y }}px);
     z-index: 10;
     flex-shrink: 0;
   }
@@ -95,16 +106,32 @@
     font-size: 1.4rem;
     margin: 0;
     color: inherit;
+    white-space: nowrap;
   }
 
+  /* ===== NAVIGATION ===== */
   #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-    position: relative;
-    top: {{ menu_pos_y }}px;
-    left: {{ menu_pos_x }}px;
-    flex: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateY({{ menu_pos_y }}px);
+    z-index: 5;
     display: flex;
-    justify-content: center;
   }
+
+  {%- if nav_align == 'left' -%}
+    #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
+      left: {{ menu_pos_x }}%;
+    }
+  {%- elsif nav_align == 'right' -%}
+    #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
+      right: {{ menu_pos_x }}%;
+    }
+  {%- else -%}
+    #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
+      left: 50%;
+      transform: translateX(-50%) translateX({{ menu_pos_x }}%) translateY(-50%) translateY({{ menu_pos_y }}px);
+    }
+  {%- endif -%}
 
   #sqe-header-{{ section.id }} .sqe-header__nav-list {
     display: flex;
@@ -125,6 +152,7 @@
     transition: color 0.2s ease, background-color 0.2s ease;
     border-radius: 4px;
     display: block;
+    white-space: nowrap;
   }
 
   #sqe-header-{{ section.id }} .sqe-header__nav-item a:hover {
@@ -136,13 +164,19 @@
     color: #F2B705;
   }
 
+  /* ===== ACTIONS GROUP (search, account, cart, cta) ===== */
   #sqe-header-{{ section.id }} .sqe-header__actions {
+    position: absolute;
+    right: {{ actions_pos_x }}%;
+    top: 50%;
+    transform: translateY(-50%) translateY({{ actions_pos_y }}px);
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    flex-shrink: 0;
+    z-index: 10;
   }
 
+  /* Individual icon fine-tuning */
   #sqe-header-{{ section.id }} .sqe-header__icon-wrap {
     position: relative;
   }
@@ -191,6 +225,7 @@
     transform: translateY(-1px);
   }
 
+  /* ===== ICONS ===== */
   #sqe-header-{{ section.id }} .header__icon {
     color: {{ text_color }};
     width: 44px;
@@ -205,15 +240,27 @@
     color: #F2B705;
   }
 
-  #sqe-header-{{ section.id }} .header__icon svg {
+  #sqe-header-{{ section.id }} .header__icon svg,
+  #sqe-header-{{ section.id }} .header__icon .svg-wrapper svg {
     width: 22px;
     height: 22px;
   }
 
+  /* Cart icon custom size fix */
+  #sqe-header-{{ section.id }} .sqe-header__cart-icon-custom {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
   #sqe-header-{{ section.id }} .cart-count-bubble {
     position: absolute;
-    top: 6px;
-    right: 2px;
+    top: 4px;
+    right: 0;
     background-color: #F2B705;
     color: #1F3A5F;
     border-radius: 50%;
@@ -227,11 +274,13 @@
     line-height: 1;
   }
 
+  /* ===== HAMBURGER ===== */
   #sqe-header-{{ section.id }} .sqe-header__hamburger-wrap {
     display: none;
-    position: relative;
-    top: {{ hamburger_pos_y }}px;
-    left: {{ hamburger_pos_x }}px;
+    position: absolute;
+    left: {{ hamburger_pos_x }}%;
+    top: 50%;
+    transform: translateY(-50%) translateY({{ hamburger_pos_y }}px);
   }
 
   {%- if show_border -%}
@@ -240,7 +289,7 @@
     }
   {%- endif -%}
 
-  /* Dropdown submenu */
+  /* ===== DROPDOWN SUBMENU ===== */
   #sqe-header-{{ section.id }} .sqe-header__nav-item {
     position: relative;
   }
@@ -272,7 +321,61 @@
     font-weight: 500;
   }
 
-  /* Sticky header states */
+  /* ===== SEARCH MODAL - INLINE IN HEADER ===== */
+  #sqe-header-{{ section.id }} .header__search {
+    display: flex;
+    align-items: center;
+  }
+
+  #sqe-header-{{ section.id }} details[open] > .search-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: {{ header_height }}px;
+    z-index: 9999;
+    background: {{ bg_color }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #sqe-header-{{ section.id }} .search-modal .modal-overlay {
+    display: none;
+  }
+
+  #sqe-header-{{ section.id }} .search-modal__content,
+  #sqe-header-{{ section.id }} .search-modal__content-bottom,
+  #sqe-header-{{ section.id }} .search-modal__content-top {
+    width: 100%;
+    max-width: 600px;
+    padding: 0 2rem;
+    position: relative;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  #sqe-header-{{ section.id }} .search-modal__form {
+    width: 100%;
+  }
+
+  #sqe-header-{{ section.id }} .search-modal__close-button {
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  #sqe-header-{{ section.id }} .predictive-search {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10001;
+  }
+
+  /* ===== STICKY HEADER STATES ===== */
   .sqe-section-header {
     position: sticky;
     top: 0;
@@ -292,7 +395,7 @@
     transition: transform 0.3s ease;
   }
 
-  /* Mobile drawer integration */
+  /* ===== MOBILE DRAWER ===== */
   #sqe-header-{{ section.id }} header-drawer {
     justify-self: start;
     margin-left: -1.2rem;
@@ -308,7 +411,7 @@
     margin: 0;
   }
 
-  /* Mobile breakpoint */
+  /* ===== MOBILE BREAKPOINT ===== */
   @media screen and (max-width: 989px) {
     #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
       display: none;
@@ -329,20 +432,6 @@
       display: flex;
     }
   {%- endif -%}
-
-  /* Search modal adjustments */
-  #sqe-header-{{ section.id }} .header__search {
-    display: flex;
-    align-items: center;
-  }
-
-  #sqe-header-{{ section.id }} .search-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10000;
-  }
 </style>
 
 <{{ header_tag }}
@@ -460,11 +549,11 @@
         {%- if show_cart -%}
           <div class="sqe-header__icon-wrap sqe-header__icon-wrap--cart">
             <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
-              {%- if cart == empty -%}
-                <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
-              {%- else -%}
-                <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
-              {%- endif -%}
+              <svg class="sqe-header__cart-icon-custom" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+              </svg>
               <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
               {%- if cart != empty -%}
                 <div class="cart-count-bubble">
@@ -685,6 +774,17 @@
     },
     {
       "type": "select",
+      "id": "nav_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Menu Alignment"
+    },
+    {
+      "type": "select",
       "id": "sticky_header_type",
       "options": [
         { "value": "none", "label": "None" },
@@ -789,21 +889,21 @@
     {
       "type": "range",
       "id": "logo_pos_x",
-      "min": -100,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Logo X Offset",
-      "default": 0
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Logo X",
+      "default": 2
     },
     {
       "type": "range",
       "id": "logo_pos_y",
-      "min": -30,
-      "max": 30,
+      "min": -20,
+      "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Logo Y Offset",
+      "label": "Logo Y Fine-tune",
       "default": 0
     },
     {
@@ -813,117 +913,130 @@
     {
       "type": "range",
       "id": "menu_pos_x",
-      "min": -200,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "label": "Menu X Offset",
-      "default": 0
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "%",
+      "label": "Menu X",
+      "default": 0,
+      "info": "Offset from alignment"
     },
     {
       "type": "range",
       "id": "menu_pos_y",
-      "min": -30,
-      "max": 30,
+      "min": -20,
+      "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Menu Y Offset",
+      "label": "Menu Y Fine-tune",
       "default": 0
     },
     {
       "type": "header",
-      "content": "Search Position"
+      "content": "Actions Position"
+    },
+    {
+      "type": "range",
+      "id": "actions_pos_x",
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "label": "Actions X (from right)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "actions_pos_y",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Actions Y Fine-tune",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Icon Fine-tuning"
     },
     {
       "type": "range",
       "id": "search_pos_x",
-      "min": -50,
-      "max": 50,
+      "min": -30,
+      "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "Search X Offset",
+      "label": "Search X Nudge",
       "default": 0
     },
     {
       "type": "range",
       "id": "search_pos_y",
-      "min": -30,
-      "max": 30,
+      "min": -20,
+      "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Search Y Offset",
+      "label": "Search Y Nudge",
       "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Account Position"
     },
     {
       "type": "range",
       "id": "account_pos_x",
-      "min": -50,
-      "max": 50,
+      "min": -30,
+      "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "Account X Offset",
+      "label": "Account X Nudge",
       "default": 0
     },
     {
       "type": "range",
       "id": "account_pos_y",
-      "min": -30,
-      "max": 30,
+      "min": -20,
+      "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Account Y Offset",
+      "label": "Account Y Nudge",
       "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Cart Position"
     },
     {
       "type": "range",
       "id": "cart_pos_x",
-      "min": -50,
-      "max": 50,
+      "min": -30,
+      "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "Cart X Offset",
+      "label": "Cart X Nudge",
       "default": 0
     },
     {
       "type": "range",
       "id": "cart_pos_y",
-      "min": -30,
-      "max": 30,
+      "min": -20,
+      "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Cart Y Offset",
+      "label": "Cart Y Nudge",
       "default": 0
-    },
-    {
-      "type": "header",
-      "content": "CTA Position"
     },
     {
       "type": "range",
       "id": "cta_pos_x",
-      "min": -50,
-      "max": 50,
+      "min": -30,
+      "max": 30,
       "step": 1,
       "unit": "px",
-      "label": "CTA X Offset",
+      "label": "CTA X Nudge",
       "default": 0
     },
     {
       "type": "range",
       "id": "cta_pos_y",
-      "min": -30,
-      "max": 30,
+      "min": -20,
+      "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "CTA Y Offset",
+      "label": "CTA Y Nudge",
       "default": 0
     },
     {
@@ -933,21 +1046,21 @@
     {
       "type": "range",
       "id": "hamburger_pos_x",
-      "min": -50,
-      "max": 50,
+      "min": 0,
+      "max": 90,
       "step": 1,
-      "unit": "px",
-      "label": "Hamburger X Offset",
-      "default": 0
+      "unit": "%",
+      "label": "Hamburger X",
+      "default": 2
     },
     {
       "type": "range",
       "id": "hamburger_pos_y",
-      "min": -30,
-      "max": 30,
+      "min": -20,
+      "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Hamburger Y Offset",
+      "label": "Hamburger Y Fine-tune",
       "default": 0
     }
   ],
