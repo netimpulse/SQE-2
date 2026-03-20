@@ -1,4 +1,28 @@
-{% stylesheet %}
+{%- liquid
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
+  assign d_font = section.settings.description_font
+  assign d_size = section.settings.description_size
+  assign d_color = section.settings.description_color
+-%}
+
+<style>
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-process-section-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #C75B12; background: rgba(199,91,18,.1);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+  }
+
   .sqe-process-section {
     padding: 60px 20px;
     background: linear-gradient(135deg, #f8fafb 0%, #eef2f7 100%);
@@ -16,19 +40,21 @@
   }
 
   .sqe-process-header h2 {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 42px;
-    font-weight: 700;
-    color: #1F3A5F;
+    font-family: {{ h_font }};
+    font-size: {{ h_size }}px;
+    font-weight: {{ h_weight }};
+    color: {{ h_color }};
     margin: 0 0 12px 0;
     letter-spacing: -0.5px;
   }
 
   .sqe-process-header p {
-    font-size: 16px;
-    color: #666;
+    font-family: {{ d_font }};
+    font-size: {{ d_size }}px;
+    color: {{ d_color }};
     margin: 0;
     font-weight: 400;
+    line-height: 1.6;
   }
 
   /* Desktop Timeline */
@@ -218,6 +244,10 @@
       font-size: 28px;
     }
 
+    .sqe-process-header p {
+      font-size: 15px;
+    }
+
     .sqe-timeline-track {
       flex-direction: column;
       padding: 0;
@@ -273,9 +303,70 @@
       margin-top: 30px;
     }
   }
-{% endstylesheet %}
 
-{% javascript %}
+  @media (max-width: 480px) {
+    .sqe-process-section {
+      padding: 30px 12px;
+    }
+
+    .sqe-process-header {
+      margin-bottom: 40px;
+    }
+
+    .sqe-process-header h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .sqe-process-header p {
+      font-size: 14px;
+    }
+
+    .sqe-timeline-wrapper {
+      padding: 30px 0;
+    }
+
+    .sqe-timeline-step {
+      padding: 0 0 30px 70px;
+      margin-bottom: 0;
+    }
+
+    .sqe-timeline-dot {
+      width: 50px;
+      height: 50px;
+      font-size: 16px;
+    }
+
+    .sqe-timeline-step.active .sqe-timeline-dot {
+      width: 60px;
+      height: 60px;
+    }
+
+    .sqe-timeline-label {
+      font-size: 13px;
+    }
+
+    .sqe-detail-panel {
+      padding: 20px;
+      gap: 15px;
+    }
+
+    .sqe-detail-content h3 {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .sqe-detail-content p {
+      font-size: 14px;
+    }
+
+    .sqe-detail-image {
+      min-height: 150px;
+    }
+  }
+</style>
+
+<script>
   class SQEInteractiveProcess {
     constructor(container) {
       this.container = container;
@@ -339,12 +430,15 @@
   document.querySelectorAll('.sqe-process-wrapper').forEach(wrapper => {
     new SQEInteractiveProcess(wrapper);
   });
-{% endjavascript %}
+</script>
 
 <div class="sqe-process-wrapper">
-  <div class="sqe-process-section">
+  <div class="sqe-process-section" id="sqe-process-section-{{ section.id }}">
     <div class="sqe-process-container">
       <div class="sqe-process-header">
+        {%- if show_label and label_text != blank -%}
+          <span class="sqe-section-label">{{ label_text }}</span>
+        {%- endif -%}
         <h2>{{ section.settings.heading }}</h2>
         <p>{{ section.settings.subheading }}</p>
       </div>
@@ -385,8 +479,28 @@
 
 {% schema %}
 {
-  "name": "SQE Interactive Process",
+  "name": "SQE Proc-Step",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Process"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -404,6 +518,74 @@
       "id": "animate_progress",
       "label": "Animate progress line on scroll",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 32,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 42
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Heading bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Description Typography"
+    },
+    {
+      "type": "select",
+      "id": "description_font",
+      "label": "Description font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#666666"
     }
   ],
   "blocks": [

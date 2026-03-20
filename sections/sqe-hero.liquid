@@ -11,13 +11,30 @@
   assign text_alignment = section.settings.text_alignment
   assign section_height = section.settings.section_height
   assign show_stats = section.settings.show_stats
-  assign heading_color = section.settings.heading_color
-  assign subheading_color = section.settings.subheading_color
-  assign heading_size = section.settings.heading_size
-  assign subheading_size = section.settings.subheading_size
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
+
+  assign sh_font = section.settings.subheading_font
+  assign sh_size = section.settings.subheading_size
+  assign sh_color = section.settings.subheading_color
+
+  assign stat_font = section.settings.stat_blocks_font
+  assign stat_num_size = section.settings.stat_number_size
+  assign stat_text_size = section.settings.stat_text_size
+  assign stat_num_color = section.settings.stat_number_color
+  assign stat_text_color = section.settings.stat_text_color
 -%}
 
-<section class="sqe-hero sqe-hero--{{ section_height }}" style="--text-alignment: {{ text_alignment }};">
+<section id="sqe-hero-{{ section.id }}" class="sqe-hero sqe-hero--{{ section_height }}" style="--text-alignment: {{ text_alignment }};">
   <div class="sqe-hero__background">
     {%- if background_image -%}
       <img
@@ -34,14 +51,17 @@
 
   <div class="sqe-hero__content">
     <div class="sqe-hero__text-block">
+      {%- if show_label and label_text != blank -%}
+        <span class="sqe-section-label">{{ label_text }}</span>
+      {%- endif -%}
       {%- if heading -%}
-        <h1 class="sqe-hero__heading" style="--heading-color: {{ heading_color }}; --heading-size: {{ heading_size }};">
+        <h1 class="sqe-hero__heading" style="font-family: {{ h_font }}; font-size: {{ h_size }}; font-weight: {{ h_weight }}; color: {{ h_color }};">
           {{ heading }}
         </h1>
       {%- endif -%}
 
       {%- if subheading -%}
-        <p class="sqe-hero__subheading" style="--subheading-color: {{ subheading_color }}; --subheading-size: {{ subheading_size }};">
+        <p class="sqe-hero__subheading" style="font-family: {{ sh_font }}; font-size: {{ sh_size }}; color: {{ sh_color }};">
           {{ subheading }}
         </p>
       {%- endif -%}
@@ -70,8 +90,8 @@
         {%- for block in section.blocks -%}
           {%- if block.type == 'stat' -%}
             <div class="sqe-hero__stat-item" {{ block.shopify_attributes }}>
-              <div class="sqe-hero__stat-number">{{ block.settings.stat_number }}</div>
-              <div class="sqe-hero__stat-text">{{ block.settings.stat_text }}</div>
+              <div class="sqe-hero__stat-number" style="font-family: {{ stat_font }}; font-size: {{ stat_num_size }}; color: {{ stat_num_color }};">{{ block.settings.stat_number }}</div>
+              <div class="sqe-hero__stat-text" style="font-family: {{ stat_font }}; font-size: {{ stat_text_size }}; color: {{ stat_text_color }};">{{ block.settings.stat_text }}</div>
             </div>
           {%- endif -%}
         {%- endfor -%}
@@ -81,7 +101,7 @@
 </section>
 
 <style>
-  :root {
+  #sqe-hero-{{ section.id }} {
     --sqe-primary-blue: #1F3A5F;
     --sqe-yellow: #F2B705;
     --sqe-light-grey: #F2F4F7;
@@ -89,7 +109,21 @@
     --sqe-orange: #C75B12;
   }
 
-  .sqe-hero {
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-hero-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  #sqe-hero-{{ section.id }}.sqe-hero {
     position: relative;
     width: 100%;
     overflow: hidden;
@@ -99,23 +133,23 @@
     align-items: center;
   }
 
-  .sqe-hero--small {
+  #sqe-hero-{{ section.id }}.sqe-hero--small {
     min-height: 400px;
   }
 
-  .sqe-hero--medium {
+  #sqe-hero-{{ section.id }}.sqe-hero--medium {
     min-height: 600px;
   }
 
-  .sqe-hero--large {
+  #sqe-hero-{{ section.id }}.sqe-hero--large {
     min-height: 800px;
   }
 
-  .sqe-hero--full {
+  #sqe-hero-{{ section.id }}.sqe-hero--full {
     min-height: 100vh;
   }
 
-  .sqe-hero__background {
+  #sqe-hero-{{ section.id }} .sqe-hero__background {
     position: absolute;
     top: 0;
     left: 0;
@@ -124,13 +158,13 @@
     z-index: 1;
   }
 
-  .sqe-hero__image {
+  #sqe-hero-{{ section.id }} .sqe-hero__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .sqe-hero__placeholder {
+  #sqe-hero-{{ section.id }} .sqe-hero__placeholder {
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, var(--sqe-primary-blue), var(--sqe-light-grey));
@@ -142,7 +176,7 @@
     font-weight: 500;
   }
 
-  .sqe-hero__overlay {
+  #sqe-hero-{{ section.id }} .sqe-hero__overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -153,7 +187,7 @@
     z-index: 2;
   }
 
-  .sqe-hero__content {
+  #sqe-hero-{{ section.id }} .sqe-hero__content {
     position: relative;
     z-index: 3;
     width: 100%;
@@ -165,39 +199,32 @@
     box-sizing: border-box;
   }
 
-  .sqe-hero__text-block {
+  #sqe-hero-{{ section.id }} .sqe-hero__text-block {
     max-width: 900px;
     width: 100%;
     text-align: var(--text-alignment, center);
   }
 
-  .sqe-hero__heading {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: var(--heading-size, 56px);
-    font-weight: 700;
+  #sqe-hero-{{ section.id }} .sqe-hero__heading {
     line-height: 1.2;
     margin: 0 0 20px 0;
-    color: var(--heading-color, #ffffff);
     letter-spacing: -0.5px;
   }
 
-  .sqe-hero__subheading {
-    font-family: 'Inter', sans-serif;
-    font-size: var(--subheading-size, 20px);
-    font-weight: 400;
+  #sqe-hero-{{ section.id }} .sqe-hero__subheading {
     line-height: 1.6;
     margin: 0 0 40px 0;
-    color: var(--subheading-color, rgba(255, 255, 255, 0.9));
+    font-weight: 400;
   }
 
-  .sqe-hero__buttons {
+  #sqe-hero-{{ section.id }} .sqe-hero__buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
     justify-content: var(--text-alignment, center);
   }
 
-  .sqe-hero__button {
+  #sqe-hero-{{ section.id }} .sqe-hero__button {
     display: inline-block;
     padding: 16px 32px;
     font-family: 'Inter', sans-serif;
@@ -210,30 +237,30 @@
     cursor: pointer;
   }
 
-  .sqe-hero__button--primary {
+  #sqe-hero-{{ section.id }} .sqe-hero__button--primary {
     background-color: var(--sqe-yellow);
     color: var(--sqe-primary-blue);
   }
 
-  .sqe-hero__button--primary:hover {
+  #sqe-hero-{{ section.id }} .sqe-hero__button--primary:hover {
     background-color: #e0a604;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(242, 183, 5, 0.4);
   }
 
-  .sqe-hero__button--secondary {
+  #sqe-hero-{{ section.id }} .sqe-hero__button--secondary {
     background-color: transparent;
     color: #ffffff;
     border-color: #ffffff;
   }
 
-  .sqe-hero__button--secondary:hover {
+  #sqe-hero-{{ section.id }} .sqe-hero__button--secondary:hover {
     background-color: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
   }
 
-  .sqe-hero__stats {
+  #sqe-hero-{{ section.id }} .sqe-hero__stats {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -244,7 +271,7 @@
     padding: 30px 20px;
   }
 
-  .sqe-hero__stats-container {
+  #sqe-hero-{{ section.id }} .sqe-hero__stats-container {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
@@ -252,105 +279,144 @@
     gap: 40px;
   }
 
-  .sqe-hero__stat-item {
+  #sqe-hero-{{ section.id }} .sqe-hero__stat-item {
     text-align: center;
   }
 
-  .sqe-hero__stat-number {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--sqe-yellow);
+  #sqe-hero-{{ section.id }} .sqe-hero__stat-number {
     line-height: 1;
     margin-bottom: 8px;
+    font-weight: 700;
   }
 
-  .sqe-hero__stat-text {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+  #sqe-hero-{{ section.id }} .sqe-hero__stat-text {
     font-weight: 500;
     letter-spacing: 0.5px;
   }
 
-  /* Mobile Responsive */
+  /* ===== MOBILE RESPONSIVE (768px) ===== */
   @media (max-width: 768px) {
-    .sqe-hero--small {
+    #sqe-hero-{{ section.id }}.sqe-hero--small {
       min-height: 300px;
     }
 
-    .sqe-hero--medium {
+    #sqe-hero-{{ section.id }}.sqe-hero--medium {
       min-height: 400px;
     }
 
-    .sqe-hero--large {
+    #sqe-hero-{{ section.id }}.sqe-hero--large {
       min-height: 600px;
     }
 
-    .sqe-hero--full {
+    #sqe-hero-{{ section.id }}.sqe-hero--full {
       min-height: 80vh;
     }
 
-    .sqe-hero__heading {
+    #sqe-hero-{{ section.id }} .sqe-hero__heading {
       font-size: clamp(32px, 8vw, var(--heading-size, 56px));
       margin-bottom: 16px;
     }
 
-    .sqe-hero__subheading {
+    #sqe-hero-{{ section.id }} .sqe-hero__subheading {
       font-size: clamp(16px, 5vw, var(--subheading-size, 20px));
       margin-bottom: 32px;
     }
 
-    .sqe-hero__buttons {
+    #sqe-hero-{{ section.id }} .sqe-hero__buttons {
       flex-direction: column;
       gap: 12px;
     }
 
-    .sqe-hero__button {
+    #sqe-hero-{{ section.id }} .sqe-hero__button {
       width: 100%;
       text-align: center;
     }
 
-    .sqe-hero__stats-container {
+    #sqe-hero-{{ section.id }} .sqe-hero__stats-container {
       grid-template-columns: 1fr;
       gap: 20px;
     }
 
-    .sqe-hero__stat-number {
-      font-size: 28px;
+    #sqe-hero-{{ section.id }} .sqe-hero__stat-number {
+      font-size: clamp(24px, 6vw, 32px);
     }
 
-    .sqe-hero__stat-text {
-      font-size: 13px;
+    #sqe-hero-{{ section.id }} .sqe-hero__stat-text {
+      font-size: clamp(12px, 3vw, 14px);
     }
   }
 
+  /* ===== MOBILE RESPONSIVE (480px) ===== */
   @media (max-width: 480px) {
-    .sqe-hero__content {
+    #sqe-hero-{{ section.id }} .sqe-hero__content {
       padding: 30px 16px;
     }
 
-    .sqe-hero__heading {
+    #sqe-hero-{{ section.id }} .sqe-hero__heading {
       font-size: clamp(24px, 7vw, 40px);
       margin-bottom: 12px;
     }
 
-    .sqe-hero__subheading {
+    #sqe-hero-{{ section.id }} .sqe-hero__subheading {
       font-size: clamp(14px, 4vw, 18px);
       margin-bottom: 24px;
     }
 
-    .sqe-hero__button {
+    #sqe-hero-{{ section.id }} .sqe-hero__button {
       padding: 14px 24px;
       font-size: 15px;
     }
+
+    #sqe-hero-{{ section.id }} .sqe-hero__stat-item {
+      padding: 0 8px;
+    }
+
+    #sqe-hero-{{ section.id }} .sqe-stats {
+      padding: 20px 16px;
+    }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const heroSection = document.getElementById('sqe-hero-{{ section.id }}');
+    if (heroSection) {
+      const buttons = heroSection.querySelectorAll('.sqe-hero__button');
+      buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          if (!this.href || this.href === '') {
+            e.preventDefault();
+          }
+        });
+      });
+    }
+  });
+</script>
 
 {% schema %}
 {
   "name": "SQE Hero",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Hero"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -359,67 +425,11 @@
       "info": "Main hero heading text"
     },
     {
-      "type": "select",
-      "id": "heading_size",
-      "label": "Heading Size",
-      "options": [
-        {
-          "value": "40px",
-          "label": "Small"
-        },
-        {
-          "value": "56px",
-          "label": "Medium"
-        },
-        {
-          "value": "72px",
-          "label": "Large"
-        },
-        {
-          "value": "90px",
-          "label": "Extra Large"
-        }
-      ],
-      "default": "56px"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading Color",
-      "default": "#ffffff"
-    },
-    {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
       "default": "Trusted by leading solar installers and integrators across the UK for independent quality inspection and technical consulting services.",
       "info": "Secondary heading text"
-    },
-    {
-      "type": "select",
-      "id": "subheading_size",
-      "label": "Subheading Size",
-      "options": [
-        {
-          "value": "16px",
-          "label": "Small"
-        },
-        {
-          "value": "20px",
-          "label": "Medium"
-        },
-        {
-          "value": "24px",
-          "label": "Large"
-        }
-      ],
-      "default": "20px"
-    },
-    {
-      "type": "color",
-      "id": "subheading_color",
-      "label": "Subheading Color",
-      "default": "rgba(255, 255, 255, 0.9)"
     },
     {
       "type": "image_picker",
@@ -438,7 +448,7 @@
       "id": "overlay_opacity",
       "min": 0,
       "max": 100,
-      "step": 5,
+      "step": 10,
       "unit": "%",
       "label": "Overlay Opacity",
       "default": 60
@@ -514,6 +524,148 @@
       "id": "show_stats",
       "label": "Show Stats Bar",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Font",
+      "options": [
+        {
+          "value": "'Source Sans 3', sans-serif",
+          "label": "Source Sans 3"
+        },
+        {
+          "value": "'Inter', sans-serif",
+          "label": "Inter"
+        },
+        {
+          "value": "system-ui, sans-serif",
+          "label": "System"
+        }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 32,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "label": "Size",
+      "default": 56
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Bold (700 weight)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Subheading Typography"
+    },
+    {
+      "type": "select",
+      "id": "subheading_font",
+      "label": "Font",
+      "options": [
+        {
+          "value": "'Source Sans 3', sans-serif",
+          "label": "Source Sans 3"
+        },
+        {
+          "value": "'Inter', sans-serif",
+          "label": "Inter"
+        },
+        {
+          "value": "system-ui, sans-serif",
+          "label": "System"
+        }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Size",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Color",
+      "default": "rgba(255, 255, 255, 0.9)"
+    },
+    {
+      "type": "header",
+      "content": "Stat Blocks Typography"
+    },
+    {
+      "type": "select",
+      "id": "stat_blocks_font",
+      "label": "Font",
+      "options": [
+        {
+          "value": "'Source Sans 3', sans-serif",
+          "label": "Source Sans 3"
+        },
+        {
+          "value": "'Inter', sans-serif",
+          "label": "Inter"
+        },
+        {
+          "value": "system-ui, sans-serif",
+          "label": "System"
+        }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "stat_number_size",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Number Size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "stat_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "stat_number_color",
+      "label": "Number Color",
+      "default": "#F2B705"
+    },
+    {
+      "type": "color",
+      "id": "stat_text_color",
+      "label": "Text Color",
+      "default": "rgba(255, 255, 255, 0.85)"
     }
   ],
   "blocks": [

@@ -3,16 +3,32 @@
   assign subheading = section.settings.subheading
   assign columns = section.settings.columns
   assign bg_color = section.settings.background_color
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
+  assign sh_font = section.settings.subheading_font
+  assign sh_size = section.settings.subheading_size
+  assign sh_color = section.settings.subheading_color
 -%}
 
 <section id="sqe-case-studies-{{ section.id }}" class="sqe-case-studies" style="background-color: {{ bg_color }};">
   <div class="sqe-case-studies-container">
+    {%- if show_label and label_text != blank -%}
+      <span class="sqe-section-label">{{ label_text }}</span>
+    {%- endif -%}
     {% if heading != blank %}
-      <h2 class="sqe-case-studies-heading">{{ heading }}</h2>
+      <h2 class="sqe-case-studies-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
     {% endif %}
 
     {% if subheading != blank %}
-      <p class="sqe-case-studies-subheading">{{ subheading }}</p>
+      <p class="sqe-case-studies-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
     {% endif %}
 
     <div class="sqe-case-studies-grid" data-columns="{{ columns }}">
@@ -58,16 +74,25 @@
 </section>
 
 <style>
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-case-studies-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #C75B12; background: rgba(199,91,18,.1);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+  }
+
   #sqe-case-studies-{{ section.id }} {
     padding: 60px 20px;
   }
 
-  .sqe-case-studies-container {
+  #sqe-case-studies-{{ section.id }} .sqe-case-studies-container {
     max-width: 1200px;
     margin: 0 auto;
+    text-align: center;
   }
 
-  .sqe-case-studies-heading {
+  #sqe-case-studies-{{ section.id }} .sqe-case-studies-heading {
     font-size: 36px;
     font-weight: 700;
     color: #1F3A5F;
@@ -180,6 +205,10 @@
     .sqe-case-studies-grid[data-columns="2"] {
       grid-template-columns: 1fr;
     }
+
+    #sqe-case-studies-{{ section.id }} .sqe-case-studies-heading {
+      font-size: 28px;
+    }
   }
 
   @media (max-width: 480px) {
@@ -187,31 +216,61 @@
       grid-template-columns: 1fr !important;
     }
 
-    .sqe-case-studies-heading {
-      font-size: 24px;
+    #sqe-case-studies-{{ section.id }} .sqe-case-studies-heading {
+      font-size: 22px;
+    }
+
+    .sqe-case-studies-subheading {
+      font-size: 14px;
+    }
+
+    .sqe-case-study-image {
+      height: 200px;
     }
   }
 </style>
 
 <script>
-  var caseStudiesSection = document.getElementById('sqe-case-studies-' + '{{ section.id }}');
-  if (caseStudiesSection) {
-    var cards = caseStudiesSection.querySelectorAll('.sqe-case-study-card');
-    cards.forEach(function(card) {
-      card.addEventListener('mouseenter', function() {
-        this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.15)';
+  (function() {
+    var caseStudiesSection = document.getElementById('sqe-case-studies-' + '{{ section.id }}');
+    if (caseStudiesSection) {
+      var cards = caseStudiesSection.querySelectorAll('.sqe-case-study-card');
+      cards.forEach(function(card) {
+        card.addEventListener('mouseenter', function() {
+          this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.15)';
+        });
+        card.addEventListener('mouseleave', function() {
+          this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+        });
       });
-      card.addEventListener('mouseleave', function() {
-        this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
-      });
-    });
-  }
+    }
+  })();
 </script>
 
 {% schema %}
 {
-  "name": "SQE Case Studies",
+  "name": "SQE Cases Studies",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Case Studies"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -240,6 +299,74 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Heading bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Subheading Typography"
+    },
+    {
+      "type": "select",
+      "id": "subheading_font",
+      "label": "Subheading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#666666"
     }
   ],
   "blocks": [

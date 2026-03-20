@@ -3,12 +3,25 @@
   assign subheading = section.settings.subheading
   assign show_ticker = section.settings.show_ticker
   assign bg_color = section.settings.background_color
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
 -%}
 
 <section id="sqe-trust-banner-{{ section.id }}" class="sqe-trust-banner" style="background-color: {{ bg_color }};">
   <div class="sqe-trust-container">
+    {%- if show_label and label_text != blank -%}
+      <span class="sqe-section-label">{{ label_text }}</span>
+    {%- endif -%}
     {% if heading != blank %}
-      <h2 class="sqe-trust-heading">{{ heading }}</h2>
+      <h2 class="sqe-trust-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
     {% endif %}
 
     {% if subheading != blank %}
@@ -59,24 +72,37 @@
     padding: 60px 20px;
   }
 
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-trust-banner-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #C75B12; background: rgba(199,91,18,.1);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+  }
+
   .sqe-trust-container {
     max-width: 1200px;
     margin: 0 auto;
+    text-align: center;
   }
 
   .sqe-trust-heading {
-    font-size: 36px;
+    font-family: {{ section.settings.heading_font }};
+    font-size: {{ section.settings.heading_size }}px;
     font-weight: 700;
-    color: #1F3A5F;
+    color: {{ section.settings.heading_color }};
     text-align: center;
     margin-bottom: 10px;
+    letter-spacing: -0.5px;
   }
 
   .sqe-trust-subheading {
-    font-size: 16px;
-    color: #666;
+    font-family: {{ section.settings.description_font | default: "'Inter', sans-serif" }};
+    font-size: {{ section.settings.description_size | default: 16 }}px;
+    color: {{ section.settings.description_color | default: '#666' }};
     text-align: center;
     margin-bottom: 40px;
+    line-height: 1.6;
   }
 
   .sqe-credentials-grid {
@@ -101,6 +127,7 @@
   }
 
   .sqe-credential-name {
+    font-family: {{ section.settings.heading_font }};
     font-size: 18px;
     font-weight: 700;
     color: #1F3A5F;
@@ -108,6 +135,7 @@
   }
 
   .sqe-credential-description {
+    font-family: {{ section.settings.description_font | default: "'Inter', sans-serif" }};
     font-size: 14px;
     color: #666;
     line-height: 1.6;
@@ -115,6 +143,7 @@
   }
 
   .sqe-credential-issuer {
+    font-family: {{ section.settings.description_font | default: "'Inter', sans-serif" }};
     font-size: 12px;
     color: #999;
     margin: 0;
@@ -156,22 +185,74 @@
   }
 
   @media (max-width: 768px) {
+    #sqe-trust-banner-{{ section.id }} {
+      padding: 45px 16px;
+    }
+
     .sqe-credentials-grid {
       grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
     }
 
     .sqe-trust-heading {
       font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .sqe-trust-subheading {
+      font-size: 15px;
+      margin-bottom: 30px;
+    }
+
+    .sqe-credential-card {
+      padding: 20px;
+    }
+
+    .sqe-ticker-badge {
+      padding: 8px 16px;
+      font-size: 11px;
     }
   }
 
   @media (max-width: 480px) {
+    #sqe-trust-banner-{{ section.id }} {
+      padding: 30px 12px;
+    }
+
     .sqe-credentials-grid {
       grid-template-columns: 1fr;
+      gap: 15px;
     }
 
     .sqe-trust-heading {
-      font-size: 24px;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .sqe-trust-subheading {
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .sqe-credential-card {
+      padding: 16px;
+    }
+
+    .sqe-credential-name {
+      font-size: 16px;
+    }
+
+    .sqe-credential-description {
+      font-size: 13px;
+    }
+
+    .sqe-credential-issuer {
+      font-size: 11px;
+    }
+
+    .sqe-ticker-badge {
+      padding: 6px 12px;
+      font-size: 10px;
     }
   }
 </style>
@@ -196,6 +277,26 @@
   "name": "SQE Trust Banner",
   "settings": [
     {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Vertrauen"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
       "type": "text",
       "id": "heading",
       "label": "Heading",
@@ -218,6 +319,74 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Heading bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Description Typography"
+    },
+    {
+      "type": "select",
+      "id": "description_font",
+      "label": "Description font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#666666"
     }
   ],
   "blocks": [

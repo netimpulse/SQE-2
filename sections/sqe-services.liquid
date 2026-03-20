@@ -4,21 +4,47 @@
   assign columns = section.settings.columns
   assign bg_color = section.settings.background_color
   assign card_style = section.settings.card_style
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
+  assign sh_font = section.settings.subheading_font
+  assign sh_size = section.settings.subheading_size
+  assign sh_color = section.settings.subheading_color
 -%}
 
 <section id="sqe-services-{{ section.id }}" class="sqe-services" style="background-color: {{ bg_color }};">
   <div class="sqe-services-container">
+    {%- if show_label and label_text != blank -%}
+      <span class="sqe-section-label">{{ label_text }}</span>
+    {%- endif -%}
     {% if heading != blank %}
-      <h2 class="sqe-services-heading">{{ heading }}</h2>
+      <h2 class="sqe-services-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
     {% endif %}
 
     {% if subheading != blank %}
-      <p class="sqe-services-subheading">{{ subheading }}</p>
+      <p class="sqe-services-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
     {% endif %}
 
     <div class="sqe-services-grid" data-columns="{{ columns }}" data-style="{{ card_style }}">
       {% for block in section.blocks %}
         {% if block.type == 'service_card' %}
+          {% assign bt_font = block.settings.title_font %}
+          {% assign bt_size = block.settings.title_size %}
+          {% assign bt_color = block.settings.title_color %}
+          {% assign bt_bold = block.settings.title_bold %}
+          {% assign bt_weight = '700' %}
+          {% if bt_bold == false %}
+            {% assign bt_weight = '400' %}
+          {% endif %}
+          {% assign bd_size = block.settings.description_size %}
+          {% assign bd_color = block.settings.description_color %}
           <div class="sqe-service-card" {{ block.shopify_attributes }}>
             {% if block.settings.icon != blank %}
               <div class="sqe-service-icon">
@@ -32,11 +58,11 @@
 
             <div class="sqe-service-content">
               {% if block.settings.title != blank %}
-                <h3 class="sqe-service-title">{{ block.settings.title }}</h3>
+                <h3 class="sqe-service-title" style="font-family:{{ bt_font }};font-size:{{ bt_size }}px;color:{{ bt_color }};font-weight:{{ bt_weight }};">{{ block.settings.title }}</h3>
               {% endif %}
 
               {% if block.settings.description != blank %}
-                <p class="sqe-service-description">{{ block.settings.description }}</p>
+                <p class="sqe-service-description" style="font-size:{{ bd_size }}px;color:{{ bd_color }};">{{ block.settings.description }}</p>
               {% endif %}
 
               {% if block.settings.link_text != blank and block.settings.link_url != blank %}
@@ -55,45 +81,56 @@
     padding: 60px 20px;
   }
 
-  .sqe-services-container {
-    max-width: 1200px;
-    margin: 0 auto;
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-services-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
   }
 
-  .sqe-services-heading {
-    font-size: 36px;
-    font-weight: 700;
-    color: #1F3A5F;
+  #sqe-services-{{ section.id }} .sqe-services-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #sqe-services-{{ section.id }} .sqe-services-heading {
     text-align: center;
     margin-bottom: 10px;
   }
 
-  .sqe-services-subheading {
-    font-size: 16px;
-    color: #666;
+  #sqe-services-{{ section.id }} .sqe-services-subheading {
     text-align: center;
     margin-bottom: 40px;
+    line-height: 1.6;
   }
 
-  .sqe-services-grid {
+  #sqe-services-{{ section.id }} .sqe-services-grid {
     display: grid;
     gap: 30px;
     margin-top: 40px;
   }
 
-  .sqe-services-grid[data-columns="2"] {
+  #sqe-services-{{ section.id }} .sqe-services-grid[data-columns="2"] {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .sqe-services-grid[data-columns="3"] {
+  #sqe-services-{{ section.id }} .sqe-services-grid[data-columns="3"] {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .sqe-services-grid[data-columns="4"] {
+  #sqe-services-{{ section.id }} .sqe-services-grid[data-columns="4"] {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .sqe-service-card {
+  #sqe-services-{{ section.id }} .sqe-service-card {
     background: white;
     padding: 30px;
     border-radius: 8px;
@@ -103,27 +140,27 @@
     transition: all 0.3s ease;
   }
 
-  .sqe-services-grid[data-style="bordered"] .sqe-service-card {
+  #sqe-services-{{ section.id }} .sqe-services-grid[data-style="bordered"] .sqe-service-card {
     border: 2px solid #E8E8E8;
   }
 
-  .sqe-services-grid[data-style="bordered"] .sqe-service-card:hover {
+  #sqe-services-{{ section.id }} .sqe-services-grid[data-style="bordered"] .sqe-service-card:hover {
     border-color: #1F3A5F;
   }
 
-  .sqe-services-grid[data-style="shadow"] .sqe-service-card {
+  #sqe-services-{{ section.id }} .sqe-services-grid[data-style="shadow"] .sqe-service-card {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .sqe-services-grid[data-style="shadow"] .sqe-service-card:hover {
+  #sqe-services-{{ section.id }} .sqe-services-grid[data-style="shadow"] .sqe-service-card:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   }
 
-  .sqe-service-card:hover {
+  #sqe-services-{{ section.id }} .sqe-service-card:hover {
     transform: translateY(-4px);
   }
 
-  .sqe-service-icon {
+  #sqe-services-{{ section.id }} .sqe-service-icon {
     width: 80px;
     height: 80px;
     background-color: #F2F4F7;
@@ -134,83 +171,132 @@
     margin-bottom: 20px;
   }
 
-  .sqe-service-icon img {
+  #sqe-services-{{ section.id }} .sqe-service-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
 
-  .sqe-service-content {
+  #sqe-services-{{ section.id }} .sqe-service-content {
     flex-grow: 1;
   }
 
-  .sqe-service-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #1F3A5F;
+  #sqe-services-{{ section.id }} .sqe-service-title {
     margin-bottom: 12px;
   }
 
-  .sqe-service-description {
-    font-size: 14px;
-    color: #666;
+  #sqe-services-{{ section.id }} .sqe-service-description {
     line-height: 1.6;
     margin-bottom: 15px;
   }
 
-  .sqe-service-link {
+  #sqe-services-{{ section.id }} .sqe-service-link {
     color: #1F3A5F;
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
     display: inline-block;
+    transition: color 0.3s ease;
   }
 
-  .sqe-service-link:hover {
+  #sqe-services-{{ section.id }} .sqe-service-link:hover {
     color: #C75B12;
   }
 
   @media (max-width: 768px) {
-    .sqe-services-grid[data-columns="3"],
-    .sqe-services-grid[data-columns="4"] {
+    #sqe-services-{{ section.id }} {
+      padding: 48px 16px;
+    }
+
+    #sqe-services-{{ section.id }} .sqe-services-grid[data-columns="3"],
+    #sqe-services-{{ section.id }} .sqe-services-grid[data-columns="4"] {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .sqe-services-grid[data-columns="2"] {
+    #sqe-services-{{ section.id }} .sqe-services-grid[data-columns="2"] {
       grid-template-columns: 1fr;
+    }
+
+    #sqe-services-{{ section.id }} .sqe-services-heading {
+      font-size: 28px !important;
+    }
+
+    #sqe-services-{{ section.id }} .sqe-services-subheading {
+      font-size: 14px !important;
     }
   }
 
   @media (max-width: 480px) {
-    .sqe-services-grid {
-      grid-template-columns: 1fr !important;
+    #sqe-services-{{ section.id }} {
+      padding: 32px 12px;
     }
 
-    .sqe-services-heading {
-      font-size: 24px;
+    #sqe-services-{{ section.id }} .sqe-services-grid {
+      grid-template-columns: 1fr !important;
+      gap: 20px;
+    }
+
+    #sqe-services-{{ section.id }} .sqe-services-heading {
+      font-size: 22px !important;
+    }
+
+    #sqe-services-{{ section.id }} .sqe-services-subheading {
+      font-size: 13px !important;
+      margin-bottom: 30px;
+    }
+
+    #sqe-services-{{ section.id }} .sqe-service-card {
+      padding: 20px;
+    }
+
+    #sqe-services-{{ section.id }} .sqe-service-icon {
+      width: 60px;
+      height: 60px;
     }
   }
 </style>
 
 <script>
-  var servicesSection = document.getElementById('sqe-services-' + '{{ section.id }}');
-  if (servicesSection) {
-    var cards = servicesSection.querySelectorAll('.sqe-service-card');
-    cards.forEach(function(card) {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-4px)';
+  (function() {
+    var servicesSection = document.getElementById('sqe-services-{{ section.id }}');
+    if (servicesSection) {
+      var cards = servicesSection.querySelectorAll('.sqe-service-card');
+      cards.forEach(function(card) {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
       });
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-      });
-    });
-  }
+    }
+  })();
 </script>
 
 {% schema %}
 {
   "name": "SQE Services",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Services"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -249,6 +335,74 @@
         { "value": "shadow", "label": "Shadow" }
       ],
       "default": "shadow"
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Size",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Subheading Typography"
+    },
+    {
+      "type": "select",
+      "id": "subheading_font",
+      "label": "Font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Color",
+      "default": "#666666"
     }
   ],
   "blocks": [
@@ -283,6 +437,63 @@
           "type": "url",
           "id": "link_url",
           "label": "Link URL"
+        },
+        {
+          "type": "header",
+          "content": "Title Typography"
+        },
+        {
+          "type": "select",
+          "id": "title_font",
+          "label": "Font",
+          "options": [
+            { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+            { "value": "'Inter', sans-serif", "label": "Inter" },
+            { "value": "system-ui, sans-serif", "label": "System" }
+          ],
+          "default": "'Source Sans 3', sans-serif"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 16,
+          "max": 32,
+          "step": 1,
+          "unit": "px",
+          "label": "Size",
+          "default": 20
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Color",
+          "default": "#1F3A5F"
+        },
+        {
+          "type": "checkbox",
+          "id": "title_bold",
+          "label": "Bold",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Description Typography"
+        },
+        {
+          "type": "range",
+          "id": "description_size",
+          "min": 12,
+          "max": 18,
+          "step": 1,
+          "unit": "px",
+          "label": "Size",
+          "default": 14
+        },
+        {
+          "type": "color",
+          "id": "description_color",
+          "label": "Color",
+          "default": "#666666"
         }
       ]
     }

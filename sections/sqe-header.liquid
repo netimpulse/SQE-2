@@ -62,32 +62,37 @@
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
 
 <style>
-  /* ===== STICKY ON SHOPIFY SECTION WRAPPER ===== */
+  /* ===== FIXED HEADER (replaces sticky – sticky fails inside section groups) ===== */
   {%- if sticky_type != 'none' -%}
-    .sqe-section-header {
-      position: sticky;
+    #sqe-header-{{ section.id }} {
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 1000;
+      background-color: {{ bg_color }};
+      color: {{ text_color }};
     }
-    .sqe-section-header.sqe-header-hidden {
+    #sqe-header-{{ section.id }}.sqe-header-hidden {
       transform: translateY(-100%);
     }
-    .sqe-section-header.sqe-header-animate {
+    #sqe-header-{{ section.id }}.sqe-header-animate {
       transition: transform 0.35s ease;
     }
+    .sqe-header-spacer {
+      display: block;
+    }
   {%- else -%}
-    .sqe-section-header {
+    #sqe-header-{{ section.id }} {
       position: relative;
       z-index: 1000;
+      background-color: {{ bg_color }};
+      color: {{ text_color }};
+    }
+    .sqe-header-spacer {
+      display: none;
     }
   {%- endif -%}
-
-  /* ===== SECTION ===== */
-  #sqe-header-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
-    position: relative;
-  }
 
   {%- if show_border -%}
     #sqe-header-{{ section.id }} {
@@ -146,16 +151,19 @@
   {%- if nav_align == 'left' -%}
     #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
       left: 2rem;
+      right: auto;
       transform: translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
     }
   {%- elsif nav_align == 'right' -%}
     #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
+      left: auto;
       right: 2rem;
       transform: translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
     }
   {%- else -%}
     #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
       left: 50%;
+      right: auto;
       transform: translateX(-50%) translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
     }
   {%- endif -%}
@@ -722,6 +730,9 @@
   </div>
 </section>
 
+{%- comment -%} Spacer compensates for fixed header height {%- endcomment -%}
+<div class="sqe-header-spacer" style="height: {{ header_height }}px;" aria-hidden="true"></div>
+
 {%- if settings.cart_type == 'notification' -%}
   {%- render 'cart-notification',
     color_scheme: 'scheme-1',
@@ -752,16 +763,13 @@
       });
     }
 
-    /* === STICKY HEADER === */
+    /* === FIXED HEADER (scroll-up / always) === */
     var stickyType = section.getAttribute('data-sqe-sticky-type');
     if (!stickyType || stickyType === 'none') return;
 
-    var wrapper = section.closest('.sqe-section-header');
-    if (!wrapper) return;
-
     var isAlwaysSticky = (stickyType === 'always');
     var currentScroll = 0;
-    var headerHeight = wrapper.offsetHeight;
+    var headerHeight = section.offsetHeight;
 
     document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
 
@@ -773,13 +781,14 @@
         return;
       }
 
+      /* on-scroll-up: hide when scrolling down, show when scrolling up */
       if (scrollTop > currentScroll && scrollTop > headerHeight) {
-        wrapper.classList.add('sqe-header-animate', 'sqe-header-hidden');
+        section.classList.add('sqe-header-animate', 'sqe-header-hidden');
       } else if (scrollTop < currentScroll && scrollTop > headerHeight) {
-        wrapper.classList.add('sqe-header-animate');
-        wrapper.classList.remove('sqe-header-hidden');
+        section.classList.add('sqe-header-animate');
+        section.classList.remove('sqe-header-hidden');
       } else if (scrollTop <= 10) {
-        wrapper.classList.remove('sqe-header-hidden', 'sqe-header-animate');
+        section.classList.remove('sqe-header-hidden', 'sqe-header-animate');
       }
 
       currentScroll = scrollTop;

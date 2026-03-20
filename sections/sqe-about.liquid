@@ -1,303 +1,335 @@
-{%- style -%}
-  .sqe-about {
+{%- liquid
+  assign bg_color = section.settings.background_color
+  assign show_header = section.settings.show_header
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign header_sub = section.settings.header_subheading
+  assign header_heading = section.settings.header_heading
+  assign section_heading = section.settings.section_heading
+  assign description = section.settings.description
+  assign image = section.settings.image
+  assign image_pos = section.settings.image_position
+  assign image_style = section.settings.image_style
+  assign show_exp = section.settings.show_experience
+  assign years = section.settings.years_of_experience
+  assign exp_label = section.settings.experience_label
+  assign show_stats = section.settings.show_stats
+  assign show_orange_bar = section.settings.show_credential_bar
+
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
+
+  assign sh_font = section.settings.subheading_font
+  assign sh_size = section.settings.subheading_size
+  assign sh_color = section.settings.subheading_color
+
+  assign desc_font = section.settings.desc_font
+  assign desc_size = section.settings.desc_size
+  assign desc_color = section.settings.desc_color
+-%}
+
+<style>
+  /* ===== SECTION ===== */
+  #sqe-about-{{ section.id }} {
     padding: 60px 20px;
-    background-color: {{ section.settings.background_color }};
+    background-color: {{ bg_color }};
+  }
+  #sqe-about-{{ section.id }} .sqe-about-ctr {
+    max-width: 1200px; margin: 0 auto;
   }
 
-  .sqe-about__container {
-    max-width: 1200px;
-    margin: 0 auto;
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-about-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #C75B12; background: rgba(199,91,18,.1);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 10px;
   }
 
-  .sqe-about__header {
-    text-align: center;
-    margin-bottom: 50px;
+  /* ===== HEADER ===== */
+  #sqe-about-{{ section.id }} .sqe-about-hdr {
+    text-align: center; margin-bottom: 50px;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-hdr-sub {
+    font-family: {{ sh_font }};
+    font-size: {{ sh_size }}px;
+    font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+    color: {{ sh_color }}; margin-bottom: 10px;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-hdr h2 {
+    font-family: {{ h_font }};
+    font-size: {{ h_size }}px;
+    font-weight: {{ h_weight }};
+    color: {{ h_color }};
+    margin: 0; line-height: 1.2;
   }
 
-  .sqe-about__header-subheading {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #C75B12;
-    margin-bottom: 10px;
-  }
-
-  .sqe-about__header-heading {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 42px;
-    font-weight: 700;
-    color: #1F3A5F;
-    margin: 0;
-    line-height: 1.2;
-  }
-
-  @media (max-width: 768px) {
-    .sqe-about__header-heading {
-      font-size: 32px;
-    }
-  }
-
-  .sqe-about__content {
+  /* ===== CONTENT GRID ===== */
+  #sqe-about-{{ section.id }} .sqe-about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-    margin-bottom: 50px;
+    gap: 50px; align-items: center; margin-bottom: 50px;
   }
-
-  @media (max-width: 768px) {
-    .sqe-about__content {
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
-  }
-
-  .sqe-about__content--reverse {
+  #sqe-about-{{ section.id }} .sqe-about-grid--rev {
     direction: rtl;
   }
-
-  .sqe-about__content--reverse > * {
+  #sqe-about-{{ section.id }} .sqe-about-grid--rev > * {
     direction: ltr;
   }
 
-  .sqe-about__image-wrapper {
-    position: relative;
-    overflow: hidden;
+  /* ===== IMAGE ===== */
+  #sqe-about-{{ section.id }} .sqe-about-img-wrap {
+    position: relative; overflow: hidden;
   }
-
-  .sqe-about__image {
-    width: 100%;
-    height: auto;
-    display: block;
+  #sqe-about-{{ section.id }} .sqe-about-img {
+    width: 100%; height: auto; display: block; border-radius: 8px;
   }
-
-  .sqe-about__image--bordered {
+  #sqe-about-{{ section.id }} .sqe-about-img--bordered {
     border: 8px solid #1F3A5F;
   }
-
-  .sqe-about__image--shadowed {
-    box-shadow: 0 10px 40px rgba(31, 58, 95, 0.15);
+  #sqe-about-{{ section.id }} .sqe-about-img--shadowed {
+    box-shadow: 0 10px 40px rgba(31,58,95,.15);
   }
-
-  .sqe-about__image--both {
+  #sqe-about-{{ section.id }} .sqe-about-img--both {
     border: 8px solid #1F3A5F;
-    box-shadow: 0 10px 40px rgba(31, 58, 95, 0.15);
+    box-shadow: 0 10px 40px rgba(31,58,95,.15);
   }
 
-  .sqe-about__text-content h2 {
+  /* Experience badge */
+  #sqe-about-{{ section.id }} .sqe-about-exp {
+    position: absolute; bottom: -20px; right: -20px;
+    background: #F2B705; color: #1F3A5F;
+    width: 120px; height: 120px; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     font-family: 'Source Sans 3', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: #1F3A5F;
-    margin: 0 0 20px 0;
-    line-height: 1.3;
+    box-shadow: 0 8px 32px rgba(242,183,5,.35);
+    z-index: 2;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-exp .num {
+    font-size: 40px; font-weight: 900; line-height: 1;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-exp .txt {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
   }
 
-  .sqe-about__description {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    color: #333333;
+  /* ===== TEXT CONTENT ===== */
+  #sqe-about-{{ section.id }} .sqe-about-text h2 {
+    font-family: {{ h_font }};
+    font-size: {{ h_size | minus: 6 }}px;
+    font-weight: {{ h_weight }};
+    color: {{ h_color }};
+    margin: 0 0 20px; line-height: 1.3;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-desc {
+    font-family: {{ desc_font }};
+    font-size: {{ desc_size }}px;
+    line-height: 1.6; color: {{ desc_color }};
     margin-bottom: 30px;
   }
-
-  .sqe-about__description p {
-    margin: 0 0 15px 0;
+  #sqe-about-{{ section.id }} .sqe-about-desc p {
+    margin: 0 0 15px;
   }
-
-  .sqe-about__description p:last-child {
+  #sqe-about-{{ section.id }} .sqe-about-desc p:last-child {
     margin-bottom: 0;
   }
-
-  .sqe-about__description strong {
-    color: #1F3A5F;
-    font-weight: 600;
+  #sqe-about-{{ section.id }} .sqe-about-desc strong {
+    color: #1F3A5F; font-weight: 600;
   }
 
-  .sqe-about__description em {
-    color: #C75B12;
+  /* ===== CREDENTIALS – SINGLE COLUMN ===== */
+  #sqe-about-{{ section.id }} .sqe-about-creds {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
   }
 
-  .sqe-about__credentials {
+  #sqe-about-{{ section.id }} .sqe-about-cred {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 16px;
+    background-color: #F2F4F7;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  {%- if show_orange_bar -%}
+    #sqe-about-{{ section.id }} .sqe-about-cred {
+      border-left: 4px solid #F2B705;
+    }
+  {%- endif -%}
+
+  #sqe-about-{{ section.id }} .sqe-about-cred:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  }
+
+  #sqe-about-{{ section.id }} .sqe-about-cred-icon {
+    width: 44px; height: 44px; min-width: 44px;
+    background: rgba(31,58,95,.07); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+
+  #sqe-about-{{ section.id }} .sqe-about-cred h3 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px; font-weight: 700; color: #1F3A5F;
+    margin: 0 0 3px;
+  }
+
+  #sqe-about-{{ section.id }} .sqe-about-cred p {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; color: #666; margin: 0; line-height: 1.5;
+  }
+
+  /* ===== STATS ROW ===== */
+  #sqe-about-{{ section.id }} .sqe-about-stats {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 30px; margin-top: 50px;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-stat {
+    text-align: center; padding: 20px;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-stat-num {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 42px; font-weight: 700; color: #F2B705;
+    margin: 0; line-height: 1;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-stat-lbl {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; color: #333; margin: 10px 0 0; font-weight: 500;
   }
 
+  /* ===== MOBILE ===== */
   @media (max-width: 768px) {
-    .sqe-about__credentials {
-      grid-template-columns: 1fr;
-      gap: 15px;
+    #sqe-about-{{ section.id }} .sqe-about-hdr h2 { font-size: 28px; }
+    #sqe-about-{{ section.id }} .sqe-about-grid {
+      grid-template-columns: 1fr; gap: 30px;
+    }
+    #sqe-about-{{ section.id }} .sqe-about-grid--rev {
+      direction: ltr;
+    }
+    #sqe-about-{{ section.id }} .sqe-about-exp {
+      width: 90px; height: 90px; bottom: -10px; right: -10px;
+    }
+    #sqe-about-{{ section.id }} .sqe-about-exp .num { font-size: 30px; }
+    #sqe-about-{{ section.id }} .sqe-about-exp .txt { font-size: 9px; }
+    #sqe-about-{{ section.id }} .sqe-about-text h2 { font-size: 24px; }
+    #sqe-about-{{ section.id }} .sqe-about-stats {
+      grid-template-columns: 1fr 1fr; gap: 16px;
     }
   }
 
-  .sqe-about__credential {
-    display: flex;
-    gap: 15px;
-    padding: 15px;
-    background-color: #F2F4F7;
-    border-radius: 8px;
-    border-left: 4px solid #F2B705;
+  @media (max-width: 480px) {
+    #sqe-about-{{ section.id }} { padding: 40px 16px; }
+    #sqe-about-{{ section.id }} .sqe-about-stats {
+      grid-template-columns: 1fr;
+    }
   }
+</style>
 
-  .sqe-about__credential-icon {
-    font-size: 32px;
-    min-width: 40px;
-    text-align: center;
-    line-height: 1;
-    flex-shrink: 0;
-  }
+<div id="sqe-about-{{ section.id }}">
+  <div class="sqe-about-ctr">
 
-  .sqe-about__credential-content h3 {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: #1F3A5F;
-    margin: 0 0 5px 0;
-  }
-
-  .sqe-about__credential-content p {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    color: #666666;
-    margin: 0;
-    line-height: 1.4;
-  }
-
-  .sqe-about__experience {
-    margin-top: 40px;
-    padding: 30px;
-    background-color: #1F3A5F;
-    border-radius: 8px;
-    text-align: center;
-  }
-
-  .sqe-about__experience-number {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: #F2B705;
-    margin: 0;
-    line-height: 1;
-  }
-
-  .sqe-about__experience-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: #F2F4F7;
-    margin: 10px 0 0 0;
-  }
-
-  .sqe-about__stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    margin-top: 50px;
-  }
-
-  .sqe-about__stat-block {
-    text-align: center;
-    padding: 20px;
-  }
-
-  .sqe-about__stat-number {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 42px;
-    font-weight: 700;
-    color: #F2B705;
-    margin: 0;
-    line-height: 1;
-  }
-
-  .sqe-about__stat-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: #333333;
-    margin: 10px 0 0 0;
-    font-weight: 500;
-  }
-{%- endstyle -%}
-
-<div class="sqe-about">
-  <div class="sqe-about__container">
-    {%- if section.settings.show_header -%}
-      <div class="sqe-about__header">
-        {%- if section.settings.header_subheading != blank -%}
-          <p class="sqe-about__header-subheading">{{ section.settings.header_subheading }}</p>
+    {%- if show_header -%}
+      <div class="sqe-about-hdr">
+        {%- if show_label and label_text != blank -%}
+          <span class="sqe-section-label">{{ label_text }}</span>
         {%- endif -%}
-        <h2 class="sqe-about__header-heading">{{ section.settings.header_heading }}</h2>
+        {%- if header_sub != blank -%}
+          <p class="sqe-about-hdr-sub">{{ header_sub }}</p>
+        {%- endif -%}
+        <h2>{{ header_heading }}</h2>
       </div>
     {%- endif -%}
 
-    <div class="sqe-about__content {% if section.settings.image_position == 'right' %}sqe-about__content--reverse{% endif %}">
-      <div class="sqe-about__image-wrapper">
-        {%- if section.settings.image != blank -%}
+    <div class="sqe-about-grid {% if image_pos == 'right' %}sqe-about-grid--rev{% endif %}">
+      <div class="sqe-about-img-wrap">
+        {%- if image != blank -%}
           <img
-            src="{{ section.settings.image | image_url: width: 600 }}"
-            alt="{{ section.settings.image.alt | escape }}"
-            class="sqe-about__image sqe-about__image--{{ section.settings.image_style }}"
+            src="{{ image | image_url: width: 600 }}"
+            alt="{{ image.alt | escape }}"
+            class="sqe-about-img sqe-about-img--{{ image_style }}"
             loading="lazy"
-            width="{{ section.settings.image.width }}"
-            height="{{ section.settings.image.height }}"
+            width="{{ image.width }}"
+            height="{{ image.height }}"
           >
         {%- else -%}
           {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- endif -%}
+
+        {%- if show_exp -%}
+          <div class="sqe-about-exp">
+            <span class="num">{{ years }}</span>
+            <span class="txt">{{ exp_label }}</span>
+          </div>
+        {%- endif -%}
       </div>
 
-      <div class="sqe-about__text-content">
-        {%- if section.settings.section_heading != blank -%}
-          <h2>{{ section.settings.section_heading }}</h2>
+      <div class="sqe-about-text">
+        {%- if show_label and label_text != blank and show_header == false -%}
+          <span class="sqe-section-label">{{ label_text }}</span>
         {%- endif -%}
 
-        {%- if section.settings.description != blank -%}
-          <div class="sqe-about__description">
-            {{ section.settings.description }}
-          </div>
+        {%- if section_heading != blank -%}
+          <h2>{{ section_heading }}</h2>
+        {%- endif -%}
+
+        {%- if description != blank -%}
+          <div class="sqe-about-desc">{{ description }}</div>
         {%- endif -%}
 
         {%- if section.blocks.size > 0 -%}
-          <div class="sqe-about__credentials">
+          <div class="sqe-about-creds">
             {%- for block in section.blocks -%}
               {%- if block.type == 'credential' -%}
-                <div class="sqe-about__credential" {{ block.shopify_attributes }}>
-                  <div class="sqe-about__credential-icon">{{ block.settings.icon }}</div>
-                  <div class="sqe-about__credential-content">
-                    <h3>{{ block.settings.credential_title }}</h3>
-                    <p>{{ block.settings.credential_text }}</p>
+                {%- liquid
+                  assign bt_font = block.settings.title_font
+                  assign bt_size = block.settings.title_size
+                  assign bt_color = block.settings.title_color
+                  assign bt_bold = block.settings.title_bold
+                  assign bt_weight = '700'
+                  if bt_bold == false
+                    assign bt_weight = '400'
+                  endif
+                  assign bd_size = block.settings.desc_size
+                  assign bd_color = block.settings.desc_color
+                -%}
+                <div class="sqe-about-cred" {{ block.shopify_attributes }}>
+                  <div class="sqe-about-cred-icon">{{ block.settings.icon }}</div>
+                  <div>
+                    <h3 style="font-family:{{ bt_font }};font-size:{{ bt_size }}px;color:{{ bt_color }};font-weight:{{ bt_weight }};">{{ block.settings.credential_title }}</h3>
+                    <p style="font-size:{{ bd_size }}px;color:{{ bd_color }};">{{ block.settings.credential_text }}</p>
                   </div>
                 </div>
               {%- endif -%}
             {%- endfor -%}
           </div>
         {%- endif -%}
-
-        {%- if section.settings.show_experience -%}
-          <div class="sqe-about__experience">
-            <p class="sqe-about__experience-number">{{ section.settings.years_of_experience }}+</p>
-            <p class="sqe-about__experience-label">{{ section.settings.experience_label }}</p>
-          </div>
-        {%- endif -%}
       </div>
     </div>
 
-    {%- if section.settings.show_stats -%}
-      <div class="sqe-about__stats">
+    {%- if show_stats -%}
+      <div class="sqe-about-stats">
         {%- for i in (1..3) -%}
-          {%- assign stat_number = 'stat_' | append: i | append: '_number' -%}
-          {%- assign stat_label = 'stat_' | append: i | append: '_label' -%}
-          {%- if section.settings[stat_number] != blank -%}
-            <div class="sqe-about__stat-block">
-              <p class="sqe-about__stat-number">{{ section.settings[stat_number] }}</p>
-              <p class="sqe-about__stat-label">{{ section.settings[stat_label] }}</p>
+          {%- assign stat_num = 'stat_' | append: i | append: '_number' -%}
+          {%- assign stat_lbl = 'stat_' | append: i | append: '_label' -%}
+          {%- if section.settings[stat_num] != blank -%}
+            <div class="sqe-about-stat">
+              <p class="sqe-about-stat-num">{{ section.settings[stat_num] }}</p>
+              <p class="sqe-about-stat-lbl">{{ section.settings[stat_lbl] }}</p>
             </div>
           {%- endif -%}
         {%- endfor -%}
       </div>
     {%- endif -%}
+
   </div>
 </div>
 
@@ -307,7 +339,23 @@
   "settings": [
     {
       "type": "header",
-      "content": "Header Settings"
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Über uns"
+    },
+    {
+      "type": "header",
+      "content": "Header"
     },
     {
       "type": "checkbox",
@@ -319,8 +367,7 @@
       "type": "text",
       "id": "header_subheading",
       "label": "Header subheading",
-      "default": "About Us",
-      "info": "Small text above main heading"
+      "default": "About Us"
     },
     {
       "type": "text",
@@ -330,23 +377,23 @@
     },
     {
       "type": "header",
-      "content": "Content Settings"
+      "content": "Content"
     },
     {
       "type": "text",
       "id": "section_heading",
-      "label": "Section heading",
+      "label": "Content heading",
       "default": "Our Expertise"
     },
     {
       "type": "richtext",
       "id": "description",
-      "label": "Company description",
-      "default": "<p>SQE Solar Quality Experts Ltd is a UK-based solar PV engineering consultancy dedicated to delivering excellence in renewable energy solutions. With extensive experience and certified expertise, we help businesses transition to sustainable power.</p>"
+      "label": "Description",
+      "default": "<p>SQE Solar Quality Experts Ltd is a UK-based solar PV engineering consultancy dedicated to delivering excellence in renewable energy solutions.</p>"
     },
     {
       "type": "header",
-      "content": "Image Settings"
+      "content": "Image"
     },
     {
       "type": "image_picker",
@@ -358,14 +405,8 @@
       "id": "image_position",
       "label": "Image position",
       "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
       ],
       "default": "left"
     },
@@ -374,96 +415,194 @@
       "id": "image_style",
       "label": "Image style",
       "options": [
-        {
-          "value": "none",
-          "label": "None"
-        },
-        {
-          "value": "bordered",
-          "label": "Bordered"
-        },
-        {
-          "value": "shadowed",
-          "label": "Shadowed"
-        },
-        {
-          "value": "both",
-          "label": "Bordered & Shadowed"
-        }
+        { "value": "none", "label": "None" },
+        { "value": "bordered", "label": "Bordered" },
+        { "value": "shadowed", "label": "Shadowed" },
+        { "value": "both", "label": "Bordered & Shadowed" }
       ],
       "default": "both"
     },
     {
       "type": "header",
-      "content": "Experience Settings"
+      "content": "Credentials Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_credential_bar",
+      "label": "Show orange left bar",
+      "default": true,
+      "info": "Orange accent line on credential cards"
+    },
+    {
+      "type": "header",
+      "content": "Experience Badge"
     },
     {
       "type": "checkbox",
       "id": "show_experience",
-      "label": "Show years of experience counter",
+      "label": "Show experience badge",
       "default": true
     },
     {
       "type": "text",
       "id": "years_of_experience",
-      "label": "Years of experience",
+      "label": "Years",
       "default": "15"
     },
     {
       "type": "text",
       "id": "experience_label",
-      "label": "Experience label",
-      "default": "Years of Industry Excellence"
+      "label": "Label",
+      "default": "Jahre"
     },
     {
       "type": "header",
-      "content": "Statistics Settings"
+      "content": "Statistics"
     },
     {
       "type": "checkbox",
       "id": "show_stats",
-      "label": "Show statistics blocks",
+      "label": "Show statistics",
       "default": true
     },
     {
       "type": "text",
       "id": "stat_1_number",
-      "label": "Statistic 1 - Number",
+      "label": "Stat 1 Number",
       "default": "500+"
     },
     {
       "type": "text",
       "id": "stat_1_label",
-      "label": "Statistic 1 - Label",
+      "label": "Stat 1 Label",
       "default": "Projects Completed"
     },
     {
       "type": "text",
       "id": "stat_2_number",
-      "label": "Statistic 2 - Number",
+      "label": "Stat 2 Number",
       "default": "98%"
     },
     {
       "type": "text",
       "id": "stat_2_label",
-      "label": "Statistic 2 - Label",
+      "label": "Stat 2 Label",
       "default": "Client Satisfaction"
     },
     {
       "type": "text",
       "id": "stat_3_number",
-      "label": "Statistic 3 - Number",
+      "label": "Stat 3 Number",
       "default": "12"
     },
     {
       "type": "text",
       "id": "stat_3_label",
-      "label": "Statistic 3 - Label",
+      "label": "Stat 3 Label",
       "default": "Industry Certifications"
     },
     {
       "type": "header",
-      "content": "Background Settings"
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 42
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Heading bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Subheading Typography"
+    },
+    {
+      "type": "select",
+      "id": "subheading_font",
+      "label": "Subheading font",
+      "options": [
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#C75B12"
+    },
+    {
+      "type": "header",
+      "content": "Description Typography"
+    },
+    {
+      "type": "select",
+      "id": "desc_font",
+      "label": "Description font",
+      "options": [
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Background"
     },
     {
       "type": "color",
@@ -481,20 +620,72 @@
           "type": "text",
           "id": "icon",
           "label": "Icon emoji",
-          "default": "✓",
-          "info": "Use emoji or custom icon text"
+          "default": "✓"
         },
         {
           "type": "text",
           "id": "credential_title",
-          "label": "Credential title",
+          "label": "Title",
           "default": "Certified Engineer"
         },
         {
           "type": "textarea",
           "id": "credential_text",
-          "label": "Credential description",
+          "label": "Description",
           "default": "All team members hold industry-recognized certifications"
+        },
+        {
+          "type": "header",
+          "content": "Block Typography"
+        },
+        {
+          "type": "select",
+          "id": "title_font",
+          "label": "Title font",
+          "options": [
+            { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+            { "value": "'Inter', sans-serif", "label": "Inter" },
+            { "value": "system-ui, sans-serif", "label": "System" }
+          ],
+          "default": "'Source Sans 3', sans-serif"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 12,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Title size",
+          "default": 15
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#1F3A5F"
+        },
+        {
+          "type": "checkbox",
+          "id": "title_bold",
+          "label": "Title bold",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "desc_size",
+          "min": 11,
+          "max": 18,
+          "step": 1,
+          "unit": "px",
+          "label": "Description size",
+          "default": 13
+        },
+        {
+          "type": "color",
+          "id": "desc_color",
+          "label": "Description color",
+          "default": "#666666"
         }
       ]
     }
@@ -505,35 +696,15 @@
       "blocks": [
         {
           "type": "credential",
-          "settings": {
-            "icon": "⚡",
-            "credential_title": "ISO Certified",
-            "credential_text": "ISO 9001:2015 Quality Management certified"
-          }
+          "settings": { "icon": "⚡", "credential_title": "ISO Certified", "credential_text": "ISO 9001:2015 Quality Management certified" }
         },
         {
           "type": "credential",
-          "settings": {
-            "icon": "✓",
-            "credential_title": "NICEIC Approved",
-            "credential_text": "NICEIC approved electrical contractor"
-          }
+          "settings": { "icon": "✓", "credential_title": "NICEIC Approved", "credential_text": "NICEIC approved electrical contractor" }
         },
         {
           "type": "credential",
-          "settings": {
-            "icon": "🏆",
-            "credential_title": "MCS Registered",
-            "credential_text": "Microgeneration Certification Scheme registered"
-          }
-        },
-        {
-          "type": "credential",
-          "settings": {
-            "icon": "🔒",
-            "credential_title": "BS 7909 Compliant",
-            "credential_text": "BS 7909 event safety electrical standards compliant"
-          }
+          "settings": { "icon": "🏆", "credential_title": "MCS Registered", "credential_text": "Microgeneration Certification Scheme registered" }
         }
       ]
     }

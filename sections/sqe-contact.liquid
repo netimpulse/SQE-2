@@ -1,19 +1,43 @@
-{% style %}
-  .sqe-contact {
+{%- liquid
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_font_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
+  assign sh_font = section.settings.subheading_font
+  assign sh_size = section.settings.subheading_size
+  assign sh_color = section.settings.subheading_color
+-%}
+
+<style>
+  #sqe-contact-{{ section.id }} {
     background-color: {{ section.settings.background_color }};
     padding: {{ section.settings.padding_top }}px {{ section.settings.padding_x }}px {{ section.settings.padding_bottom }}px {{ section.settings.padding_x }}px;
   }
 
-  .sqe-contact__container {
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-contact-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #C75B12; background: rgba(199,91,18,.1);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+  }
+
+  #sqe-contact-{{ section.id }} .sqe-contact__container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  .sqe-contact__heading {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: {{ section.settings.heading_font_size }}px;
-    font-weight: 700;
-    color: {{ section.settings.heading_color }};
+  #sqe-contact-{{ section.id }} .sqe-contact__heading {
+    font-family: {{ h_font }};
+    font-size: {{ h_size }}px;
+    font-weight: {{ h_weight }};
+    color: {{ h_color }};
     margin: 0 0 50px 0;
     text-align: {{ section.settings.heading_alignment }};
     line-height: 1.2;
@@ -182,7 +206,7 @@
       padding: {{ section.settings.mobile_padding_top }}px {{ section.settings.mobile_padding_x }}px {{ section.settings.mobile_padding_bottom }}px {{ section.settings.mobile_padding_x }}px;
     }
 
-    .sqe-contact__heading {
+    #sqe-contact-{{ section.id }} .sqe-contact__heading {
       font-size: {{ section.settings.mobile_heading_font_size }}px;
       margin-bottom: 40px;
     }
@@ -198,10 +222,27 @@
       text-align: center;
     }
   }
-{% endstyle %}
 
-<div class="sqe-contact">
+  @media (max-width: 480px) {
+    #sqe-contact-{{ section.id }} {
+      padding: 30px 16px;
+    }
+
+    #sqe-contact-{{ section.id }} .sqe-contact__heading {
+      font-size: {{ section.settings.mobile_heading_font_size | minus: 6 }}px;
+    }
+
+    .sqe-contact__form-button {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<div id="sqe-contact-{{ section.id }}" class="sqe-contact">
   <div class="sqe-contact__container">
+    {%- if show_label and label_text != blank -%}
+      <span class="sqe-section-label">{{ label_text }}</span>
+    {%- endif -%}
     {% if section.settings.heading %}
       <h2 class="sqe-contact__heading">{{ section.settings.heading }}</h2>
     {% endif %}
@@ -397,8 +438,24 @@
 
 {% schema %}
 {
-  "name": "SQE Contact Section",
+  "name": "SQE Contact",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Contact"
+    },
     {
       "type": "header",
       "content": "General"
@@ -408,6 +465,23 @@
       "id": "heading",
       "label": "Section Heading",
       "default": "Get in Touch"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Heading bold",
+      "default": true
     },
     {
       "type": "select",
@@ -434,6 +508,64 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#F2F4F7"
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (Desktop)",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_font_size",
+      "label": "Heading Font Size (Mobile)",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "header",
+      "content": "Subheading Typography"
+    },
+    {
+      "type": "select",
+      "id": "subheading_font",
+      "label": "Subheading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#666666"
     },
     {
       "type": "header",
@@ -757,34 +889,6 @@
       "id": "link_hover_color",
       "label": "Link Hover Color",
       "default": "#C75B12"
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "range",
-      "id": "heading_font_size",
-      "label": "Heading Font Size (Desktop)",
-      "min": 24,
-      "max": 60,
-      "step": 2,
-      "default": 42
-    },
-    {
-      "type": "range",
-      "id": "mobile_heading_font_size",
-      "label": "Heading Font Size (Mobile)",
-      "min": 18,
-      "max": 36,
-      "step": 2,
-      "default": 28
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading Color",
-      "default": "#1F3A5F"
     },
     {
       "type": "header",

@@ -1,467 +1,332 @@
-{% stylesheet %}
-  .sqe-floating-stats-section {
+{%- liquid
+  assign show_header = section.settings.show_header
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign heading_font = section.settings.heading_font
+  assign heading_size = section.settings.heading_size
+  assign heading_color = section.settings.heading_color
+  assign heading_bold = section.settings.heading_bold
+  assign sub_font = section.settings.sub_font
+  assign sub_size = section.settings.sub_size
+  assign sub_color = section.settings.sub_color
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+
+  assign heading_weight = '700'
+  if heading_bold == false
+    assign heading_weight = '400'
+  endif
+-%}
+
+<style>
+  /* ===== CONTAINER ===== */
+  #sqe-stats-{{ section.id }} {
     padding: 100px 20px;
     background: linear-gradient(135deg, #0a1929 0%, #1F3A5F 50%, #0f2a47 100%);
     position: relative;
     overflow: hidden;
     font-family: 'Inter', sans-serif;
-    min-height: 600px;
   }
 
-  /* Animated Background Elements */
-  .sqe-stats-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    z-index: 0;
+  #sqe-stats-{{ section.id }} .sqe-stats-bg {
+    position: absolute; inset: 0; overflow: hidden; z-index: 0;
   }
 
-  .sqe-background-shape {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.08;
-    mix-blend-mode: screen;
-    will-change: transform;
+  #sqe-stats-{{ section.id }} .sqe-bg-shape {
+    position: absolute; border-radius: 50%; opacity: 0.08; mix-blend-mode: screen;
   }
-
-  .sqe-shape-1 {
-    width: 600px;
-    height: 600px;
+  #sqe-stats-{{ section.id }} .sqe-bg-s1 {
+    width: 600px; height: 600px;
     background: radial-gradient(circle, #F2B705 0%, transparent 70%);
-    top: -300px;
-    left: -300px;
-    animation: float-shape1 20s ease-in-out infinite;
+    top: -300px; left: -300px;
+    animation: sqe-float1-{{ section.id }} 20s ease-in-out infinite;
   }
-
-  .sqe-shape-2 {
-    width: 500px;
-    height: 500px;
+  #sqe-stats-{{ section.id }} .sqe-bg-s2 {
+    width: 500px; height: 500px;
     background: radial-gradient(circle, #C75B12 0%, transparent 70%);
-    bottom: -250px;
-    right: -250px;
-    animation: float-shape2 25s ease-in-out infinite;
+    bottom: -250px; right: -250px;
+    animation: sqe-float2-{{ section.id }} 25s ease-in-out infinite;
   }
 
-  .sqe-shape-3 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, #F2B705 0%, transparent 70%);
-    top: 50%;
-    right: -200px;
-    animation: float-shape3 30s ease-in-out infinite;
+  @keyframes sqe-float1-{{ section.id }} {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(-30px,100px) scale(.95); }
+  }
+  @keyframes sqe-float2-{{ section.id }} {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(-50px,50px) scale(1.08); }
   }
 
-  @keyframes float-shape1 {
-    0%, 100% {
-      transform: translate(0, 0) scale(1);
-    }
-    25% {
-      transform: translate(50px, -50px) scale(1.1);
-    }
-    50% {
-      transform: translate(-30px, 100px) scale(0.95);
-    }
-    75% {
-      transform: translate(80px, 30px) scale(1.05);
-    }
-  }
-
-  @keyframes float-shape2 {
-    0%, 100% {
-      transform: translate(0, 0) scale(1);
-    }
-    33% {
-      transform: translate(-50px, 50px) scale(1.08);
-    }
-    66% {
-      transform: translate(30px, -80px) scale(0.92);
-    }
-  }
-
-  @keyframes float-shape3 {
-    0%, 100% {
-      transform: translate(0, 0) scale(1);
-    }
-    40% {
-      transform: translate(-60px, -60px) scale(1.1);
-    }
-    80% {
-      transform: translate(40px, 40px) scale(0.9);
-    }
-  }
-
-  /* Geometric Grid Pattern */
-  .sqe-grid-pattern {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0.04;
+  /* Grid pattern */
+  #sqe-stats-{{ section.id }} .sqe-grid-pat {
+    position: absolute; width: 100%; height: 100%; opacity: 0.04; pointer-events: none;
     background-image:
-      linear-gradient(0deg, transparent 24%, rgba(242, 183, 5, 0.5) 25%, rgba(242, 183, 5, 0.5) 26%, transparent 27%, transparent 74%, rgba(242, 183, 5, 0.5) 75%, rgba(242, 183, 5, 0.5) 76%, transparent 77%, transparent),
-      linear-gradient(90deg, transparent 24%, rgba(242, 183, 5, 0.5) 25%, rgba(242, 183, 5, 0.5) 26%, transparent 27%, transparent 74%, rgba(242, 183, 5, 0.5) 75%, rgba(242, 183, 5, 0.5) 76%, transparent 77%, transparent);
+      linear-gradient(0deg, transparent 24%, rgba(242,183,5,.5) 25%, rgba(242,183,5,.5) 26%, transparent 27%, transparent 74%, rgba(242,183,5,.5) 75%, rgba(242,183,5,.5) 76%, transparent 77%),
+      linear-gradient(90deg, transparent 24%, rgba(242,183,5,.5) 25%, rgba(242,183,5,.5) 26%, transparent 27%, transparent 74%, rgba(242,183,5,.5) 75%, rgba(242,183,5,.5) 76%, transparent 77%);
     background-size: 100px 100px;
-    pointer-events: none;
   }
 
-  /* Container */
-  .sqe-stats-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
+  /* ===== SECTION LABEL ===== */
+  #sqe-stats-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #C75B12; background: rgba(199,91,18,.15);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
   }
 
-  .sqe-stats-header {
-    text-align: center;
-    margin-bottom: 80px;
+  /* ===== HEADER ===== */
+  #sqe-stats-{{ section.id }} .sqe-stats-inner {
+    max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;
   }
 
-  .sqe-stats-header h2 {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: white;
-    margin: 0 0 16px 0;
-    letter-spacing: -0.8px;
-    line-height: 1.2;
+  #sqe-stats-{{ section.id }} .sqe-stats-hdr {
+    text-align: center; margin-bottom: 80px;
   }
 
-  .sqe-stats-header p {
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0;
-    font-weight: 400;
-    max-width: 600px;
-    margin: 0 auto;
+  #sqe-stats-{{ section.id }} .sqe-stats-hdr h2 {
+    font-family: {{ heading_font }};
+    font-size: {{ heading_size }}px;
+    font-weight: {{ heading_weight }};
+    color: {{ heading_color }};
+    margin: 0 0 16px; letter-spacing: -0.8px; line-height: 1.2;
   }
 
-  /* Stats Grid */
-  .sqe-stats-grid {
+  #sqe-stats-{{ section.id }} .sqe-stats-hdr p {
+    font-family: {{ sub_font }};
+    font-size: {{ sub_size }}px;
+    color: {{ sub_color }};
+    margin: 0 auto; max-width: 600px;
+  }
+
+  /* ===== STATS GRID ===== */
+  #sqe-stats-{{ section.id }} .sqe-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 30px;
-    perspective: 1000px;
   }
 
-  .sqe-stat-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.95);
+  /* Cards: VISIBLE by default (no opacity:0 that hides them if JS fails) */
+  #sqe-stats-{{ section.id }} .sqe-stat-card {
+    background: rgba(255,255,255,.95);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255,255,255,.2);
     border-radius: 16px;
     padding: 40px 30px;
     text-align: center;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(31,58,95,.1);
+    position: relative;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  #sqe-stats-{{ section.id }} .sqe-stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, #F2B705 0%, #C75B12 100%);
+  }
+
+  #sqe-stats-{{ section.id }} .sqe-stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px rgba(31,58,95,.2);
+    border-color: rgba(242,183,5,.4);
+  }
+
+  /* When JS is ready, hide cards for entrance animation */
+  #sqe-stats-{{ section.id }}.sqe-js-ready .sqe-stat-card {
     opacity: 0;
     transform: translateY(40px);
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(31, 58, 95, 0.1);
-    will-change: transform, opacity;
+    transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1);
   }
-
-  .sqe-stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #F2B705 0%, #C75B12 100%);
-    transform: translateX(-100%);
-    transition: transform 0.6s ease;
-  }
-
-  .sqe-stat-card.visible {
+  #sqe-stats-{{ section.id }}.sqe-js-ready .sqe-stat-card.visible {
     opacity: 1;
     transform: translateY(0);
   }
-
-  .sqe-stat-card.visible::before {
-    transform: translateX(0);
-  }
-
-  .sqe-stat-card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 30px 60px rgba(31, 58, 95, 0.2);
-    border-color: rgba(242, 183, 5, 0.4);
-  }
-
-  .sqe-stat-card:hover::before {
-    background: linear-gradient(90deg, #C75B12 0%, #F2B705 100%);
+  #sqe-stats-{{ section.id }}.sqe-js-ready .sqe-stat-card.visible:hover {
+    transform: translateY(-8px);
   }
 
   /* Icon */
-  .sqe-stat-icon {
-    width: 70px;
-    height: 70px;
-    margin: 0 auto 25px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #F2B705 0%, #C75B12 100%);
-    border-radius: 14px;
-    font-size: 32px;
-    color: white;
-    font-weight: 700;
-    transition: all 0.4s ease;
+  #sqe-stats-{{ section.id }} .sqe-stat-icon {
+    width: 70px; height: 70px; margin: 0 auto 25px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #F2B705, #C75B12);
+    border-radius: 14px; font-size: 32px; color: #fff; font-weight: 700;
   }
 
-  .sqe-stat-card.visible .sqe-stat-icon {
-    animation: bounce-icon 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  @keyframes bounce-icon {
-    0% {
-      transform: scale(0.5);
-      opacity: 0;
-    }
-    60% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
-  .sqe-stat-card:hover .sqe-stat-icon {
-    transform: scale(1.15) rotate(5deg);
-    box-shadow: 0 12px 30px rgba(242, 183, 5, 0.3);
-  }
-
-  /* Counter */
-  .sqe-stat-number {
+  /* Number */
+  #sqe-stats-{{ section.id }} .sqe-stat-number {
     font-family: 'Source Sans 3', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: #1F3A5F;
-    margin: 0 0 8px 0;
-    letter-spacing: -0.5px;
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 8px;
+    font-size: 48px; font-weight: 700; color: #1F3A5F;
+    margin: 0 0 8px; display: flex; align-items: baseline; justify-content: center; gap: 8px;
+  }
+  #sqe-stats-{{ section.id }} .sqe-stat-counter {
+    display: inline-block; min-width: 60px;
+  }
+  #sqe-stats-{{ section.id }} .sqe-stat-suffix {
+    font-size: 32px; color: #F2B705; font-weight: 600;
   }
 
-  .sqe-stat-counter {
-    display: inline-block;
-    min-width: 60px;
+  /* Label */
+  #sqe-stats-{{ section.id }} .sqe-stat-label {
+    font-size: 14px; color: #999; text-transform: uppercase;
+    letter-spacing: 1px; font-weight: 600; margin: 0;
   }
 
-  .sqe-stat-suffix {
-    font-size: 32px;
-    color: #F2B705;
-    font-weight: 600;
-  }
-
-  .sqe-stat-label {
-    font-size: 14px;
-    color: #999;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    margin: 0;
-  }
-
-  /* Stagger Animation */
-  {% for i in (1..10) %}
-    .sqe-stat-card:nth-child({{ i }}) {
-      animation-delay: {{ i | times: 0.08 }}s;
-    }
-  {% endfor %}
-
-  /* Mobile */
+  /* ===== MOBILE ===== */
   @media (max-width: 768px) {
-    .sqe-floating-stats-section {
+    #sqe-stats-{{ section.id }} {
       padding: 60px 16px;
-      min-height: auto;
     }
-
-    .sqe-stats-header h2 {
-      font-size: 32px;
+    #sqe-stats-{{ section.id }} .sqe-stats-hdr h2 { font-size: 28px; }
+    #sqe-stats-{{ section.id }} .sqe-stats-hdr p { font-size: 15px; }
+    #sqe-stats-{{ section.id }} .sqe-stats-grid {
+      grid-template-columns: 1fr 1fr; gap: 16px;
     }
-
-    .sqe-stats-header p {
-      font-size: 16px;
-    }
-
-    .sqe-stats-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-
-    .sqe-stat-card {
-      padding: 30px 20px;
-    }
-
-    .sqe-stat-icon {
-      width: 60px;
-      height: 60px;
-      font-size: 26px;
-    }
-
-    .sqe-stat-number {
-      font-size: 36px;
-    }
-
-    .sqe-stat-suffix {
-      font-size: 24px;
-    }
-
-    .sqe-background-shape {
-      display: none;
-    }
-  }
-{% endstylesheet %}
-
-{% javascript %}
-  class SQEFloatingStats {
-    constructor(container) {
-      this.container = container;
-      this.cards = container.querySelectorAll('.sqe-stat-card');
-      this.counters = container.querySelectorAll('.sqe-stat-counter');
-      this.hasAnimated = false;
-
-      this.init();
-    }
-
-    init() {
-      this.observeCards();
-    }
-
-    observeCards() {
-      const options = {
-        threshold: 0.5,
-        rootMargin: '0px 0px -50px 0px'
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting && !this.hasAnimated) {
-            this.animateCards();
-            this.hasAnimated = true;
-          }
-        });
-      }, options);
-
-      this.cards.forEach(card => observer.observe(card));
-    }
-
-    animateCards() {
-      this.cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.classList.add('visible');
-
-          const counter = card.querySelector('.sqe-stat-counter');
-          if (counter && counter.dataset.target) {
-            this.animateCounter(counter, counter.dataset.target, counter.dataset.duration || 2000);
-          }
-        }, index * 150);
-      });
-    }
-
-    animateCounter(element, target, duration) {
-      const startValue = 0;
-      const endValue = parseInt(target, 10);
-      const increment = endValue / (duration / 50);
-      let currentValue = startValue;
-
-      const timer = setInterval(() => {
-        currentValue += increment;
-        if (currentValue >= endValue) {
-          element.textContent = endValue;
-          clearInterval(timer);
-        } else {
-          element.textContent = Math.floor(currentValue);
-        }
-      }, 50);
-    }
+    #sqe-stats-{{ section.id }} .sqe-stat-card { padding: 24px 16px; }
+    #sqe-stats-{{ section.id }} .sqe-stat-icon { width: 56px; height: 56px; font-size: 24px; }
+    #sqe-stats-{{ section.id }} .sqe-stat-number { font-size: 36px; }
+    #sqe-stats-{{ section.id }} .sqe-stat-suffix { font-size: 22px; }
+    #sqe-stats-{{ section.id }} .sqe-bg-shape { display: none; }
   }
 
-  document.querySelectorAll('.sqe-floating-stats-section').forEach(section => {
-    new SQEFloatingStats(section);
-  });
+  @media (max-width: 480px) {
+    #sqe-stats-{{ section.id }} .sqe-stats-grid {
+      grid-template-columns: 1fr; gap: 14px;
+    }
+  }
+</style>
 
-  // Parallax effect on scroll
-  window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('.sqe-floating-stats-section');
-    sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const scrollPercent = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
-      const shapes = section.querySelectorAll('.sqe-background-shape');
-
-      shapes.forEach((shape, index) => {
-        const offset = scrollPercent * 30 * (index + 1);
-        shape.style.transform = `translateY(${offset}px) scale(${1 + scrollPercent * 0.1})`;
-      });
-    });
-  });
-{% endjavascript %}
-
-<div class="sqe-floating-stats-section">
-  <!-- Background Elements -->
-  <div class="sqe-stats-background">
-    <div class="sqe-background-shape sqe-shape-1"></div>
-    <div class="sqe-background-shape sqe-shape-2"></div>
-    <div class="sqe-background-shape sqe-shape-3"></div>
-    <div class="sqe-grid-pattern"></div>
+<div id="sqe-stats-{{ section.id }}">
+  <div class="sqe-stats-bg">
+    <div class="sqe-bg-shape sqe-bg-s1"></div>
+    <div class="sqe-bg-shape sqe-bg-s2"></div>
+    <div class="sqe-grid-pat"></div>
   </div>
 
-  <!-- Content -->
-  <div class="sqe-stats-container">
-    {% if section.settings.show_header %}
-      <div class="sqe-stats-header">
-        <h2>{{ section.settings.heading }}</h2>
-        <p>{{ section.settings.subheading }}</p>
+  <div class="sqe-stats-inner">
+    {%- if show_header -%}
+      <div class="sqe-stats-hdr">
+        {%- if show_label and label_text != blank -%}
+          <span class="sqe-section-label">{{ label_text }}</span>
+        {%- endif -%}
+        <h2>{{ heading }}</h2>
+        {%- if subheading != blank -%}
+          <p>{{ subheading }}</p>
+        {%- endif -%}
       </div>
-    {% endif %}
+    {%- endif -%}
 
     <div class="sqe-stats-grid">
-      {% for block in section.blocks %}
+      {%- for block in section.blocks -%}
         <div class="sqe-stat-card" {{ block.shopify_attributes }}>
-          <!-- Icon -->
-          {% if block.settings.icon_type != 'none' %}
+          {%- if block.settings.icon_type != 'none' -%}
             <div class="sqe-stat-icon">
-              {% case block.settings.icon_type %}
-                {% when 'sun' %}
-                  ☀️
-                {% when 'zap' %}
-                  ⚡
-                {% when 'check' %}
-                  ✓
-                {% when 'trending' %}
-                  📈
-                {% when 'target' %}
-                  🎯
-                {% when 'shield' %}
-                  🛡️
-              {% endcase %}
+              {%- case block.settings.icon_type -%}
+                {%- when 'sun' -%}☀️
+                {%- when 'zap' -%}⚡
+                {%- when 'check' -%}✓
+                {%- when 'trending' -%}📈
+                {%- when 'target' -%}🎯
+                {%- when 'shield' -%}🛡️
+              {%- endcase -%}
             </div>
-          {% endif %}
+          {%- endif -%}
 
-          <!-- Number -->
           <div class="sqe-stat-number">
-            <span class="sqe-stat-counter" data-target="{{ block.settings.number }}" data-duration="{{ block.settings.animation_duration }}">0</span>
-            {% if block.settings.suffix != blank %}
+            <span class="sqe-stat-counter" data-target="{{ block.settings.number }}" data-duration="{{ block.settings.animation_duration }}">{{ block.settings.number }}</span>
+            {%- if block.settings.suffix != blank -%}
               <span class="sqe-stat-suffix">{{ block.settings.suffix }}</span>
-            {% endif %}
+            {%- endif -%}
           </div>
 
-          <!-- Label -->
           <p class="sqe-stat-label">{{ block.settings.label }}</p>
         </div>
-      {% endfor %}
+      {%- endfor -%}
     </div>
   </div>
 </div>
+
+<script>
+  (function() {
+    var wrap = document.getElementById('sqe-stats-{{ section.id }}');
+    if (!wrap) return;
+
+    var cards = wrap.querySelectorAll('.sqe-stat-card');
+    var counters = wrap.querySelectorAll('.sqe-stat-counter');
+    if (!cards.length) return;
+
+    /* Mark JS-ready: hides cards for entrance animation */
+    wrap.classList.add('sqe-js-ready');
+
+    /* Reset counter text to 0 (since we show real number by default for no-JS) */
+    counters.forEach(function(c) { c.textContent = '0'; });
+
+    var hasAnimated = false;
+
+    function animateCounter(el, target, duration) {
+      var end = parseInt(target, 10);
+      if (isNaN(end)) { el.textContent = target; return; }
+      var inc = end / (duration / 50);
+      var cur = 0;
+      var timer = setInterval(function() {
+        cur += inc;
+        if (cur >= end) { el.textContent = end; clearInterval(timer); }
+        else { el.textContent = Math.floor(cur); }
+      }, 50);
+    }
+
+    function revealCards() {
+      if (hasAnimated) return;
+      hasAnimated = true;
+      cards.forEach(function(card, i) {
+        setTimeout(function() {
+          card.classList.add('visible');
+          var c = card.querySelector('.sqe-stat-counter');
+          if (c && c.dataset.target) {
+            animateCounter(c, c.dataset.target, parseInt(c.dataset.duration, 10) || 2000);
+          }
+        }, i * 150);
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { revealCards(); obs.disconnect(); }
+        });
+      }, { threshold: 0.3 });
+      obs.observe(wrap);
+    } else {
+      /* Fallback: reveal immediately */
+      revealCards();
+    }
+  })();
+</script>
 
 {% schema %}
 {
   "name": "SQE Floating Stats",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show section label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Kennzahlen"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
     {
       "type": "checkbox",
       "id": "show_header",
@@ -479,6 +344,74 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "Proven expertise and measurable results in solar quality assessment"
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Heading bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Subheading Typography"
+    },
+    {
+      "type": "select",
+      "id": "sub_font",
+      "label": "Subheading font",
+      "options": [
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "sub_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "sub_color",
+      "label": "Subheading color",
+      "default": "#ffffffb3"
     }
   ],
   "blocks": [
@@ -495,7 +428,7 @@
         {
           "type": "text",
           "id": "suffix",
-          "label": "Suffix (+ , MW, GW, etc)",
+          "label": "Suffix (+, MW, GW, %)",
           "default": "+"
         },
         {
@@ -509,42 +442,37 @@
           "id": "icon_type",
           "label": "Icon",
           "options": [
-            {
-              "value": "none",
-              "label": "None"
-            },
-            {
-              "value": "sun",
-              "label": "Sun"
-            },
-            {
-              "value": "zap",
-              "label": "Zap / Energy"
-            },
-            {
-              "value": "check",
-              "label": "Checkmark"
-            },
-            {
-              "value": "trending",
-              "label": "Trending Up"
-            },
-            {
-              "value": "target",
-              "label": "Target"
-            },
-            {
-              "value": "shield",
-              "label": "Shield"
-            }
+            { "value": "none", "label": "None" },
+            { "value": "sun", "label": "Sun" },
+            { "value": "zap", "label": "Zap / Energy" },
+            { "value": "check", "label": "Checkmark" },
+            { "value": "trending", "label": "Trending Up" },
+            { "value": "target", "label": "Target" },
+            { "value": "shield", "label": "Shield" }
           ],
           "default": "sun"
         },
         {
           "type": "text",
           "id": "animation_duration",
-          "label": "Animation duration (ms)",
+          "label": "Count duration (ms)",
           "default": "2000"
+        },
+        {
+          "type": "header",
+          "content": "Card Typography"
+        },
+        {
+          "type": "color",
+          "id": "number_color",
+          "label": "Number color",
+          "default": "#1F3A5F"
+        },
+        {
+          "type": "color",
+          "id": "label_color",
+          "label": "Label color",
+          "default": "#999999"
         }
       ]
     }
@@ -555,39 +483,19 @@
       "blocks": [
         {
           "type": "stat",
-          "settings": {
-            "number": "500",
-            "suffix": "+",
-            "label": "Projects Inspected",
-            "icon_type": "sun"
-          }
+          "settings": { "number": "500", "suffix": "+", "label": "Projects Inspected", "icon_type": "sun" }
         },
         {
           "type": "stat",
-          "settings": {
-            "number": "2",
-            "suffix": "GW",
-            "label": "Total Capacity Assessed",
-            "icon_type": "zap"
-          }
+          "settings": { "number": "2", "suffix": "GW", "label": "Total Capacity Assessed", "icon_type": "zap" }
         },
         {
           "type": "stat",
-          "settings": {
-            "number": "98",
-            "suffix": "%",
-            "label": "Client Satisfaction",
-            "icon_type": "check"
-          }
+          "settings": { "number": "98", "suffix": "%", "label": "Client Satisfaction", "icon_type": "check" }
         },
         {
           "type": "stat",
-          "settings": {
-            "number": "15",
-            "suffix": "+",
-            "label": "Years Experience",
-            "icon_type": "trending"
-          }
+          "settings": { "number": "15", "suffix": "+", "label": "Years Experience", "icon_type": "trending" }
         }
       ]
     }

@@ -3,28 +3,53 @@
   assign background_color = section.settings.background_color
   assign auto_rotate = section.settings.auto_rotate
   assign rotate_speed = section.settings.rotate_speed | default: 5
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
+  assign q_font = section.settings.quote_font
+  assign q_size = section.settings.quote_size
+  assign q_color = section.settings.quote_color
+  assign name_size = section.settings.client_name_size
+  assign name_color = section.settings.client_name_color
+  assign name_bold = section.settings.client_name_bold
+  assign name_weight = '700'
+  if name_bold == false
+    assign name_weight = '400'
+  endif
+  assign role_size = section.settings.client_role_size
+  assign role_color = section.settings.client_role_color
 -%}
 
-<section id="section-{{ section.id }}" class="sqe-testimonials-v2" style="background-color: {{ background_color }};">
+<section id="sqe-testi-{{ section.id }}" class="sqe-testimonials-v2" style="background-color: {{ background_color }};">
   <div class="testimonials-container">
+    {%- if show_label and label_text != blank -%}
+      <span class="sqe-section-label">{{ label_text }}</span>
+    {%- endif -%}
     {% if heading %}
-      <h2 class="testimonials-heading">{{ heading }}</h2>
+      <h2 class="testimonials-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
     {% endif %}
 
     {% if section.blocks.size > 0 %}
       {% assign first_block = section.blocks.first %}
       <div class="featured-testimonial" data-testimonial-id="{{ first_block.id }}" data-quote="{{ first_block.settings.quote | escape }}" data-client-name="{{ first_block.settings.client_name | escape }}" data-client-title="{{ first_block.settings.client_title | escape }}" data-company="{{ first_block.settings.company | escape }}" data-rating="{{ first_block.settings.rating }}" {% if first_block.settings.photo %}data-photo="{{ first_block.settings.photo | img_url: '150x150' }}"{% endif %}>
         <div class="quote-content">
-          <p class="quote-text">{{ first_block.settings.quote }}</p>
+          <p class="quote-text" style="font-family:{{ q_font }};font-size:{{ q_size }}px;color:{{ q_color }};">{{ first_block.settings.quote }}</p>
         </div>
         <div class="client-info">
           {% if first_block.settings.photo %}
             <img src="{{ first_block.settings.photo | img_url: '100x100' }}" alt="{{ first_block.settings.client_name }}" class="client-photo">
           {% endif %}
           <div class="client-details">
-            <h3 class="client-name">{{ first_block.settings.client_name }}</h3>
-            <p class="client-title">{{ first_block.settings.client_title }}</p>
-            <p class="client-company">{{ first_block.settings.company }}</p>
+            <h3 class="client-name" style="font-size:{{ name_size }}px;color:{{ name_color }};font-weight:{{ name_weight }};">{{ first_block.settings.client_name }}</h3>
+            <p class="client-title" style="font-size:{{ role_size }}px;color:{{ role_color }};">{{ first_block.settings.client_title }}</p>
+            <p class="client-company" style="font-size:{{ role_size }}px;color:{{ role_color }};">{{ first_block.settings.company }}</p>
           </div>
           {% if first_block.settings.rating %}
             <div class="client-rating">
@@ -48,24 +73,36 @@
 </section>
 
 <style>
-  #section-{{ section.id }} {
+  #sqe-testi-{{ section.id }} {
     padding: 60px 20px;
   }
 
-  .testimonials-container {
-    max-width: 900px;
-    margin: 0 auto;
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-testi-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
   }
 
-  .testimonials-heading {
-    font-size: 48px;
-    font-weight: 700;
-    color: #1F3A5F;
+  #sqe-testi-{{ section.id }} .testimonials-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #sqe-testi-{{ section.id }} .testimonials-heading {
     margin-bottom: 50px;
     text-align: center;
   }
 
-  .featured-testimonial {
+  #sqe-testi-{{ section.id }} .featured-testimonial {
     background: white;
     padding: 50px;
     border-radius: 8px;
@@ -77,21 +114,19 @@
     justify-content: space-between;
   }
 
-  .quote-content {
+  #sqe-testi-{{ section.id }} .quote-content {
     margin-bottom: 30px;
   }
 
-  .quote-text {
-    font-size: 28px;
+  #sqe-testi-{{ section.id }} .quote-text {
     font-style: italic;
-    color: #1F3A5F;
     line-height: 1.8;
     margin: 0;
     position: relative;
     padding-left: 30px;
   }
 
-  .quote-text::before {
+  #sqe-testi-{{ section.id }} .quote-text::before {
     content: '"';
     position: absolute;
     left: 0;
@@ -100,7 +135,7 @@
     opacity: 0.3;
   }
 
-  .client-info {
+  #sqe-testi-{{ section.id }} .client-info {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -108,7 +143,7 @@
     border-top: 2px solid #F2F4F7;
   }
 
-  .client-photo {
+  #sqe-testi-{{ section.id }} .client-photo {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -116,48 +151,41 @@
     flex-shrink: 0;
   }
 
-  .client-details {
+  #sqe-testi-{{ section.id }} .client-details {
     flex: 1;
   }
 
-  .client-name {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1F3A5F;
+  #sqe-testi-{{ section.id }} .client-name {
     margin: 0 0 5px 0;
   }
 
-  .client-title {
-    font-size: 14px;
-    color: #C75B12;
+  #sqe-testi-{{ section.id }} .client-title {
     font-weight: 600;
     margin: 0 0 3px 0;
   }
 
-  .client-company {
-    font-size: 13px;
-    color: #999;
+  #sqe-testi-{{ section.id }} .client-company {
     margin: 0;
   }
 
-  .client-rating {
+  #sqe-testi-{{ section.id }} .client-rating {
     display: flex;
     gap: 5px;
   }
 
-  .star {
+  #sqe-testi-{{ section.id }} .star {
     color: #F2B705;
     font-size: 18px;
   }
 
-  .testimonial-nav {
+  #sqe-testi-{{ section.id }} .testimonial-nav {
     display: flex;
     justify-content: center;
     gap: 12px;
     margin-top: 40px;
   }
 
-  .nav-dot {
+  #sqe-testi-{{ section.id }} .nav-dot {
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -167,35 +195,87 @@
     transition: all 0.3s ease;
   }
 
-  .nav-dot:hover {
+  #sqe-testi-{{ section.id }} .nav-dot:hover {
     background: #1F3A5F;
   }
 
-  .nav-dot.active {
+  #sqe-testi-{{ section.id }} .nav-dot.active {
     background: #1F3A5F;
     width: 30px;
     border-radius: 6px;
   }
 
+  /* Tablet Breakpoint (768px) */
   @media (max-width: 768px) {
-    .featured-testimonial {
+    #sqe-testi-{{ section.id }} {
+      padding: 50px 16px;
+    }
+
+    #sqe-testi-{{ section.id }} .testimonials-heading {
+      margin-bottom: 40px;
+    }
+
+    #sqe-testi-{{ section.id }} .featured-testimonial {
       padding: 30px 20px;
       min-height: auto;
     }
-    .quote-text {
-      font-size: 20px;
+
+    #sqe-testi-{{ section.id }} .quote-text {
+      font-size: 20px !important;
     }
-    .testimonials-heading {
-      font-size: 32px;
-    }
-    .client-info {
+
+    #sqe-testi-{{ section.id }} .client-info {
       flex-direction: column;
       text-align: center;
       border-top: none;
       padding-top: 20px;
     }
-    .client-details {
+
+    #sqe-testi-{{ section.id }} .client-details {
       width: 100%;
+    }
+  }
+
+  /* Mobile Breakpoint (480px) */
+  @media (max-width: 480px) {
+    #sqe-testi-{{ section.id }} {
+      padding: 40px 12px;
+    }
+
+    #sqe-testi-{{ section.id }} .testimonials-heading {
+      margin-bottom: 30px;
+    }
+
+    #sqe-testi-{{ section.id }} .featured-testimonial {
+      padding: 20px 16px;
+      min-height: auto;
+    }
+
+    #sqe-testi-{{ section.id }} .quote-text {
+      font-size: 16px !important;
+      padding-left: 20px;
+    }
+
+    #sqe-testi-{{ section.id }} .quote-text::before {
+      font-size: 36px;
+    }
+
+    #sqe-testi-{{ section.id }} .client-photo {
+      width: 60px;
+      height: 60px;
+    }
+
+    #sqe-testi-{{ section.id }} .client-name {
+      margin: 0 0 4px 0;
+    }
+
+    #sqe-testi-{{ section.id }} .client-title {
+      margin: 0 0 2px 0;
+    }
+
+    #sqe-testi-{{ section.id }} .testimonial-nav {
+      margin-top: 30px;
+      gap: 8px;
     }
   }
 </style>
@@ -203,7 +283,7 @@
 <script>
   (function() {
     var sectionId = '{{ section.id }}';
-    var el = document.getElementById('section-' + sectionId);
+    var el = document.getElementById('sqe-testi-' + sectionId);
     var featured = el.querySelector('.featured-testimonial');
     var navDots = el.querySelectorAll('.nav-dot');
     var autoRotate = {{ auto_rotate | json }};
@@ -227,14 +307,18 @@
       navDots.forEach(function(d) { d.classList.remove('active'); });
       dot.classList.add('active');
 
-      var html = '<div class="quote-content"><p class="quote-text">' + quote + '</p></div>';
+      var quoteStyle = 'font-family:{{ q_font }};font-size:{{ q_size }}px;color:{{ q_color }};';
+      var nameStyle = 'font-size:{{ name_size }}px;color:{{ name_color }};font-weight:{{ name_weight }};';
+      var roleStyle = 'font-size:{{ role_size }}px;color:{{ role_color }};';
+
+      var html = '<div class="quote-content"><p class="quote-text" style="' + quoteStyle + '">' + quote + '</p></div>';
       html += '<div class="client-info">';
       if (photo) {
         html += '<img src="' + photo + '" alt="' + name + '" class="client-photo">';
       }
-      html += '<div class="client-details"><h3 class="client-name">' + name + '</h3>';
-      html += '<p class="client-title">' + title + '</p>';
-      html += '<p class="client-company">' + company + '</p></div>';
+      html += '<div class="client-details"><h3 class="client-name" style="' + nameStyle + '">' + name + '</h3>';
+      html += '<p class="client-title" style="' + roleStyle + '">' + title + '</p>';
+      html += '<p class="client-company" style="' + roleStyle + '">' + company + '</p></div>';
       if (rating) {
         html += '<div class="client-rating">';
         for (var i = 0; i < rating; i++) {
@@ -276,8 +360,28 @@
 
 {% schema %}
 {
-  "name": "Testimonials v2",
+  "name": "SQE Testimonials",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Testimonials"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -305,6 +409,120 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#F2F4F7"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Size",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Quote Text"
+    },
+    {
+      "type": "select",
+      "id": "quote_font",
+      "label": "Font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "quote_size",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Size",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "quote_color",
+      "label": "Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "header",
+      "content": "Client Name"
+    },
+    {
+      "type": "range",
+      "id": "client_name_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "client_name_color",
+      "label": "Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "client_name_bold",
+      "label": "Bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Role & Company"
+    },
+    {
+      "type": "range",
+      "id": "client_role_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "client_role_color",
+      "label": "Color",
+      "default": "#C75B12"
     }
   ],
   "blocks": [

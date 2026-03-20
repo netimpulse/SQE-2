@@ -2,15 +2,31 @@
   assign heading = section.settings.heading
   assign subheading = section.settings.subheading
   assign background_color = section.settings.background_color
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign h_font = section.settings.heading_font
+  assign h_size = section.settings.heading_size
+  assign h_color = section.settings.heading_color
+  assign h_bold = section.settings.heading_bold
+  assign h_weight = '700'
+  if h_bold == false
+    assign h_weight = '400'
+  endif
+  assign sh_font = section.settings.subheading_font
+  assign sh_size = section.settings.subheading_size
+  assign sh_color = section.settings.subheading_color
 -%}
 
-<section id="section-{{ section.id }}" class="sqe-project-showcase" style="background-color: {{ background_color }};">
+<section id="sqe-project-showcase-{{ section.id }}" class="sqe-project-showcase" style="background-color: {{ background_color }};">
   <div class="showcase-container">
+    {%- if show_label and label_text != blank -%}
+      <span class="sqe-section-label">{{ label_text }}</span>
+    {%- endif -%}
     {% if heading %}
-      <h2 class="showcase-heading">{{ heading }}</h2>
+      <h2 class="showcase-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
     {% endif %}
     {% if subheading %}
-      <p class="showcase-subheading">{{ subheading }}</p>
+      <p class="showcase-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
     {% endif %}
 
     <div class="showcase-main">
@@ -58,7 +74,15 @@
 </section>
 
 <style>
-  #section-{{ section.id }} {
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-project-showcase-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #C75B12; background: rgba(199,91,18,.1);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+  }
+
+  #sqe-project-showcase-{{ section.id }} {
     padding: 60px 20px;
   }
 
@@ -66,12 +90,13 @@
     transition: background-color 0.3s ease;
   }
 
-  .showcase-container {
+  #sqe-project-showcase-{{ section.id }} .showcase-container {
     max-width: 1200px;
     margin: 0 auto;
+    text-align: center;
   }
 
-  .showcase-heading {
+  #sqe-project-showcase-{{ section.id }} .showcase-heading {
     font-size: 48px;
     font-weight: 700;
     color: #1F3A5F;
@@ -174,18 +199,48 @@
       gap: 20px;
       padding: 20px;
     }
-    .showcase-heading {
+
+    #sqe-project-showcase-{{ section.id }} .showcase-heading {
       font-size: 32px;
     }
+
     .project-title {
       font-size: 24px;
+    }
+
+    .showcase-subheading {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #sqe-project-showcase-{{ section.id }} {
+      padding: 40px 16px;
+    }
+
+    #sqe-project-showcase-{{ section.id }} .showcase-heading {
+      font-size: 24px;
+    }
+
+    .project-title {
+      font-size: 20px;
+    }
+
+    .project-description {
+      font-size: 14px;
+    }
+
+    .thumbnail-item {
+      flex: 0 0 120px;
     }
   }
 </style>
 
 <script>
   (function() {
-    var el = document.getElementById('section-' + '{{ section.id }}');
+    var el = document.getElementById('sqe-project-showcase-' + '{{ section.id }}');
+    if (!el) return;
+
     var thumbnails = el.querySelectorAll('.thumbnail-item');
     var featured = el.querySelector('.featured-project');
 
@@ -230,8 +285,28 @@
 
 {% schema %}
 {
-  "name": "Project Showcase",
+  "name": "Proj Showcase",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "Projects"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -249,6 +324,74 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Heading bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Subheading Typography"
+    },
+    {
+      "type": "select",
+      "id": "subheading_font",
+      "label": "Subheading font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#333333"
     }
   ],
   "blocks": [

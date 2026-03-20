@@ -3,11 +3,30 @@
   Features: Featured article, article cards, category filtering, read time, smooth animations
 {% endcomment %}
 
-<div class="sqe-news-container">
+{%- liquid
+  assign show_label = section.settings.show_section_label
+  assign label_text = section.settings.section_label_text
+  assign title_font = section.settings.title_font
+  assign title_size = section.settings.title_size
+  assign title_color = section.settings.title_color
+  assign title_bold = section.settings.title_bold
+  assign title_weight = '700'
+  if title_bold == false
+    assign title_weight = '400'
+  endif
+  assign sh_font = section.settings.subtitle_font
+  assign sh_size = section.settings.subtitle_size
+  assign sh_color = section.settings.subtitle_color
+-%}
+
+<div id="sqe-news-container-{{ section.id }}" class="sqe-news-container">
   <div class="sqe-news-header">
-    <h2 class="sqe-news-title">{{ section.settings.title }}</h2>
+    {%- if show_label and label_text != blank -%}
+      <span class="sqe-section-label">{{ label_text }}</span>
+    {%- endif -%}
+    <h2 class="sqe-news-title" style="font-family:{{ title_font }};font-size:{{ title_size }}px;color:{{ title_color }};font-weight:{{ title_weight }};">{{ section.settings.title }}</h2>
     {% if section.settings.subtitle %}
-      <p class="sqe-news-subtitle">{{ section.settings.subtitle }}</p>
+      <p class="sqe-news-subtitle" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ section.settings.subtitle }}</p>
     {% endif %}
   </div>
 
@@ -135,10 +154,18 @@
 </div>
 
 <style>
-  .sqe-news-container {
+  #sqe-news-container-{{ section.id }} {
     max-width: {{ section.settings.max_width }}px;
     margin: {{ section.settings.margin_top }}px auto {{ section.settings.margin_bottom }}px;
     padding: {{ section.settings.padding }}px;
+  }
+
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-news-container-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #C75B12; background: rgba(199,91,18,.1);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
   }
 
   .sqe-news-header {
@@ -148,7 +175,7 @@
 
   .sqe-news-title {
     font-family: 'Source Sans 3', sans-serif;
-    font-size: {{ section.settings.title_size }}px;
+    font-size: 36px;
     font-weight: 700;
     color: #1F3A5F;
     margin: 0 0 12px 0;
@@ -573,7 +600,7 @@
   }
 
   @media (max-width: 768px) {
-    .sqe-news-container {
+    #sqe-news-container-{{ section.id }} {
       padding: 16px;
     }
 
@@ -643,36 +670,40 @@
     .sqe-article-excerpt {
       font-size: 12px;
     }
+
+    .sqe-news-title {
+      font-size: 20px;
+    }
+
+    .sqe-news-subtitle {
+      font-size: 14px;
+    }
   }
 </style>
 
 <script>
 (function() {
-  const container = document.querySelector('.sqe-news-container');
-  if (!container) return;
+  var el = document.getElementById('sqe-news-container-' + '{{ section.id }}');
+  if (!el) return;
 
-  const loadMoreBtn = container.querySelector('.sqe-load-more-btn');
+  var loadMoreBtn = el.querySelector('.sqe-load-more-btn');
 
   if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', () => {
-      // Rotate icon
-      const icon = loadMoreBtn.querySelector('.sqe-btn-icon');
+      var icon = loadMoreBtn.querySelector('.sqe-btn-icon');
       icon.style.transform = 'rotate(90deg) scale(1.2)';
 
-      // Add loading state
       loadMoreBtn.disabled = true;
-      const originalText = loadMoreBtn.querySelector('.sqe-btn-text');
-      const originalTextContent = originalText.textContent;
+      var originalText = loadMoreBtn.querySelector('.sqe-btn-text');
+      var originalTextContent = originalText.textContent;
       originalText.textContent = 'Loading...';
 
-      // Simulate loading and fetch more articles
       setTimeout(() => {
         loadMoreBtn.disabled = false;
         originalText.textContent = originalTextContent;
         icon.style.transform = 'rotate(0) scale(1)';
 
-        // Trigger animation on new cards
-        const newCards = container.querySelectorAll('.sqe-article-card');
+        var newCards = el.querySelectorAll('.sqe-article-card');
         newCards.forEach(card => {
           if (!card.style.animation) {
             card.style.animation = 'sqe-fade-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards';
@@ -682,8 +713,7 @@
     });
   }
 
-  // Intersection Observer for scroll animations
-  const observer = new IntersectionObserver((entries) => {
+  var observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.style.opacity = '1';
@@ -695,30 +725,39 @@
     rootMargin: '0px 0px -50px 0px'
   });
 
-  container.querySelectorAll('.sqe-article-card').forEach(card => {
+  el.querySelectorAll('.sqe-article-card').forEach(card => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(20px)';
     card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(card);
-  });
-
-  // Keyboard navigation
-  const articleLinks = container.querySelectorAll('a[href]');
-  articleLinks.forEach((link, index) => {
-    link.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab') {
-        // Natural tab flow
-        return;
-      }
-    });
   });
 })();
 </script>
 
 {% schema %}
 {
-  "name": "SQE News & Insights",
+  "name": "News Insights",
   "settings": [
+    {
+      "type": "header",
+      "content": "Section Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section_label",
+      "label": "Show orange label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "section_label_text",
+      "label": "Label text",
+      "default": "News"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
     {
       "type": "text",
       "id": "title",
@@ -729,7 +768,22 @@
       "type": "text",
       "id": "subtitle",
       "label": "Section Subtitle",
-      "default": "Stay updated with the latest in solar inspection technology and industry trends"
+      "default": "Stay updated with the latest"
+    },
+    {
+      "type": "header",
+      "content": "Title Typography"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Title font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Source Sans 3', sans-serif"
     },
     {
       "type": "range",
@@ -740,6 +794,53 @@
       "step": 2,
       "unit": "px",
       "default": 36
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "checkbox",
+      "id": "title_bold",
+      "label": "Title bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Subtitle Typography"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_font",
+      "label": "Subtitle font",
+      "options": [
+        { "value": "'Source Sans 3', sans-serif", "label": "Source Sans 3" },
+        { "value": "'Inter', sans-serif", "label": "Inter" },
+        { "value": "system-ui, sans-serif", "label": "System" }
+      ],
+      "default": "'Inter', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
     },
     {
       "type": "range",
@@ -791,13 +892,13 @@
           "type": "text",
           "id": "title",
           "label": "Article Title",
-          "default": "Understanding Thermal Imaging in Solar Inspections"
+          "default": "Article Title"
         },
         {
           "type": "textarea",
           "id": "excerpt",
           "label": "Excerpt",
-          "default": "Thermal imaging technology has revolutionized the way solar panels are inspected and maintained, allowing technicians to identify issues invisible to the naked eye."
+          "default": "Article excerpt text"
         },
         {
           "type": "image_picker",
@@ -846,44 +947,11 @@
         {
           "type": "article",
           "settings": {
-            "title": "Understanding Thermal Imaging in Solar Inspections",
-            "excerpt": "Thermal imaging technology has revolutionized the way solar panels are inspected, allowing technicians to identify issues invisible to the naked eye.",
+            "title": "Understanding Thermal Imaging",
+            "excerpt": "Thermal imaging has revolutionized inspections.",
             "category": "Technical Insights",
             "date": "2024-03-15",
             "read_time": 5,
-            "url": "#"
-          }
-        },
-        {
-          "type": "article",
-          "settings": {
-            "title": "Solar Panel Defects: Early Detection Saves Thousands",
-            "excerpt": "Early detection of solar panel defects can prevent significant energy loss and costly repairs.",
-            "category": "Industry News",
-            "date": "2024-03-12",
-            "read_time": 4,
-            "url": "#"
-          }
-        },
-        {
-          "type": "article",
-          "settings": {
-            "title": "SQE Expands Services to Northern England",
-            "excerpt": "We're excited to announce the expansion of our inspection services to cover additional regions.",
-            "category": "Company Updates",
-            "date": "2024-03-10",
-            "read_time": 3,
-            "url": "#"
-          }
-        },
-        {
-          "type": "article",
-          "settings": {
-            "title": "The Future of Solar Energy Quality Assurance",
-            "excerpt": "As solar technology evolves, quality assurance standards continue to advance to meet new challenges.",
-            "category": "Industry News",
-            "date": "2024-03-08",
-            "read_time": 6,
             "url": "#"
           }
         }
