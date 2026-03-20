@@ -64,35 +64,18 @@
 <style>
   /*
    * ============================================================
-   *  SQE HEADER – Complete rewrite v7
+   *  SQE HEADER – v8
    *
-   *  KEY FIX: Dawn's base.css adds .shopify-section-header-sticky
-   *  with position:sticky to the Shopify wrapper div. This breaks
-   *  our position:fixed. We override the WRAPPER styles here.
-   *
-   *  NO Liquid conditionals in CSS – everything via data-* attrs.
+   *  Uses Dawn's native sticky system (position: sticky via
+   *  .shopify-section-header-sticky on the wrapper) instead of
+   *  fighting it. This ensures the sticky header setting works
+   *  correctly in both the theme editor and the live site.
    * ============================================================
    */
 
-  /* --- DAWN OVERRIDE: neutralize Shopify wrapper styles --- */
+  /* --- Let Dawn's sticky system work on the wrapper --- */
   #shopify-section-{{ section.id }} {
-    position: relative !important;
-    top: auto !important;
     z-index: 1000 !important;
-  }
-  #shopify-section-{{ section.id }}.shopify-section-header-sticky {
-    position: relative !important;
-    top: auto !important;
-  }
-  #shopify-section-{{ section.id }}.shopify-section-header-hidden {
-    top: auto !important;
-  }
-  #shopify-section-{{ section.id }}.section-header.animate {
-    transition: none !important;
-  }
-  /* Remove Dawn header-wrapper interference */
-  #shopify-section-{{ section.id }} .header-wrapper {
-    display: contents !important;
   }
 
   /* --- SECTION ELEMENT: base styles --- */
@@ -103,44 +86,12 @@
     box-sizing: border-box;
   }
 
-  /* --- STICKY via data-sticky (all rules always present) --- */
-  .sqe-hdr-{{ section.id }}[data-sticky="none"] {
-    position: relative !important;
-  }
-  .sqe-hdr-{{ section.id }}[data-sticky="always"] {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 1001 !important;
-  }
-  .sqe-hdr-{{ section.id }}[data-sticky="on-scroll-up"] {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 1001 !important;
-    transition: transform 0.35s ease;
-  }
-  .sqe-hdr-{{ section.id }}[data-sticky="on-scroll-up"].sqe-hidden {
-    transform: translateY(-110%);
-  }
-
   /* --- BORDER via data-border --- */
   .sqe-hdr-{{ section.id }}[data-border="true"] {
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   }
   .sqe-hdr-{{ section.id }}[data-border="false"] {
     border-bottom: none;
-  }
-
-  /* --- SPACER: shown only when sticky --- */
-  .sqe-hdr-spacer-{{ section.id }}[data-show="true"] {
-    display: block;
-    height: {{ header_height }}px;
-  }
-  .sqe-hdr-spacer-{{ section.id }}[data-show="false"] {
-    display: none;
   }
 
   /* --- INNER container --- */
@@ -529,10 +480,6 @@
     .sqe-hdr-{{ section.id }} .sqe-h-search-bar form {
       max-width: none;
     }
-    /* Spacer mobile */
-    .sqe-hdr-spacer-{{ section.id }}[data-show="true"] {
-      height: 60px;
-    }
   }
 
   /* ===== SMALL MOBILE (max-width: 480px) ===== */
@@ -555,10 +502,6 @@
     }
     .sqe-hdr-{{ section.id }} .sqe-h-logo img {
       max-height: 30px;
-    }
-    /* Spacer small mobile */
-    .sqe-hdr-spacer-{{ section.id }}[data-show="true"] {
-      height: 56px;
     }
   }
 
@@ -744,8 +687,6 @@
   </div>
 </section>
 
-{%- comment -%} Spacer compensates for fixed header height {%- endcomment -%}
-<div class="sqe-hdr-spacer-{{ section.id }}" data-show="{% if sticky_type != 'none' %}true{% else %}false{% endif %}" aria-hidden="true"></div>
 
 {%- if settings.cart_type == 'notification' -%}
   {%- render 'cart-notification',
@@ -757,10 +698,11 @@
 <script>
   (function() {
     /*
-     * SQE Header JS – v7 rewrite
+     * SQE Header JS – v8
      *
-     * KEY: We neutralize Dawn's sticky-header behavior on the
-     * Shopify wrapper so it doesn't compete with our CSS.
+     * Uses Dawn's native sticky system instead of fighting it.
+     * Manages .shopify-section-header-sticky / -hidden classes
+     * on the wrapper, just like Dawn's own StickyHeader element.
      */
 
     var section = document.querySelector('[data-sqe-header]');
@@ -768,54 +710,60 @@
 
     var stickyType = section.getAttribute('data-sticky');
     var sectionId = '{{ section.id }}';
-
-    /* === NEUTRALIZE DAWN STICKY HEADER === */
     var wrapper = document.getElementById('shopify-section-' + sectionId);
-    if (wrapper) {
-      /* Remove Dawn's sticky classes immediately */
-      wrapper.classList.remove('shopify-section-header-sticky');
-      wrapper.classList.remove('shopify-section-header-hidden');
-      wrapper.style.position = 'relative';
-      wrapper.style.top = 'auto';
+    if (!wrapper) return;
 
-      /* Watch for Dawn JS re-adding them */
-      var observer = new MutationObserver(function(mutations) {
-        for (var i = 0; i < mutations.length; i++) {
-          if (mutations[i].attributeName === 'class') {
-            var changed = false;
-            if (wrapper.classList.contains('shopify-section-header-sticky')) {
-              wrapper.classList.remove('shopify-section-header-sticky');
-              changed = true;
-            }
-            if (wrapper.classList.contains('shopify-section-header-hidden')) {
-              wrapper.classList.remove('shopify-section-header-hidden');
-              changed = true;
-            }
-            if (changed) {
-              wrapper.style.position = 'relative';
-              wrapper.style.top = 'auto';
-            }
-          }
-          if (mutations[i].attributeName === 'style') {
-            /* Prevent Dawn from setting inline styles on wrapper */
-            if (wrapper.style.position !== 'relative') {
-              wrapper.style.position = 'relative';
-            }
-            if (wrapper.style.top !== 'auto') {
-              wrapper.style.top = 'auto';
-            }
-          }
-        }
+    /* === SET CSS VARIABLE FOR OTHER COMPONENTS === */
+    function setHeaderHeight() {
+      document.documentElement.style.setProperty('--header-height', section.offsetHeight + 'px');
+    }
+    setHeaderHeight();
+    window.matchMedia('(max-width: 990px)').addEventListener('change', setHeaderHeight);
+
+    /* === CLEAN SLATE: remove any stale classes/inline styles === */
+    wrapper.classList.remove('shopify-section-header-sticky', 'shopify-section-header-hidden', 'animate');
+    wrapper.style.removeProperty('position');
+    wrapper.style.removeProperty('top');
+
+    /* === STICKY BEHAVIOR via Dawn's native classes === */
+    var isAlwaysSticky = (stickyType === 'always');
+
+    if (stickyType === 'always') {
+      /* Always sticky – add the class and leave it */
+      wrapper.classList.add('shopify-section-header-sticky');
+    }
+
+    if (stickyType === 'on-scroll-up') {
+      var currentScrollTop = 0;
+      var headerBoundsBottom = section.offsetHeight;
+
+      /* Observe the section to get accurate bounds */
+      var io = new IntersectionObserver(function(entries) {
+        headerBoundsBottom = entries[0].intersectionRect.bottom || section.offsetHeight;
+        io.disconnect();
       });
-      observer.observe(wrapper, { attributes: true, attributeFilter: ['class', 'style'] });
+      io.observe(wrapper);
+
+      window.addEventListener('scroll', function() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > currentScrollTop && scrollTop > headerBoundsBottom) {
+          /* Scrolling DOWN past header → hide */
+          wrapper.classList.add('shopify-section-header-sticky', 'shopify-section-header-hidden');
+        } else if (scrollTop < currentScrollTop && scrollTop > headerBoundsBottom) {
+          /* Scrolling UP → reveal */
+          wrapper.classList.add('shopify-section-header-sticky', 'animate');
+          wrapper.classList.remove('shopify-section-header-hidden');
+        } else if (scrollTop <= 0) {
+          /* Back at top → reset */
+          wrapper.classList.remove('shopify-section-header-sticky', 'shopify-section-header-hidden', 'animate');
+        }
+
+        currentScrollTop = scrollTop;
+      }, { passive: true });
     }
 
-    /* Also neutralize the section-group wrapper */
-    var groupWrapper = document.getElementById('shopify-section-group-header-group');
-    if (groupWrapper) {
-      groupWrapper.style.position = 'relative';
-      groupWrapper.style.zIndex = '1000';
-    }
+    /* For "none": classes were already removed above, nothing to do */
 
     /* === SEARCH TOGGLE === */
     var searchToggle = section.querySelector('[data-sqe-search-toggle]');
@@ -834,33 +782,6 @@
         searchBar.classList.remove('sqe-search-open');
       });
     }
-
-    /* === SCROLL-UP STICKY === */
-    if (stickyType === 'on-scroll-up') {
-      var lastScroll = 0;
-      var headerH = section.offsetHeight;
-
-      window.addEventListener('scroll', function() {
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollTop > lastScroll && scrollTop > headerH) {
-          /* Scrolling DOWN past header → hide */
-          section.classList.add('sqe-hidden');
-        } else if (scrollTop < lastScroll) {
-          /* Scrolling UP → show */
-          section.classList.remove('sqe-hidden');
-        }
-
-        if (scrollTop <= 10) {
-          section.classList.remove('sqe-hidden');
-        }
-
-        lastScroll = scrollTop;
-      }, { passive: true });
-    }
-
-    /* === SET CSS VARIABLE FOR OTHER COMPONENTS === */
-    document.documentElement.style.setProperty('--header-height', section.offsetHeight + 'px');
   })();
 </script>
 
