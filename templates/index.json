@@ -89,7 +89,7 @@
             "after_label": "After",
             "title": "Thermal Image Analysis",
             "description": "Our advanced thermal imaging technology reveals heat loss patterns and structural issues invisible to the naked eye.",
-            "enable_auto_animate": true
+            "enable_auto_animate": false
           }
         },
         "comparison_hUJT3w": {
