@@ -9,116 +9,162 @@
  */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "sqe_hero_Qqba3L": {
+      "type": "sqe-hero",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "stat_JhjFhD": {
+          "type": "stat",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "stat_number": "15+",
+            "stat_text": "Years Experience"
           }
         },
-        "button": {
-          "type": "buttons",
+        "stat_3qcRMg": {
+          "type": "stat",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "stat_number": "500+",
+            "stat_text": "Projects Completed"
+          }
+        },
+        "stat_6TEmpz": {
+          "type": "stat",
+          "settings": {
+            "stat_number": "UK-Wide",
+            "stat_text": "Coverage"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "stat_JhjFhD",
+        "stat_3qcRMg",
+        "stat_6TEmpz"
       ],
+      "name": "SQE Hero",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "image_behavior": "none",
-        "desktop_content_position": "bottom-center",
-        "desktop_content_alignment": "center",
-        "show_text_box": false,
-        "color_scheme": "scheme-3",
-        "stack_images_on_mobile": false,
-        "mobile_content_alignment": "center",
-        "show_text_below": false
+        "heading": "Engineering Excellence in Solar PV Quality Assurance",
+        "heading_size": "56px",
+        "heading_color": "#ffffff",
+        "subheading": "Trusted by leading solar installers and integrators across the UK for independent quality inspection and technical consulting services.",
+        "subheading_size": "20px",
+        "subheading_color": "rgba(255, 255, 255, 0.9)",
+        "overlay_color": "#1F3A5F",
+        "overlay_opacity": 60,
+        "text_alignment": "center",
+        "section_height": "large",
+        "primary_button_text": "Request a Consultation",
+        "primary_button_link": "",
+        "secondary_button_text": "Learn More",
+        "secondary_button_link": "",
+        "show_stats": true
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 8,
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
-      }
-    },
-    "sqe_before_after_slider_G7cUqf": {
-      "type": "sqe-before-after-slider",
+    "sqe_service_explorer_W6i39i": {
+      "type": "sqe-service-explorer",
       "blocks": {
-        "comparison_RWWHGM": {
-          "type": "comparison",
+        "service_h9t7AC": {
+          "type": "service",
           "settings": {
-            "before_image": "shopify://shop_images/dach-ohne-solarzelle.png",
-            "after_image": "shopify://shop_images/solar.png",
-            "show_labels": true,
-            "before_label": "Before",
-            "after_label": "After",
-            "title": "Thermal Image Analysis",
-            "description": "Our advanced thermal imaging technology reveals heat loss patterns and structural issues invisible to the naked eye.",
-            "enable_auto_animate": false
+            "title": "service 2",
+            "description": "Besipeil Text",
+            "features": "Beispiel Text",
+            "image": "shopify://shop_images/dach-ohne-solarzelle.png",
+            "link_url": "",
+            "link_text": "Learn More"
           }
         },
-        "comparison_hUJT3w": {
-          "type": "comparison",
+        "service_VTfpyg": {
+          "type": "service",
           "settings": {
-            "show_labels": true,
-            "before_label": "Before",
-            "after_label": "After",
-            "title": "Structural Integrity Check",
-            "description": "High-resolution imaging identifies potential structural concerns before they become costly problems.",
-            "enable_auto_animate": false
+            "title": "Service 1",
+            "description": "Beispiel Text",
+            "features": "Beispiel Text",
+            "image": "shopify://shop_images/solar.png",
+            "link_url": "",
+            "link_text": "Learn More"
           }
         }
       },
       "block_order": [
-        "comparison_RWWHGM",
-        "comparison_hUJT3w"
+        "service_h9t7AC",
+        "service_VTfpyg"
       ],
-      "name": "SQE Before/After Slider",
+      "name": "Service Explorer",
       "settings": {
-        "show_header": true,
-        "heading": "Inspection Results",
-        "subheading": "Drag the slider to see the difference thermal imaging reveals"
+        "heading": "Our Services",
+        "subheading": "Explore what we offer",
+        "accent_color": "#F2B705"
+      }
+    },
+    "sqe_news_insights_enPaAW": {
+      "type": "sqe-news-insights",
+      "blocks": {
+        "article_f8TJw8": {
+          "type": "article",
+          "settings": {
+            "title": "Understanding Thermal Imaging in Solar Inspections",
+            "excerpt": "Thermal imaging technology has revolutionized the way solar panels are inspected, allowing technicians to identify issues invisible to the naked eye.",
+            "image": "shopify://shop_images/solar.png",
+            "category": "Technical Insights",
+            "date": "2024-03-15",
+            "read_time": 5,
+            "url": "#"
+          }
+        },
+        "article_fCL9Cd": {
+          "type": "article",
+          "settings": {
+            "title": "Solar Panel Defects: Early Detection Saves Thousands",
+            "excerpt": "Early detection of solar panel defects can prevent significant energy loss and costly repairs.",
+            "category": "Industry News",
+            "date": "2024-03-12",
+            "read_time": 4,
+            "url": "#"
+          }
+        },
+        "article_ndWzLV": {
+          "type": "article",
+          "settings": {
+            "title": "SQE Expands Services to Northern England",
+            "excerpt": "We're excited to announce the expansion of our inspection services to cover additional regions.",
+            "category": "Company Updates",
+            "date": "2024-03-10",
+            "read_time": 3,
+            "url": "#"
+          }
+        },
+        "article_e3i677": {
+          "type": "article",
+          "settings": {
+            "title": "The Future of Solar Energy Quality Assurance",
+            "excerpt": "As solar technology evolves, quality assurance standards continue to advance to meet new challenges.",
+            "category": "Industry News",
+            "date": "2024-03-08",
+            "read_time": 6,
+            "url": "#"
+          }
+        }
+      },
+      "block_order": [
+        "article_f8TJw8",
+        "article_fCL9Cd",
+        "article_ndWzLV",
+        "article_e3i677"
+      ],
+      "name": "SQE News & Insights",
+      "settings": {
+        "title": "News & Insights",
+        "subtitle": "Stay updated with the latest in solar inspection technology and industry trends",
+        "title_size": 36,
+        "max_width": 1300,
+        "padding": 20,
+        "margin_top": 40,
+        "margin_bottom": 40
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection",
-    "sqe_before_after_slider_G7cUqf"
+    "sqe_hero_Qqba3L",
+    "sqe_service_explorer_W6i39i",
+    "sqe_news_insights_enPaAW"
   ]
 }
