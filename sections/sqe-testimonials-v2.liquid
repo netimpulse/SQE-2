@@ -1,0 +1,957 @@
+{% comment %}
+  SQE Testimonials v2 - Modern animated testimonial carousel with word reveal animation
+  Features: Typewriter quote animation, circular nav dots, auto-rotate, video support
+{% endcomment %}
+
+<div class="sqe-testimonials-v2" data-testimonials-section>
+  <div class="sqe-testimonials-header">
+    <h2 class="sqe-testimonials-title">{{ section.settings.title }}</h2>
+    <p class="sqe-testimonials-subtitle">{{ section.settings.subtitle }}</p>
+  </div>
+
+  <div class="sqe-testimonials-container">
+    <div class="sqe-testimonials-background" data-bg-gradient></div>
+
+    <div class="sqe-testimonials-featured">
+      <div class="sqe-quotation-mark" data-quotation-mark>
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 20 Q 10 30, 10 50 Q 10 80, 35 80 Q 50 80, 50 65 Q 50 50, 35 45 Q 40 40, 45 40 Q 65 40, 65 60 Q 65 85, 40 95 Q 20 100, 10 85 M 70 20 Q 60 30, 60 50 Q 60 80, 85 80 Q 100 80, 100 65 Q 100 50, 85 45 Q 90 40, 95 40 Q 115 40, 115 60 Q 115 85, 90 95 Q 70 100, 60 85" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="sqe-quote-content">
+        <div class="sqe-quote-text-wrapper">
+          <p class="sqe-quote-text" data-quote-text></p>
+          <div class="sqe-quote-cursor" data-quote-cursor></div>
+        </div>
+
+        <div class="sqe-testimonial-author">
+          <div class="sqe-author-photo-wrapper">
+            <div class="sqe-author-photo" data-author-photo></div>
+            <div class="sqe-company-logo-area" data-company-logo></div>
+            {% if section.blocks.first.settings.video_url %}
+              <button class="sqe-video-play-btn" data-video-btn aria-label="Play video testimonial">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+            {% endif %}
+          </div>
+
+          <div class="sqe-author-info">
+            <h3 class="sqe-author-name" data-author-name></h3>
+            <p class="sqe-author-title" data-author-title></p>
+            <p class="sqe-author-company" data-author-company></p>
+          </div>
+        </div>
+
+        <div class="sqe-rating-wrapper">
+          <div class="sqe-stars" data-stars-container>
+            {% for i in (1..5) %}
+              <svg class="sqe-star" data-star="{{ i }}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            {% endfor %}
+          </div>
+          <span class="sqe-rating-text" data-rating-text></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sqe-testimonials-nav">
+    {% for block in section.blocks %}
+      <button
+        class="sqe-testimonials-nav-dot"
+        data-nav-dot="{{ forloop.index0 }}"
+        aria-label="Testimonial from {{ block.settings.client_name }}"
+      >
+        <img
+          src="{{ block.settings.photo | image_url: width: 100 }}"
+          alt="{{ block.settings.client_name }}"
+          loading="lazy"
+        >
+      </button>
+    {% endfor %}
+  </div>
+
+  {% if section.settings.auto_rotate %}
+    <div class="sqe-progress-indicator" data-progress-bar></div>
+  {% endif %}
+</div>
+
+{% comment %} Video Modal {% endcomment %}
+<div class="sqe-video-modal-overlay" data-video-overlay></div>
+<div class="sqe-video-modal" data-video-modal>
+  <button class="sqe-video-modal-close" data-video-close aria-label="Close video">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <iframe
+    class="sqe-video-iframe"
+    data-video-iframe
+    width="100%"
+    height="100%"
+    frameborder="0"
+    allowfullscreen
+  ></iframe>
+</div>
+
+<style>
+  .sqe-testimonials-v2 {
+    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_horizontal }}px {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.section_bg_color }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sqe-testimonials-header {
+    text-align: center;
+    margin-bottom: 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sqe-testimonials-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 16px;
+    line-height: 1.2;
+  }
+
+  .sqe-testimonials-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: #666;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .sqe-testimonials-container {
+    max-width: 1000px;
+    margin: 0 auto 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sqe-testimonials-background {
+    position: absolute;
+    inset: -50px;
+    background: linear-gradient(135deg, rgba(242, 183, 5, 0.05) 0%, rgba(31, 58, 95, 0.03) 100%);
+    border-radius: 30px;
+    z-index: -1;
+    transition: background 0.8s ease;
+  }
+
+  .sqe-testimonials-featured {
+    padding: 60px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    position: relative;
+  }
+
+  .sqe-quotation-mark {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    width: 80px;
+    height: 80px;
+    color: {{ section.settings.accent_color }};
+    opacity: 0.15;
+    animation: sqe-float 3s ease-in-out infinite;
+  }
+
+  @keyframes sqe-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .sqe-quotation-mark svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .sqe-quote-content {
+    padding-right: 100px;
+  }
+
+  .sqe-quote-text-wrapper {
+    margin-bottom: 50px;
+    min-height: 120px;
+    position: relative;
+  }
+
+  .sqe-quote-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-style: italic;
+    color: {{ section.settings.heading_color }};
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+  }
+
+  .sqe-quote-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1.2em;
+    background: {{ section.settings.primary_color }};
+    margin-left: 4px;
+    animation: sqe-blink 1s infinite;
+    vertical-align: text-bottom;
+  }
+
+  .sqe-quote-cursor.hidden {
+    display: none;
+  }
+
+  @keyframes sqe-blink {
+    0%, 49%, 100% { opacity: 1; }
+    50%, 99% { opacity: 0; }
+  }
+
+  .sqe-testimonial-author {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .sqe-author-photo-wrapper {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .sqe-author-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
+  }
+
+  .sqe-author-photo-wrapper:hover .sqe-author-photo {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  }
+
+  .sqe-company-logo-area {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid white;
+  }
+
+  .sqe-video-play-btn {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(31, 58, 95, 0.7);
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    opacity: 0;
+  }
+
+  .sqe-author-photo-wrapper:hover .sqe-video-play-btn {
+    opacity: 1;
+  }
+
+  .sqe-video-play-btn:hover {
+    background: rgba(31, 58, 95, 0.9);
+  }
+
+  .sqe-author-info {
+    flex: 1;
+    padding-top: 5px;
+  }
+
+  .sqe-author-name {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 4px;
+  }
+
+  .sqe-author-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: {{ section.settings.primary_color }};
+    margin: 0 0 2px;
+    font-weight: 600;
+  }
+
+  .sqe-author-company {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #999;
+    margin: 0;
+  }
+
+  .sqe-rating-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sqe-stars {
+    display: flex;
+    gap: 4px;
+  }
+
+  .sqe-star {
+    color: #ddd;
+    transition: all 0.3s ease;
+  }
+
+  .sqe-star.filled {
+    color: {{ section.settings.accent_color }};
+    filter: drop-shadow(0 2px 4px rgba(242, 183, 5, 0.3));
+  }
+
+  .sqe-rating-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #999;
+    font-weight: 500;
+  }
+
+  .sqe-testimonials-nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sqe-testimonials-nav-dot {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    border: 3px solid transparent;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    background: #f5f5f5;
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .sqe-testimonials-nav-dot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .sqe-testimonials-nav-dot:hover {
+    transform: scale(1.08);
+  }
+
+  .sqe-testimonials-nav-dot.active {
+    border-color: {{ section.settings.accent_color }};
+    box-shadow: 0 8px 24px rgba(242, 183, 5, 0.3);
+    transform: scale(1.1);
+  }
+
+  .sqe-progress-indicator {
+    height: 3px;
+    background: linear-gradient(90deg, {{ section.settings.accent_color }}, {{ section.settings.primary_color }});
+    width: 0%;
+    animation: sqe-testimonial-progress linear forwards;
+    border-radius: 2px;
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes sqe-testimonial-progress {
+    0% { width: 0%; }
+    90% { width: 100%; }
+    100% { width: 100%; }
+  }
+
+  .sqe-video-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    backdrop-filter: blur(0px);
+  }
+
+  .sqe-video-modal-overlay.active {
+    background: rgba(0, 0, 0, 0.85);
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(4px);
+  }
+
+  .sqe-video-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 90%;
+    max-width: 900px;
+    aspect-ratio: 16 / 9;
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sqe-video-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .sqe-video-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    z-index: 1002;
+    backdrop-filter: blur(4px);
+  }
+
+  .sqe-video-modal-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: rotate(90deg);
+  }
+
+  .sqe-video-iframe {
+    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .sqe-testimonials-v2 {
+      padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    }
+
+    .sqe-testimonials-title {
+      font-size: 32px;
+    }
+
+    .sqe-testimonials-subtitle {
+      font-size: 16px;
+    }
+
+    .sqe-testimonials-header {
+      margin-bottom: 50px;
+    }
+
+    .sqe-testimonials-featured {
+      padding: 40px;
+    }
+
+    .sqe-quotation-mark {
+      width: 60px;
+      height: 60px;
+      top: 20px;
+      right: 20px;
+      opacity: 0.1;
+    }
+
+    .sqe-quote-content {
+      padding-right: 0;
+    }
+
+    .sqe-quote-text {
+      font-size: 22px;
+    }
+
+    .sqe-quote-text-wrapper {
+      margin-bottom: 40px;
+      min-height: 100px;
+    }
+
+    .sqe-testimonial-author {
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .sqe-author-photo {
+      width: 80px;
+      height: 80px;
+    }
+
+    .sqe-company-logo-area {
+      width: 40px;
+      height: 40px;
+      bottom: -4px;
+      right: -4px;
+      padding: 4px;
+    }
+
+    .sqe-author-name {
+      font-size: 18px;
+    }
+
+    .sqe-testimonials-nav {
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .sqe-testimonials-nav-dot {
+      width: 60px;
+      height: 60px;
+    }
+
+    .sqe-video-modal {
+      width: 95%;
+      max-width: 600px;
+    }
+
+    .sqe-video-modal-close {
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const section = document.querySelector('[data-testimonials-section]');
+    const navDots = document.querySelectorAll('.sqe-testimonials-nav-dot');
+    const quoteText = document.querySelector('[data-quote-text]');
+    const quoteCursor = document.querySelector('[data-quote-cursor]');
+    const authorPhoto = document.querySelector('[data-author-photo]');
+    const companyLogo = document.querySelector('[data-company-logo]');
+    const authorName = document.querySelector('[data-author-name]');
+    const authorTitle = document.querySelector('[data-author-title]');
+    const authorCompany = document.querySelector('[data-author-company]');
+    const starsContainer = document.querySelector('[data-stars-container]');
+    const ratingText = document.querySelector('[data-rating-text]');
+    const bgGradient = document.querySelector('[data-bg-gradient]');
+    const progressBar = document.querySelector('[data-progress-bar]');
+    const videoOverlay = document.querySelector('[data-video-overlay]');
+    const videoModal = document.querySelector('[data-video-modal]');
+    const videoClose = document.querySelector('[data-video-close]');
+    const videoIframe = document.querySelector('[data-video-iframe]');
+    const videoBtns = document.querySelectorAll('[data-video-btn]');
+
+    const autoRotate = {{ section.settings.auto_rotate | json }};
+    const rotateInterval = {{ section.settings.rotate_interval }};
+    const typewriterSpeed = {{ section.settings.typewriter_speed }};
+
+    let currentIndex = 0;
+    let rotateTimer;
+    let isAnimating = false;
+
+    const testimonials = [];
+    {% for block in section.blocks %}
+      testimonials.push({
+        quote: "{{ block.settings.quote | escape }}",
+        clientName: "{{ block.settings.client_name | escape }}",
+        clientTitle: "{{ block.settings.client_title | escape }}",
+        company: "{{ block.settings.company | escape }}",
+        photo: "{{ block.settings.photo | image_url: width: 400 }}",
+        companyLogo: "{{ block.settings.company_logo | image_url: width: 200 }}",
+        rating: {{ block.settings.rating | default: 5 }},
+        videoUrl: "{{ block.settings.video_url | escape }}",
+        accentColor: "{{ block.settings.accent_color | default: section.settings.accent_color }}"
+      });
+    {% endfor %}
+
+    function typewriteText(text, element, speed, onComplete) {
+      let index = 0;
+      element.textContent = '';
+
+      function type() {
+        if (index < text.length) {
+          element.textContent += text[index];
+          index++;
+          setTimeout(type, speed);
+        } else {
+          quoteCursor.classList.add('hidden');
+          if (onComplete) onComplete();
+        }
+      }
+
+      quoteCursor.classList.remove('hidden');
+      type();
+    }
+
+    function updateStars(rating) {
+      const stars = document.querySelectorAll('.sqe-star');
+      stars.forEach((star, idx) => {
+        if (idx < rating) {
+          star.classList.add('filled');
+        } else {
+          star.classList.remove('filled');
+        }
+      });
+      ratingText.textContent = `${rating.0}/5 Stars`;
+    }
+
+    function displayTestimonial(index, animate = true) {
+      if (isAnimating && animate) return;
+      isAnimating = true;
+
+      const testimonial = testimonials[index];
+
+      navDots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === index);
+      });
+
+      authorPhoto.style.backgroundImage = `url('${testimonial.photo}')`;
+
+      if (testimonial.companyLogo) {
+        companyLogo.style.backgroundImage = `url('${testimonial.companyLogo}')`;
+      }
+
+      authorName.textContent = testimonial.clientName;
+      authorTitle.textContent = testimonial.clientTitle;
+      authorCompany.textContent = testimonial.company;
+
+      updateStars(testimonial.rating);
+
+      bgGradient.style.background = `linear-gradient(135deg, rgba(242, 183, 5, 0.08) 0%, rgba(${testimonial.accentColor === '#F2B705' ? '242, 183, 5' : '31, 58, 95'}, 0.05) 100%)`;
+
+      if (testimonial.videoUrl) {
+        videoBtns.forEach(btn => btn.style.display = 'flex');
+      } else {
+        videoBtns.forEach(btn => btn.style.display = 'none');
+      }
+
+      typewriteText(testimonial.quote, quoteText, typewriterSpeed, () => {
+        isAnimating = false;
+      });
+
+      resetAutoRotate();
+    }
+
+    function nextTestimonial() {
+      currentIndex = (currentIndex + 1) % testimonials.length;
+      displayTestimonial(currentIndex);
+    }
+
+    function resetAutoRotate() {
+      clearTimeout(rotateTimer);
+      if (progressBar) {
+        progressBar.style.animation = 'none';
+        void progressBar.offsetWidth;
+        progressBar.style.animation = `sqe-testimonial-progress ${rotateInterval / 1000}s linear forwards`;
+      }
+
+      if (autoRotate) {
+        rotateTimer = setTimeout(nextTestimonial, rotateInterval);
+      }
+    }
+
+    navDots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        currentIndex = idx;
+        displayTestimonial(idx);
+      });
+    });
+
+    section.addEventListener('mouseenter', () => {
+      if (autoRotate) {
+        clearTimeout(rotateTimer);
+        if (progressBar) {
+          progressBar.style.animation = 'none';
+        }
+      }
+    });
+
+    section.addEventListener('mouseleave', () => {
+      if (autoRotate) {
+        resetAutoRotate();
+      }
+    });
+
+    videoBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const testimonial = testimonials[currentIndex];
+        if (testimonial.videoUrl) {
+          videoIframe.src = testimonial.videoUrl;
+          videoModal.classList.add('active');
+          videoOverlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    videoClose.addEventListener('click', () => {
+      videoModal.classList.remove('active');
+      videoOverlay.classList.remove('active');
+      videoIframe.src = '';
+      document.body.style.overflow = '';
+    });
+
+    videoOverlay.addEventListener('click', () => {
+      videoModal.classList.remove('active');
+      videoOverlay.classList.remove('active');
+      videoIframe.src = '';
+      document.body.style.overflow = '';
+    });
+
+    videoModal.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+        videoClose.click();
+      }
+    });
+
+    displayTestimonial(0, false);
+    if (autoRotate) {
+      resetAutoRotate();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SQE Testimonials v2",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "What Our Clients Say"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Real stories from satisfied solar customers"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Stars, Nav)",
+      "default": "#F2B705"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Horizontal",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Enable Auto-Rotation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotate_interval",
+      "min": 4000,
+      "max": 20000,
+      "step": 1000,
+      "unit": "ms",
+      "label": "Auto-Rotation Interval",
+      "default": 8000
+    },
+    {
+      "type": "range",
+      "id": "typewriter_speed",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "ms",
+      "label": "Typewriter Speed",
+      "default": 30
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Testimonial Quote",
+          "default": "<p>SQE Solar Quality Experts transformed our business with their professional solar solutions. Highly recommended!</p>"
+        },
+        {
+          "type": "text",
+          "id": "client_name",
+          "label": "Client Name",
+          "default": "John Anderson"
+        },
+        {
+          "type": "text",
+          "id": "client_title",
+          "label": "Client Title",
+          "default": "Business Owner"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Company Name",
+          "default": "Anderson Industries"
+        },
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Client Photo"
+        },
+        {
+          "type": "image_picker",
+          "id": "company_logo",
+          "label": "Company Logo (Badge)"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating",
+          "default": 5
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video Testimonial URL (YouTube/Vimeo embed)"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Accent Color (Override)",
+          "default": "#F2B705"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SQE Testimonials v2",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>Working with SQE Solar Quality Experts was a game-changer for our company. Their technical expertise and attention to detail are unmatched. We've seen measurable improvements in our solar installations and customer satisfaction has never been higher.</p>",
+            "client_name": "Sarah Mitchell",
+            "client_title": "Operations Manager",
+            "company": "Green Energy Solutions",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>The quality control processes that SQE implemented have revolutionized how we approach solar projects. Their team is knowledgeable, professional, and truly committed to excellence. I wouldn't trust anyone else with our quality assurance needs.</p>",
+            "client_name": "Michael Johnson",
+            "client_title": "Project Director",
+            "company": "Sustainable Energy Corp",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>From initial consultation to final installation, SQE Solar Quality Experts provided exceptional service. Their team's expertise in solar technology and commitment to quality is evident in every project they undertake. Highly recommended for any solar business.</p>",
+            "client_name": "Emily Chen",
+            "client_title": "CEO",
+            "company": "Future Power Systems",
+            "rating": 5
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

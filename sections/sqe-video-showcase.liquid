@@ -1,0 +1,718 @@
+{% comment %}
+  SQE Premium Video Showcase Section
+  Features: Interactive video player, tabbed content, playlist, lazy loading
+{% endcomment %}
+
+<div class="sqe-video-container">
+  {% if section.blocks.size > 0 %}
+    <div class="sqe-video-wrapper">
+      <!-- Main Video Display -->
+      <div class="sqe-video-main">
+        <div class="sqe-video-player" data-video-index="0">
+          {% assign first_block = section.blocks[0] %}
+
+          <!-- Poster Image -->
+          {% if first_block.settings.poster_image %}
+            <img
+              src="{{ first_block.settings.poster_image | image_url: width: 1200 }}"
+              alt="{{ first_block.settings.title }}"
+              class="sqe-video-poster"
+              loading="lazy"
+            >
+          {% else %}
+            <div class="sqe-video-poster-placeholder"></div>
+          {% endif %}
+
+          <!-- Play Button Overlay -->
+          <button class="sqe-play-button" aria-label="Play video">
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+              <circle cx="30" cy="30" r="25" stroke="white" stroke-width="2"/>
+              <polygon points="24,18 24,42 42,30" fill="white"/>
+            </svg>
+          </button>
+
+          <!-- Pulsing Circle -->
+          <div class="sqe-play-pulse"></div>
+
+          <!-- YouTube/Vimeo Embed (Hidden by default) -->
+          <div class="sqe-video-iframe-wrapper" style="display: none;">
+            {% if first_block.settings.video_url %}
+              <iframe
+                class="sqe-video-iframe"
+                src="{{ first_block.settings.video_url }}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Video Title -->
+        <div class="sqe-video-info">
+          <h2 class="sqe-video-title">{{ first_block.settings.title }}</h2>
+          <p class="sqe-video-description">{{ first_block.settings.description }}</p>
+        </div>
+      </div>
+
+      <!-- Tabbed Content Area -->
+      {% if first_block.settings.tab_overview or first_block.settings.tab_details or first_block.settings.tab_downloads %}
+        <div class="sqe-video-tabs-wrapper">
+          <div class="sqe-video-tabs">
+            {% if first_block.settings.tab_overview %}
+              <button class="sqe-tab-btn active" data-tab="overview">
+                <span>Overview</span>
+              </button>
+            {% endif %}
+            {% if first_block.settings.tab_details %}
+              <button class="sqe-tab-btn" data-tab="details">
+                <span>Details</span>
+              </button>
+            {% endif %}
+            {% if first_block.settings.tab_downloads %}
+              <button class="sqe-tab-btn" data-tab="downloads">
+                <span>Downloads</span>
+              </button>
+            {% endif %}
+          </div>
+
+          <div class="sqe-tab-content">
+            {% if first_block.settings.tab_overview %}
+              <div class="sqe-tab-pane active" id="overview">
+                {{ first_block.settings.tab_overview }}
+              </div>
+            {% endif %}
+            {% if first_block.settings.tab_details %}
+              <div class="sqe-tab-pane" id="details">
+                {{ first_block.settings.tab_details }}
+              </div>
+            {% endif %}
+            {% if first_block.settings.tab_downloads %}
+              <div class="sqe-tab-pane" id="downloads">
+                {{ first_block.settings.tab_downloads }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Playlist Section (if multiple videos) -->
+    {% if section.blocks.size > 1 %}
+      <div class="sqe-video-playlist-wrapper">
+        <h3 class="sqe-playlist-title">Video Playlist</h3>
+        <div class="sqe-video-playlist">
+          {% for block in section.blocks %}
+            <div
+              class="sqe-playlist-item {% if forloop.first %}active{% endif %}"
+              data-video-index="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              {% if block.settings.poster_image %}
+                <img
+                  src="{{ block.settings.poster_image | image_url: width: 300 }}"
+                  alt="{{ block.settings.title }}"
+                  class="sqe-playlist-thumbnail"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="sqe-playlist-thumbnail-placeholder"></div>
+              {% endif %}
+
+              <div class="sqe-playlist-play-icon">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="white">
+                  <polygon points="8,4 8,28 24,16"/>
+                </svg>
+              </div>
+
+              <div class="sqe-playlist-content">
+                <h4 class="sqe-playlist-item-title">{{ block.settings.title }}</h4>
+                <p class="sqe-playlist-item-desc">{{ block.settings.description | strip_html | truncatewords: 10 }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  {% else %}
+    <div class="sqe-video-placeholder">
+      <p>Add videos to display showcase</p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .sqe-video-container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: {{ section.settings.margin_top }}px auto {{ section.settings.margin_bottom }}px;
+    padding: {{ section.settings.padding }}px;
+  }
+
+  .sqe-video-wrapper {
+    display: grid;
+    gap: 40px;
+  }
+
+  .sqe-video-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sqe-video-player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .sqe-video-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .sqe-video-poster-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1F3A5F 0%, #2a5080 100%);
+  }
+
+  .sqe-video-iframe-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+  }
+
+  .sqe-video-iframe {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Play Button */
+  .sqe-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .sqe-play-button:hover {
+    background: white;
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+  }
+
+  .sqe-play-button svg {
+    transition: transform 0.3s ease;
+    margin-left: 4px;
+  }
+
+  .sqe-play-button:hover svg {
+    transform: scale(1.15);
+  }
+
+  /* Pulsing Circle */
+  .sqe-play-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 3px solid rgba(242, 183, 5, 0.6);
+    border-radius: 50%;
+    animation: sqe-pulse 2s ease-out infinite;
+  }
+
+  @keyframes sqe-pulse {
+    0% {
+      width: 100px;
+      height: 100px;
+      opacity: 1;
+    }
+    100% {
+      width: 160px;
+      height: 160px;
+      opacity: 0;
+    }
+  }
+
+  .sqe-video-player.playing .sqe-play-button,
+  .sqe-video-player.playing .sqe-play-pulse,
+  .sqe-video-player.playing .sqe-video-poster {
+    display: none;
+  }
+
+  /* Video Info */
+  .sqe-video-info {
+    padding: 20px 0;
+  }
+
+  .sqe-video-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0 0 12px 0;
+  }
+
+  .sqe-video-description {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Tabs */
+  .sqe-video-tabs-wrapper {
+    border-top: 2px solid #F2F4F7;
+    padding-top: 30px;
+  }
+
+  .sqe-video-tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 2px solid #F2F4F7;
+    margin-bottom: 24px;
+  }
+
+  .sqe-tab-btn {
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .sqe-tab-btn:hover {
+    color: #1F3A5F;
+  }
+
+  .sqe-tab-btn.active {
+    color: #1F3A5F;
+    border-bottom-color: #F2B705;
+  }
+
+  .sqe-tab-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sqe-tab-pane {
+    display: none;
+    animation: sqe-fade-in 0.3s ease;
+  }
+
+  .sqe-tab-pane.active {
+    display: block;
+  }
+
+  @keyframes sqe-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .sqe-tab-pane p {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.8;
+    margin: 0 0 12px 0;
+  }
+
+  .sqe-tab-pane p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Playlist */
+  .sqe-video-playlist-wrapper {
+    padding-top: 40px;
+    border-top: 2px solid #F2F4F7;
+  }
+
+  .sqe-playlist-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0 0 20px 0;
+  }
+
+  .sqe-video-playlist {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .sqe-playlist-item {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    group;
+    transition: all 0.3s ease;
+  }
+
+  .sqe-playlist-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(31, 58, 95, 0.15);
+  }
+
+  .sqe-playlist-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .sqe-playlist-thumbnail-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1F3A5F 0%, #2a5080 100%);
+  }
+
+  .sqe-playlist-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(31, 58, 95, 0.85);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 3;
+  }
+
+  .sqe-playlist-item:hover .sqe-playlist-play-icon {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .sqe-playlist-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.9) 100%);
+  }
+
+  .sqe-playlist-item.active .sqe-playlist-content {
+    background: linear-gradient(180deg, transparent 0%, #1F3A5F 100%);
+  }
+
+  .sqe-playlist-item-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 4px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sqe-playlist-item-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    display: none;
+  }
+
+  .sqe-playlist-item.active {
+    border: 3px solid #F2B705;
+  }
+
+  .sqe-playlist-item.active .sqe-playlist-item-title {
+    color: #F2B705;
+    font-weight: 700;
+  }
+
+  .sqe-video-placeholder {
+    text-align: center;
+    padding: 80px 20px;
+    color: #999;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sqe-video-container {
+      padding: 16px;
+    }
+
+    .sqe-video-wrapper {
+      gap: 24px;
+    }
+
+    .sqe-video-title {
+      font-size: 22px;
+    }
+
+    .sqe-video-tabs {
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .sqe-tab-btn {
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+
+    .sqe-video-playlist {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .sqe-play-button {
+      width: 60px;
+      height: 60px;
+    }
+
+    .sqe-play-pulse {
+      width: 80px;
+      height: 80px;
+    }
+
+    @keyframes sqe-pulse {
+      0% {
+        width: 80px;
+        height: 80px;
+        opacity: 1;
+      }
+      100% {
+        width: 130px;
+        height: 130px;
+        opacity: 0;
+      }
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const container = document.querySelector('.sqe-video-container');
+  if (!container) return;
+
+  const videoPlayer = container.querySelector('.sqe-video-player');
+  const playButton = container.querySelector('.sqe-play-button');
+  const playlistItems = container.querySelectorAll('.sqe-playlist-item');
+  const tabButtons = container.querySelectorAll('.sqe-tab-btn');
+
+  // Play button click
+  playButton?.addEventListener('click', (e) => {
+    e.preventDefault();
+    playVideo(0);
+  });
+
+  function playVideo(index) {
+    const videoPlayer = container.querySelector('.sqe-video-player');
+    const iframeWrapper = videoPlayer.querySelector('.sqe-video-iframe-wrapper');
+
+    iframeWrapper.style.display = 'block';
+    videoPlayer.classList.add('playing');
+  }
+
+  // Playlist navigation
+  playlistItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      playlistItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+
+      // Update main video
+      const videoIndex = item.getAttribute('data-video-index');
+      const title = item.querySelector('.sqe-playlist-item-title').textContent;
+      const desc = item.querySelector('.sqe-playlist-item-desc').textContent;
+      const poster = item.querySelector('.sqe-playlist-thumbnail');
+
+      const mainTitle = container.querySelector('.sqe-video-title');
+      const mainDesc = container.querySelector('.sqe-video-description');
+      const mainPoster = container.querySelector('.sqe-video-poster');
+      const videoPlayer = container.querySelector('.sqe-video-player');
+      const iframeWrapper = videoPlayer.querySelector('.sqe-video-iframe-wrapper');
+
+      mainTitle.textContent = title;
+      mainDesc.textContent = desc;
+      if (poster && poster.src) {
+        mainPoster.src = poster.src;
+      }
+
+      // Reset video player
+      videoPlayer.classList.remove('playing');
+      iframeWrapper.style.display = 'none';
+    });
+  });
+
+  // Tab switching
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabName = btn.getAttribute('data-tab');
+
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      container.querySelectorAll('.sqe-tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+      });
+
+      const pane = container.querySelector(`#${tabName}`);
+      if (pane) {
+        pane.classList.add('active');
+      }
+    });
+  });
+
+  // Keyboard support
+  container.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target === playButton) {
+      playButton.click();
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SQE Video Showcase",
+  "settings": [
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width (px)",
+      "min": 800,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding (px)",
+      "min": 0,
+      "max": 60,
+      "step": 10,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top Margin (px)",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom Margin (px)",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Video Title",
+          "default": "Solar Inspection Process"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Video Description",
+          "default": "Learn how our advanced inspection process identifies issues and ensures peak performance"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL (YouTube/Vimeo embed URL)",
+          "placeholder": "https://www.youtube.com/embed/..."
+        },
+        {
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "Poster Image"
+        },
+        {
+          "type": "richtext",
+          "id": "tab_overview",
+          "label": "Overview Tab Content",
+          "default": "<p>Overview content goes here</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "tab_details",
+          "label": "Details Tab Content"
+        },
+        {
+          "type": "richtext",
+          "id": "tab_downloads",
+          "label": "Downloads Tab Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SQE Video Showcase",
+      "blocks": [
+        {
+          "type": "video",
+          "settings": {
+            "title": "Advanced Solar Inspection Technology",
+            "description": "Discover how SQE uses cutting-edge thermal imaging and electrical testing to ensure your solar system performs optimally",
+            "tab_overview": "<p>Our inspection process uses state-of-the-art thermal imaging technology to identify performance issues before they impact your energy production.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

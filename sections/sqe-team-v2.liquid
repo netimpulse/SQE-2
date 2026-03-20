@@ -1,0 +1,1014 @@
+{% comment %}
+  SQE Team v2 - Modern horizontal scrollable team section with expanded modal
+  Features: Circular cards with hover expansion, smooth animations, mobile swipe
+{% endcomment %}
+
+<div class="sqe-team-v2">
+  <div class="sqe-team-header">
+    <h2 class="sqe-team-title">{{ section.settings.title }}</h2>
+    <p class="sqe-team-subtitle">{{ section.settings.subtitle }}</p>
+  </div>
+
+  <div class="sqe-team-scroll-container">
+    <div class="sqe-team-scroll-track" data-scroll-track>
+      {% for block in section.blocks %}
+        <div class="sqe-team-card" data-team-id="{{ forloop.index }}" data-index="{{ forloop.index0 }}">
+          <div class="sqe-team-card-inner">
+            <div class="sqe-team-photo-wrapper">
+              {% if block.settings.photo %}
+                <img
+                  src="{{ block.settings.photo | image_url: width: 300 }}"
+                  alt="{{ block.settings.name }}"
+                  class="sqe-team-photo"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="sqe-team-photo-placeholder">
+                  <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+                  </svg>
+                </div>
+              {% endif %}
+            </div>
+            <div class="sqe-team-card-info">
+              <h3 class="sqe-team-name">{{ block.settings.name }}</h3>
+              <p class="sqe-team-title">{{ block.settings.title }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="sqe-team-scroll-indicators">
+    {% for block in section.blocks %}
+      <button class="sqe-scroll-dot" data-dot="{{ forloop.index0 }}" aria-label="Go to {{ block.settings.name }}"></button>
+    {% endfor %}
+  </div>
+
+  {% if section.settings.auto_scroll %}
+    <div class="sqe-scroll-progress"></div>
+  {% endif %}
+</div>
+
+{% comment %} Modal Overlay {% endcomment %}
+<div class="sqe-team-modal-overlay" data-modal-overlay></div>
+
+{% comment %} Team Member Detail Modal {% endcomment %}
+<div class="sqe-team-modal" data-team-modal>
+  <button class="sqe-modal-close" data-modal-close aria-label="Close modal">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <div class="sqe-modal-content">
+    <div class="sqe-modal-photo-side">
+      <img src="" alt="" class="sqe-modal-photo" data-modal-photo>
+    </div>
+
+    <div class="sqe-modal-info-side">
+      <h2 class="sqe-modal-name" data-modal-name></h2>
+      <p class="sqe-modal-title" data-modal-title></p>
+
+      <div class="sqe-modal-stats">
+        <div class="sqe-modal-stat">
+          <div class="sqe-stat-number" data-stat-counter>0</div>
+          <p class="sqe-stat-label">Years Experience</p>
+        </div>
+      </div>
+
+      <p class="sqe-modal-bio" data-modal-bio></p>
+
+      <div class="sqe-modal-expertise">
+        <p class="sqe-expertise-label">Expertise</p>
+        <div class="sqe-expertise-tags" data-modal-expertise></div>
+      </div>
+
+      <div class="sqe-modal-contact">
+        {% if block.settings.linkedin_url %}
+          <a href="" class="sqe-contact-btn sqe-linkedin-btn" data-modal-linkedin aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.39v-1.2h-2.5v8.5h2.5v-4.34c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.34h2.5M6.5 8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m1.25 12.25v-5h-2.5v5h2.5z"/>
+            </svg>
+            LinkedIn
+          </a>
+        {% endif %}
+        {% if block.settings.email %}
+          <a href="" class="sqe-contact-btn sqe-email-btn" data-modal-email aria-label="Email">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            Email
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sqe-team-v2 {
+    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_horizontal }}px {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.background_color }};
+    position: relative;
+  }
+
+  .sqe-team-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .sqe-team-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 16px;
+    line-height: 1.2;
+  }
+
+  .sqe-team-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: #666;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .sqe-team-scroll-container {
+    overflow: hidden;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .sqe-team-scroll-track {
+    display: flex;
+    gap: 30px;
+    padding: 20px 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding: 0 {{ section.settings.padding_horizontal }}px;
+  }
+
+  .sqe-team-scroll-track::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .sqe-team-scroll-track::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+  }
+
+  .sqe-team-scroll-track::-webkit-scrollbar-thumb {
+    background: {{ section.settings.primary_color }};
+    border-radius: 10px;
+  }
+
+  .sqe-team-scroll-track::-webkit-scrollbar-thumb:hover {
+    background: {{ section.settings.primary_color }};
+    opacity: 0.8;
+  }
+
+  .sqe-team-card {
+    flex: 0 0 220px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .sqe-team-card:hover {
+    transform: translateY(-8px);
+  }
+
+  .sqe-team-card-inner {
+    text-align: center;
+  }
+
+  .sqe-team-photo-wrapper {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 6px solid {{ section.settings.accent_color }};
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .sqe-team-card:hover .sqe-team-photo-wrapper {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+  }
+
+  .sqe-team-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .sqe-team-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+  }
+
+  .sqe-team-card-info {
+    padding: 0 10px;
+  }
+
+  .sqe-team-name {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 8px;
+    line-height: 1.3;
+  }
+
+  .sqe-team-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #999;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .sqe-team-scroll-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+
+  .sqe-scroll-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid {{ section.settings.primary_color }};
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .sqe-scroll-dot.active {
+    background: {{ section.settings.primary_color }};
+    transform: scale(1.2);
+  }
+
+  .sqe-scroll-progress {
+    height: 3px;
+    background: linear-gradient(90deg, {{ section.settings.primary_color }}, {{ section.settings.accent_color }});
+    width: 0%;
+    animation: sqe-progress-bar linear forwards;
+  }
+
+  @keyframes sqe-progress-bar {
+    0% { width: 0%; }
+    90% { width: 100%; }
+    100% { width: 100%; }
+  }
+
+  .sqe-team-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 998;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    backdrop-filter: blur(0px);
+  }
+
+  .sqe-team-modal-overlay.active {
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(4px);
+  }
+
+  .sqe-team-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: white;
+    border-radius: 20px;
+    padding: 60px;
+    max-width: 1000px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.2);
+  }
+
+  .sqe-team-modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .sqe-modal-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: #f5f5f5;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: {{ section.settings.heading_color }};
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+
+  .sqe-modal-close:hover {
+    background: {{ section.settings.primary_color }};
+    color: white;
+    transform: rotate(90deg);
+  }
+
+  .sqe-modal-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .sqe-modal-photo-side {
+    perspective: 1000px;
+  }
+
+  .sqe-modal-photo {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: sqe-photo-fade-in 0.6s ease 0.2s both;
+  }
+
+  @keyframes sqe-photo-fade-in {
+    from {
+      opacity: 0;
+      transform: translateX(-30px) rotateY(10deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) rotateY(0deg);
+    }
+  }
+
+  .sqe-modal-info-side {
+    animation: sqe-info-fade-in 0.6s ease 0.2s both;
+  }
+
+  @keyframes sqe-info-fade-in {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .sqe-modal-name {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 8px;
+    line-height: 1.2;
+  }
+
+  .sqe-modal-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: {{ section.settings.accent_color }};
+    margin: 0 0 30px;
+    font-weight: 600;
+  }
+
+  .sqe-modal-stats {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 40px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+
+  .sqe-modal-stat {
+    text-align: left;
+  }
+
+  .sqe-stat-number {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: {{ section.settings.primary_color }};
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .sqe-stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #999;
+    margin: 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .sqe-modal-bio {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.7;
+    margin: 0 0 30px;
+  }
+
+  .sqe-modal-expertise {
+    margin-bottom: 30px;
+  }
+
+  .sqe-expertise-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .sqe-expertise-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sqe-expertise-tag {
+    display: inline-block;
+    background: {{ section.settings.accent_color }};
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    animation: sqe-tag-pop 0.3s ease;
+  }
+
+  @keyframes sqe-tag-pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .sqe-modal-contact {
+    display: flex;
+    gap: 16px;
+    margin-top: 30px;
+  }
+
+  .sqe-contact-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 10px;
+    border: 2px solid;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: white;
+  }
+
+  .sqe-linkedin-btn {
+    border-color: #0077b5;
+    color: #0077b5;
+  }
+
+  .sqe-linkedin-btn:hover {
+    background: #0077b5;
+    color: white;
+  }
+
+  .sqe-email-btn {
+    border-color: {{ section.settings.primary_color }};
+    color: {{ section.settings.primary_color }};
+  }
+
+  .sqe-email-btn:hover {
+    background: {{ section.settings.primary_color }};
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .sqe-team-v2 {
+      padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    }
+
+    .sqe-team-title {
+      font-size: 32px;
+    }
+
+    .sqe-team-subtitle {
+      font-size: 16px;
+    }
+
+    .sqe-team-header {
+      margin-bottom: 40px;
+    }
+
+    .sqe-team-scroll-track {
+      gap: 20px;
+      padding: 15px 0;
+    }
+
+    .sqe-team-card {
+      flex: 0 0 180px;
+    }
+
+    .sqe-team-photo-wrapper {
+      width: 180px;
+      height: 180px;
+      margin-bottom: 15px;
+    }
+
+    .sqe-team-name {
+      font-size: 18px;
+    }
+
+    .sqe-team-title {
+      font-size: 13px;
+    }
+
+    .sqe-team-modal {
+      padding: 40px 25px;
+      width: 95%;
+      max-height: 95vh;
+    }
+
+    .sqe-modal-close {
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+    }
+
+    .sqe-modal-content {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .sqe-modal-name {
+      font-size: 28px;
+    }
+
+    .sqe-modal-title {
+      font-size: 16px;
+    }
+
+    .sqe-modal-stats {
+      gap: 20px;
+    }
+
+    .sqe-stat-number {
+      font-size: 28px;
+    }
+
+    .sqe-modal-bio {
+      font-size: 15px;
+    }
+
+    .sqe-modal-contact {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const scrollTrack = document.querySelector('[data-scroll-track]');
+    const modalOverlay = document.querySelector('[data-modal-overlay]');
+    const modal = document.querySelector('[data-team-modal]');
+    const modalClose = document.querySelector('[data-modal-close]');
+    const cards = document.querySelectorAll('.sqe-team-card');
+    const dots = document.querySelectorAll('.sqe-scroll-dot');
+    const progressBar = document.querySelector('.sqe-scroll-progress');
+    const autoScroll = {{ section.settings.auto_scroll | json }};
+    const autoScrollInterval = {{ section.settings.auto_scroll_interval }};
+
+    let currentIndex = 0;
+    let scrollTimer;
+    let autoScrollTimer;
+    const teamData = {};
+
+    {% for block in section.blocks %}
+      teamData[{{ forloop.index0 }}] = {
+        photo: "{{ block.settings.photo | image_url: width: 600 }}",
+        name: "{{ block.settings.name | escape }}",
+        title: "{{ block.settings.title | escape }}",
+        bio: "{{ block.settings.bio | escape }}",
+        expertise: "{{ block.settings.expertise_tags | escape }}".split(',').map(t => t.trim()),
+        linkedIn: "{{ block.settings.linkedin_url }}",
+        email: "{{ block.settings.email }}",
+        yearsExp: {{ block.settings.years_experience | default: 0 }}
+      };
+    {% endfor %}
+
+    function updateDots() {
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentIndex);
+      });
+    }
+
+    function openModal(index) {
+      const data = teamData[index];
+      document.querySelector('[data-modal-photo]').src = data.photo;
+      document.querySelector('[data-modal-photo]').alt = data.name;
+      document.querySelector('[data-modal-name]').textContent = data.name;
+      document.querySelector('[data-modal-title]').textContent = data.title;
+      document.querySelector('[data-modal-bio]').textContent = data.bio;
+
+      const expertiseContainer = document.querySelector('[data-modal-expertise]');
+      expertiseContainer.innerHTML = data.expertise
+        .filter(t => t)
+        .map(t => `<span class="sqe-expertise-tag">${t}</span>`)
+        .join('');
+
+      const linkedInLink = document.querySelector('[data-modal-linkedin]');
+      const emailLink = document.querySelector('[data-modal-email]');
+
+      if (data.linkedIn) {
+        linkedInLink.href = data.linkedIn;
+        linkedInLink.style.display = 'flex';
+      } else {
+        linkedInLink.style.display = 'none';
+      }
+
+      if (data.email) {
+        emailLink.href = `mailto:${data.email}`;
+        emailLink.style.display = 'flex';
+      } else {
+        emailLink.style.display = 'none';
+      }
+
+      animateCounter(data.yearsExp);
+
+      modal.classList.add('active');
+      modalOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function animateCounter(target) {
+      const element = document.querySelector('[data-stat-counter]');
+      const duration = 1000;
+      const start = Date.now();
+
+      function update() {
+        const elapsed = Date.now() - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(progress * target);
+        element.textContent = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      update();
+    }
+
+    function scrollToCard(index) {
+      if (index < 0 || index >= cards.length) return;
+      currentIndex = index;
+      updateDots();
+
+      const card = cards[index];
+      const container = scrollTrack;
+      const cardLeft = card.offsetLeft;
+      const cardWidth = card.offsetWidth;
+      const containerWidth = container.clientWidth;
+      const scrollLeft = container.scrollLeft;
+
+      let targetScroll;
+      if (cardLeft < scrollLeft) {
+        targetScroll = cardLeft - 30;
+      } else if (cardLeft + cardWidth > scrollLeft + containerWidth) {
+        targetScroll = cardLeft - containerWidth + cardWidth + 30;
+      } else {
+        return;
+      }
+
+      container.scrollTo({
+        left: targetScroll,
+        behavior: 'smooth'
+      });
+    }
+
+    function resetAutoScroll() {
+      clearTimeout(autoScrollTimer);
+      if (progressBar) {
+        progressBar.style.animation = 'none';
+        void progressBar.offsetWidth;
+        progressBar.style.animation = `sqe-progress-bar ${autoScrollInterval / 1000}s linear forwards`;
+      }
+
+      autoScrollTimer = setTimeout(() => {
+        currentIndex = (currentIndex + 1) % cards.length;
+        scrollToCard(currentIndex);
+        resetAutoScroll();
+      }, autoScrollInterval);
+    }
+
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
+        openModal(idx);
+      });
+    });
+
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        scrollToCard(idx);
+        resetAutoScroll();
+      });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+
+    scrollTrack.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        let closestIndex = 0;
+        let closestDistance = Infinity;
+
+        cards.forEach((card, idx) => {
+          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+          const containerCenter = scrollTrack.scrollLeft + scrollTrack.clientWidth / 2;
+          const distance = Math.abs(cardCenter - containerCenter);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = idx;
+          }
+        });
+
+        currentIndex = closestIndex;
+        updateDots();
+      }, 150);
+    });
+
+    scrollTrack.addEventListener('mouseenter', () => {
+      if (autoScroll) {
+        clearTimeout(autoScrollTimer);
+        if (progressBar) {
+          progressBar.style.animation = 'none';
+        }
+      }
+    });
+
+    scrollTrack.addEventListener('mouseleave', () => {
+      if (autoScroll) {
+        resetAutoScroll();
+      }
+    });
+
+    if (autoScroll) {
+      resetAutoScroll();
+    }
+
+    updateDots();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SQE Team v2",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Meet Our Expert Team"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Industry-leading professionals dedicated to your solar success"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Ring & Tags)",
+      "default": "#F2B705"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding Horizontal",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_scroll",
+      "label": "Enable Auto-Scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "auto_scroll_interval",
+      "min": 3000,
+      "max": 15000,
+      "step": 1000,
+      "unit": "ms",
+      "label": "Auto-Scroll Interval",
+      "default": 6000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "team_member",
+      "name": "Team Member",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Team Member Photo"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "John Smith"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Job Title",
+          "default": "Senior Engineer"
+        },
+        {
+          "type": "richtext",
+          "id": "bio",
+          "label": "Biography",
+          "default": "<p>Experienced professional with a passion for solar innovation and customer success.</p>"
+        },
+        {
+          "type": "text",
+          "id": "expertise_tags",
+          "label": "Expertise (comma-separated)",
+          "default": "Solar Design, Project Management, Quality Assurance"
+        },
+        {
+          "type": "range",
+          "id": "years_experience",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "label": "Years of Experience",
+          "default": 15
+        },
+        {
+          "type": "url",
+          "id": "linkedin_url",
+          "label": "LinkedIn URL"
+        },
+        {
+          "type": "email",
+          "id": "email",
+          "label": "Email Address"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SQE Team v2",
+      "blocks": [
+        {
+          "type": "team_member",
+          "settings": {
+            "name": "Sarah Johnson",
+            "title": "Chief Technical Officer",
+            "expertise_tags": "Solar Design, Systems Architecture, Quality Control",
+            "years_experience": 18
+          }
+        },
+        {
+          "type": "team_member",
+          "settings": {
+            "name": "Michael Chen",
+            "title": "Project Manager",
+            "expertise_tags": "Project Management, Client Relations, Installation",
+            "years_experience": 12
+          }
+        },
+        {
+          "type": "team_member",
+          "settings": {
+            "name": "Emma Williams",
+            "title": "Quality Assurance Lead",
+            "expertise_tags": "Quality Testing, Compliance, Documentation",
+            "years_experience": 10
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

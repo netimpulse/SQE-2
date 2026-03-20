@@ -1,0 +1,894 @@
+{% comment %}
+  SQE News & Insights Section
+  Features: Featured article, article cards, category filtering, read time, smooth animations
+{% endcomment %}
+
+<div class="sqe-news-container">
+  <div class="sqe-news-header">
+    <h2 class="sqe-news-title">{{ section.settings.title }}</h2>
+    {% if section.settings.subtitle %}
+      <p class="sqe-news-subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+  </div>
+
+  {% if section.blocks.size > 0 %}
+    <div class="sqe-news-grid">
+      <!-- Featured Article (first block) -->
+      <div class="sqe-featured-article">
+        {% assign featured = section.blocks[0] %}
+
+        <div class="sqe-featured-image-wrapper">
+          {% if featured.settings.image %}
+            <img
+              src="{{ featured.settings.image | image_url: width: 800 }}"
+              alt="{{ featured.settings.title }}"
+              class="sqe-featured-image"
+              loading="lazy"
+            >
+          {% else %}
+            <div class="sqe-featured-image-placeholder"></div>
+          {% endif %}
+          <div class="sqe-featured-overlay"></div>
+        </div>
+
+        <div class="sqe-featured-content">
+          <div class="sqe-featured-meta">
+            <span class="sqe-category-tag sqe-category-{{ featured.settings.category | downcase | replace: ' ', '-' }}">
+              {{ featured.settings.category }}
+            </span>
+            <time class="sqe-article-date">{{ featured.settings.date | date: "%b %d, %Y" }}</time>
+          </div>
+
+          <h3 class="sqe-featured-title">{{ featured.settings.title }}</h3>
+
+          <p class="sqe-featured-excerpt">{{ featured.settings.excerpt }}</p>
+
+          <div class="sqe-featured-footer">
+            <span class="sqe-read-time">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1"/>
+                <path d="M8 3v5l3 2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              </svg>
+              {{ featured.settings.read_time }} min read
+            </span>
+
+            <a href="{{ featured.settings.url }}" class="sqe-featured-link">
+              Read Full Article
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Articles Grid -->
+      {% if section.blocks.size > 1 %}
+        <div class="sqe-secondary-articles">
+          {% for block in section.blocks offset: 1 limit: 3 %}
+            <article
+              class="sqe-article-card sqe-fade-in"
+              style="animation-delay: {{ forloop.index | times: 0.15 }}s;"
+              {{ block.shopify_attributes }}
+            >
+              <div class="sqe-article-image-wrapper">
+                {% if block.settings.image %}
+                  <img
+                    src="{{ block.settings.image | image_url: width: 400 }}"
+                    alt="{{ block.settings.title }}"
+                    class="sqe-article-image"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <div class="sqe-article-image-placeholder"></div>
+                {% endif %}
+                <div class="sqe-article-overlay"></div>
+              </div>
+
+              <div class="sqe-article-content">
+                <div class="sqe-article-meta">
+                  <span class="sqe-category-tag sqe-category-{{ block.settings.category | downcase | replace: ' ', '-' }}">
+                    {{ block.settings.category }}
+                  </span>
+                </div>
+
+                <h4 class="sqe-article-title">{{ block.settings.title }}</h4>
+
+                <p class="sqe-article-excerpt">{{ block.settings.excerpt | strip_html | truncatewords: 15 }}</p>
+
+                <div class="sqe-article-footer">
+                  <div class="sqe-article-details">
+                    <time class="sqe-article-date-small">{{ block.settings.date | date: "%b %d" }}</time>
+                    <span class="sqe-read-time-small">{{ block.settings.read_time }}m</span>
+                  </div>
+
+                  <a href="{{ block.settings.url }}" class="sqe-article-link">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Load More Button -->
+    {% if section.blocks.size > 4 %}
+      <div class="sqe-news-footer">
+        <button class="sqe-load-more-btn" aria-label="Load more articles">
+          <span class="sqe-btn-text">Load More Articles</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="sqe-btn-icon">
+            <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    {% endif %}
+
+  {% else %}
+    <div class="sqe-news-placeholder">
+      <p>Add articles to display news section</p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .sqe-news-container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: {{ section.settings.margin_top }}px auto {{ section.settings.margin_bottom }}px;
+    padding: {{ section.settings.padding }}px;
+  }
+
+  .sqe-news-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .sqe-news-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0 0 12px 0;
+  }
+
+  .sqe-news-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* Grid Layout */
+  .sqe-news-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+
+  /* Featured Article */
+  .sqe-featured-article {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sqe-featured-image-wrapper {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(31, 58, 95, 0.12);
+  }
+
+  .sqe-featured-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .sqe-featured-article:hover .sqe-featured-image {
+    transform: scale(1.08);
+  }
+
+  .sqe-featured-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(31, 58, 95, 0) 0%, rgba(31, 58, 95, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .sqe-featured-article:hover .sqe-featured-overlay {
+    opacity: 1;
+  }
+
+  .sqe-featured-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1F3A5F 0%, #2a5080 100%);
+  }
+
+  /* Featured Content */
+  .sqe-featured-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sqe-featured-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .sqe-featured-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+  }
+
+  .sqe-featured-article:hover .sqe-featured-title {
+    color: #F2B705;
+  }
+
+  .sqe-featured-excerpt {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #666;
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  .sqe-featured-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 16px;
+    border-top: 2px solid #F2F4F7;
+  }
+
+  .sqe-read-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #999;
+  }
+
+  .sqe-featured-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #1F3A5F;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .sqe-featured-link:hover {
+    color: #F2B705;
+  }
+
+  .sqe-featured-link svg {
+    transition: transform 0.3s ease;
+  }
+
+  .sqe-featured-link:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Secondary Articles */
+  .sqe-secondary-articles {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sqe-article-card {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+  }
+
+  .sqe-article-card:hover {
+    border-color: #F2B705;
+    box-shadow: 0 8px 24px rgba(242, 183, 5, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .sqe-article-image-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .sqe-article-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .sqe-article-card:hover .sqe-article-image {
+    transform: scale(1.1);
+  }
+
+  .sqe-article-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(31, 58, 95, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .sqe-article-card:hover .sqe-article-overlay {
+    opacity: 1;
+  }
+
+  .sqe-article-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1F3A5F 0%, #2a5080 100%);
+  }
+
+  /* Article Content */
+  .sqe-article-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sqe-article-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .sqe-article-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin: 0;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+  }
+
+  .sqe-article-card:hover .sqe-article-title {
+    color: #F2B705;
+  }
+
+  .sqe-article-excerpt {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    flex: 1;
+    line-height: 1.6;
+  }
+
+  .sqe-article-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #F2F4F7;
+  }
+
+  .sqe-article-details {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .sqe-article-date-small {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #999;
+  }
+
+  .sqe-read-time-small {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #999;
+  }
+
+  .sqe-article-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #F2F4F7;
+    color: #1F3A5F;
+    border-radius: 50%;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .sqe-article-link:hover {
+    background: #1F3A5F;
+    color: #F2B705;
+    transform: scale(1.1);
+  }
+
+  /* Category Tags */
+  .sqe-category-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  .sqe-category-industry-news {
+    background: #FFF4E6;
+    color: #C75B12;
+  }
+
+  .sqe-category-technical-insights {
+    background: #E0F2FE;
+    color: #1F3A5F;
+  }
+
+  .sqe-category-company-updates {
+    background: #F0FDF4;
+    color: #16A34A;
+  }
+
+  .sqe-category-tag:not(.sqe-category-industry-news):not(.sqe-category-technical-insights):not(.sqe-category-company-updates) {
+    background: #F2F4F7;
+    color: #666;
+  }
+
+  .sqe-article-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Animations */
+  @keyframes sqe-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .sqe-fade-in {
+    animation: sqe-fade-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  /* Load More Button */
+  .sqe-news-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    border-top: 2px solid #F2F4F7;
+  }
+
+  .sqe-load-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #1F3A5F 0%, #2a5080 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .sqe-load-more-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(31, 58, 95, 0.2);
+  }
+
+  .sqe-load-more-btn:active {
+    transform: translateY(-1px);
+  }
+
+  .sqe-btn-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .sqe-load-more-btn:hover .sqe-btn-icon {
+    transform: rotate(90deg);
+  }
+
+  .sqe-news-placeholder {
+    text-align: center;
+    padding: 80px 20px;
+    color: #999;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .sqe-news-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .sqe-featured-title {
+      font-size: 24px;
+    }
+
+    .sqe-secondary-articles {
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sqe-news-container {
+      padding: 16px;
+    }
+
+    .sqe-news-title {
+      font-size: 24px;
+    }
+
+    .sqe-news-grid {
+      gap: 20px;
+    }
+
+    .sqe-featured-image-wrapper {
+      aspect-ratio: 16 / 9;
+    }
+
+    .sqe-featured-title {
+      font-size: 20px;
+    }
+
+    .sqe-featured-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      border: none;
+      padding: 0;
+    }
+
+    .sqe-article-card {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sqe-article-image-wrapper {
+      width: 100%;
+      height: 200px;
+    }
+
+    .sqe-article-footer {
+      justify-content: space-between;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sqe-news-header {
+      margin-bottom: 30px;
+    }
+
+    .sqe-featured-image-wrapper {
+      aspect-ratio: 16 / 10;
+    }
+
+    .sqe-featured-title {
+      font-size: 18px;
+    }
+
+    .sqe-featured-excerpt {
+      font-size: 14px;
+    }
+
+    .sqe-article-image-wrapper {
+      height: 150px;
+    }
+
+    .sqe-article-title {
+      font-size: 14px;
+    }
+
+    .sqe-article-excerpt {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const container = document.querySelector('.sqe-news-container');
+  if (!container) return;
+
+  const loadMoreBtn = container.querySelector('.sqe-load-more-btn');
+
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', () => {
+      // Rotate icon
+      const icon = loadMoreBtn.querySelector('.sqe-btn-icon');
+      icon.style.transform = 'rotate(90deg) scale(1.2)';
+
+      // Add loading state
+      loadMoreBtn.disabled = true;
+      const originalText = loadMoreBtn.querySelector('.sqe-btn-text');
+      const originalTextContent = originalText.textContent;
+      originalText.textContent = 'Loading...';
+
+      // Simulate loading and fetch more articles
+      setTimeout(() => {
+        loadMoreBtn.disabled = false;
+        originalText.textContent = originalTextContent;
+        icon.style.transform = 'rotate(0) scale(1)';
+
+        // Trigger animation on new cards
+        const newCards = container.querySelectorAll('.sqe-article-card');
+        newCards.forEach(card => {
+          if (!card.style.animation) {
+            card.style.animation = 'sqe-fade-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards';
+          }
+        });
+      }, 1000);
+    });
+  }
+
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  container.querySelectorAll('.sqe-article-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(card);
+  });
+
+  // Keyboard navigation
+  const articleLinks = container.querySelectorAll('a[href]');
+  articleLinks.forEach((link, index) => {
+    link.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        // Natural tab flow
+        return;
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SQE News & Insights",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "News & Insights"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Stay updated with the latest in solar inspection technology and industry trends"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size (px)",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width (px)",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding (px)",
+      "min": 0,
+      "max": 60,
+      "step": 10,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top Margin (px)",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom Margin (px)",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article",
+      "name": "Article",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Article Title",
+          "default": "Understanding Thermal Imaging in Solar Inspections"
+        },
+        {
+          "type": "textarea",
+          "id": "excerpt",
+          "label": "Excerpt",
+          "default": "Thermal imaging technology has revolutionized the way solar panels are inspected and maintained, allowing technicians to identify issues invisible to the naked eye."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Featured Image"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Category",
+          "options": [
+            { "value": "Industry News", "label": "Industry News" },
+            { "value": "Technical Insights", "label": "Technical Insights" },
+            { "value": "Company Updates", "label": "Company Updates" },
+            { "value": "Case Studies", "label": "Case Studies" }
+          ],
+          "default": "Technical Insights"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Publication Date",
+          "placeholder": "2024-03-15"
+        },
+        {
+          "type": "range",
+          "id": "read_time",
+          "label": "Read Time (minutes)",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Article URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SQE News & Insights",
+      "blocks": [
+        {
+          "type": "article",
+          "settings": {
+            "title": "Understanding Thermal Imaging in Solar Inspections",
+            "excerpt": "Thermal imaging technology has revolutionized the way solar panels are inspected, allowing technicians to identify issues invisible to the naked eye.",
+            "category": "Technical Insights",
+            "date": "2024-03-15",
+            "read_time": 5,
+            "url": "#"
+          }
+        },
+        {
+          "type": "article",
+          "settings": {
+            "title": "Solar Panel Defects: Early Detection Saves Thousands",
+            "excerpt": "Early detection of solar panel defects can prevent significant energy loss and costly repairs.",
+            "category": "Industry News",
+            "date": "2024-03-12",
+            "read_time": 4,
+            "url": "#"
+          }
+        },
+        {
+          "type": "article",
+          "settings": {
+            "title": "SQE Expands Services to Northern England",
+            "excerpt": "We're excited to announce the expansion of our inspection services to cover additional regions.",
+            "category": "Company Updates",
+            "date": "2024-03-10",
+            "read_time": 3,
+            "url": "#"
+          }
+        },
+        {
+          "type": "article",
+          "settings": {
+            "title": "The Future of Solar Energy Quality Assurance",
+            "excerpt": "As solar technology evolves, quality assurance standards continue to advance to meet new challenges.",
+            "category": "Industry News",
+            "date": "2024-03-08",
+            "read_time": 6,
+            "url": "#"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
