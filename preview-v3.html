@@ -1,0 +1,2570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQE Solar Quality Experts Ltd | Independent Expert Witnesses for Solar PV & Corrosion Protection</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333333;
+            background-color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Color Variables */
+        :root {
+            --primary-blue: #1F3A5F;
+            --yellow: #F2B705;
+            --light-grey: #F2F4F7;
+            --dark-grey: #333333;
+            --orange: #C75B12;
+            --white: #ffffff;
+            --text-light: #666666;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        /* HEADER - Sticky Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(31, 58, 95, 0.15);
+        }
+
+        .logo {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo-dot {
+            color: var(--yellow);
+            font-weight: 900;
+        }
+
+        nav {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--white);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--yellow);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--yellow);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .phone-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        .phone-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--yellow), var(--orange));
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .cta-button-header {
+            background-color: var(--yellow);
+            color: var(--primary-blue);
+            padding: 0.75rem 1.25rem;
+            border-radius: 2px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button-header:hover {
+            background-color: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(242, 183, 5, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--white);
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1F3A5F 0%, #2d5a8c 50%, #1a2f4a 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(90deg, rgba(242, 183, 5, 0.05) 1px, transparent 1px),
+                linear-gradient(rgba(242, 183, 5, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            animation: gridSlide 20s linear infinite;
+        }
+
+        @keyframes gridSlide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            color: var(--white);
+            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+            color: #B8D4E8;
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .cta-primary {
+            background-color: var(--yellow);
+            color: var(--primary-blue);
+            padding: 1rem 2rem;
+            border-radius: 2px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-primary:hover {
+            background-color: #FFD700;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(242, 183, 5, 0.4);
+        }
+
+        .cta-secondary {
+            background-color: transparent;
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: 2px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: 2px solid var(--white);
+            cursor: pointer;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-secondary:hover {
+            background-color: var(--white);
+            color: var(--primary-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(31, 58, 95, 0.8);
+            padding: 1.5rem 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(242, 183, 5, 0.2);
+            border-bottom: 1px solid rgba(242, 183, 5, 0.2);
+            color: var(--white);
+            font-size: 0.95rem;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(180deg, transparent, var(--yellow), transparent);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* USP SECTION */
+        .usp-section {
+            padding: 5rem 2rem;
+            background-color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .usp-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 35px,
+                rgba(242, 183, 5, 0.03) 35px,
+                rgba(242, 183, 5, 0.03) 70px
+            );
+            pointer-events: none;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .usp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .usp-card {
+            background: var(--white);
+            padding: 2rem;
+            border-left: 5px solid var(--yellow);
+            box-shadow: 0 4px 12px rgba(31, 58, 95, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .usp-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, transparent 0%, rgba(242, 183, 5, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .usp-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(31, 58, 95, 0.15);
+            border-left-width: 8px;
+        }
+
+        .usp-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), #2d5a8c);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--yellow);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%);
+        }
+
+        .usp-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .usp-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* FLOATING STATS SECTION */
+        .floating-stats {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #2d5a8c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floating-stats::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(90deg, rgba(242, 183, 5, 0.05) 1px, transparent 1px),
+                linear-gradient(rgba(242, 183, 5, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .floating-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--yellow);
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--yellow);
+            margin-bottom: 0.5rem;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* SERVICE EXPLORER */
+        .service-explorer {
+            padding: 5rem 2rem;
+            background-color: var(--light-grey);
+            min-height: 600px;
+        }
+
+        .service-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .service-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(31, 58, 95, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .service-item:hover {
+            background-color: rgba(242, 183, 5, 0.08);
+            padding-left: 2rem;
+        }
+
+        .service-item.active {
+            background-color: var(--white);
+            border-left: 4px solid var(--yellow);
+            box-shadow: 0 4px 12px rgba(31, 58, 95, 0.1);
+        }
+
+        .service-number {
+            display: inline-block;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--yellow);
+            margin-right: 1rem;
+        }
+
+        .service-name {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 600;
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+        }
+
+        .service-name-en {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-top: 0.25rem;
+        }
+
+        .service-detail {
+            background: var(--white);
+            padding: 2.5rem;
+            border-left: 5px solid var(--yellow);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(31, 58, 95, 0.1);
+        }
+
+        .service-detail h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .service-detail p {
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .feature-tag {
+            background: linear-gradient(135deg, var(--primary-blue), #2d5a8c);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* PROCESS SECTION */
+        .process-section {
+            padding: 5rem 2rem;
+            background-color: var(--white);
+        }
+
+        .process-timeline {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--yellow) 0%, var(--yellow) 20%, transparent 20%, transparent 25%, var(--yellow) 25%, var(--yellow) 45%, transparent 45%, transparent 50%, var(--yellow) 50%, var(--yellow) 70%, transparent 70%, transparent 75%, var(--yellow) 75%, var(--yellow) 95%, transparent 95%, transparent 100%);
+            z-index: 0;
+        }
+
+        .timeline-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), #2d5a8c);
+            color: var(--yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 1rem;
+            border: 3px solid var(--white);
+            box-shadow: 0 4px 12px rgba(31, 58, 95, 0.2);
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        .step-name {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .step-name-en {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .timeline-step:hover .step-number {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(31, 58, 95, 0.3);
+        }
+
+        /* TEAM SECTION */
+        .team-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, var(--light-grey) 100%);
+        }
+
+        .team-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .team-card {
+            background: var(--white);
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(31, 58, 95, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(31, 58, 95, 0.2);
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .team-card:nth-child(2) .team-photo {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .team-info {
+            padding: 2rem;
+        }
+
+        .team-name {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-title {
+            font-size: 0.9rem;
+            color: var(--orange);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .team-bio {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .team-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-tag {
+            background: rgba(31, 58, 95, 0.08);
+            color: var(--primary-blue);
+            padding: 0.35rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 2px;
+            font-weight: 500;
+        }
+
+        .team-social {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--light-grey);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-icon:hover {
+            background: var(--yellow);
+            color: var(--primary-blue);
+        }
+
+        /* PROJECT SHOWCASE */
+        .projects-section {
+            padding: 5rem 2rem;
+            background-color: var(--white);
+        }
+
+        .projects-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .featured-project {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #2d5a8c 100%);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(31, 58, 95, 0.2);
+        }
+
+        .featured-project::after {
+            content: attr(data-project);
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            right: 2rem;
+            color: var(--white);
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .project-thumbnails {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .thumbnail {
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+        }
+
+        .thumbnail:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .thumbnail:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .thumbnail:nth-child(4) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .thumbnail:nth-child(5) {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(31, 58, 95, 0.2);
+        }
+
+        .thumbnail.active {
+            border: 3px solid var(--yellow);
+        }
+
+        /* BEFORE/AFTER SLIDER */
+        .slider-section {
+            padding: 5rem 2rem;
+            background: var(--light-grey);
+        }
+
+        .slider-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .comparison-slider {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: ew-resize;
+            margin: 0 auto;
+        }
+
+        .comparison-slider img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            user-select: none;
+        }
+
+        .img-before {
+            clip-path: polygon(0 0, var(--position, 50%) 0, var(--position, 50%) 100%, 0 100%);
+        }
+
+        .img-after {
+            clip-path: polygon(var(--position, 50%) 0, 100% 0, 100% 100%, var(--position, 50%) 100%);
+        }
+
+        .comparison-handle {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background: var(--yellow);
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .handle-button {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: var(--yellow);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-blue);
+            box-shadow: 0 4px 12px rgba(242, 183, 5, 0.4);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        /* TESTIMONIALS */
+        .testimonials-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #2d5a8c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(90deg, rgba(242, 183, 5, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(242, 183, 5, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .testimonials-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 2px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .testimonial-quote {
+            font-size: 1.1rem;
+            color: var(--dark-grey);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--primary-blue);
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        .testimonial-position {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--yellow);
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* TRUST BANNER */
+        .trust-section {
+            padding: 3rem 2rem;
+            background: var(--white);
+            border-top: 1px solid rgba(31, 58, 95, 0.1);
+            border-bottom: 1px solid rgba(31, 58, 95, 0.1);
+        }
+
+        .trust-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .trust-title {
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .trust-item {
+            background: var(--light-grey);
+            padding: 1.5rem;
+            border-left: 4px solid var(--yellow);
+        }
+
+        .trust-item-title {
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .trust-item-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* FAQ SECTION */
+        .faq-section {
+            padding: 5rem 2rem;
+            background: var(--light-grey);
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .faq-tab {
+            background: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .faq-tab.active {
+            background: var(--primary-blue);
+            color: var(--white);
+            border-color: var(--yellow);
+        }
+
+        .faq-item {
+            background: var(--white);
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--light-grey);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active {
+            border-left-color: var(--yellow);
+            box-shadow: 0 4px 12px rgba(31, 58, 95, 0.1);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .faq-toggle {
+            width: 24px;
+            height: 24px;
+            background: var(--yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .faq-answer p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        /* NEWS & INSIGHTS */
+        .news-section {
+            padding: 5rem 2rem;
+            background: var(--white);
+        }
+
+        .news-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .news-featured {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #2d5a8c 100%);
+            padding: 2rem;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: 400px;
+        }
+
+        .news-featured h3 {
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .news-featured p {
+            color: #B8D4E8;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-featured-date {
+            font-size: 0.9rem;
+            color: var(--yellow);
+            font-weight: 600;
+        }
+
+        .news-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .news-item {
+            background: var(--light-grey);
+            padding: 1.5rem;
+            border-left: 4px solid var(--yellow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .news-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(31, 58, 95, 0.1);
+        }
+
+        .news-item h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .news-item-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* CTA BANNER */
+        .cta-banner-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #2d5a8c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(90deg, rgba(242, 183, 5, 0.05) 1px, transparent 1px),
+                linear-gradient(rgba(242, 183, 5, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .cta-banner-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .cta-banner-content h2 {
+            color: var(--white);
+            margin-bottom: 2rem;
+        }
+
+        .cta-banner-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* CONTACT SECTION */
+        .contact-section {
+            padding: 5rem 2rem;
+            background: var(--light-grey);
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-blue), #2d5a8c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--yellow);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .contact-details h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-details p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .contact-form {
+            background: var(--white);
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(31, 58, 95, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(31, 58, 95, 0.2);
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--yellow);
+            box-shadow: 0 0 0 3px rgba(242, 183, 5, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background-color: var(--yellow);
+            color: var(--primary-blue);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 2px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(242, 183, 5, 0.3);
+        }
+
+        /* LEGAL NOTICE */
+        .legal-notice {
+            background: rgba(31, 58, 95, 0.05);
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(31, 58, 95, 0.1);
+            border-bottom: 1px solid rgba(31, 58, 95, 0.1);
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .legal-notice p {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 3rem 2rem 2rem;
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h4 {
+            color: var(--yellow);
+            margin-bottom: 1rem;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: #B8D4E8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--yellow);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #B8D4E8;
+        }
+
+        .back-to-top {
+            width: 50px;
+            height: 50px;
+            background: var(--yellow);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            transition: all 0.3s ease;
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(242, 183, 5, 0.4);
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: var(--primary-blue);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            .header-right {
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stat-item:not(:last-child)::after {
+                display: none;
+            }
+
+            .service-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .timeline-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .timeline-container::before {
+                top: 30px;
+                left: 30px;
+                right: auto;
+                width: 3px;
+                height: auto;
+                background: linear-gradient(180deg, var(--yellow) 0%, var(--yellow) 20%, transparent 20%, transparent 25%, var(--yellow) 25%, var(--yellow) 45%, transparent 45%, transparent 50%, var(--yellow) 50%, var(--yellow) 70%, transparent 70%, transparent 75%, var(--yellow) 75%, var(--yellow) 95%, transparent 95%, transparent 100%);
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+            }
+
+            .cta-banner-buttons {
+                flex-direction: column;
+            }
+
+            .footer-bottom {
+                flex-direction: column-reverse;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .phone-contact {
+                display: none;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .usp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-thumbnails {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        /* ANIMATION UTILITIES */
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">SQE<span class="logo-dot">•</span></div>
+        <nav id="mainNav">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <div class="header-right">
+            <div class="phone-contact">
+                <div class="phone-icon">☎</div>
+                <span>+44 (0) 1400 xxx xxx</span>
+            </div>
+            <button class="cta-button-header">Gutachten Anfragen</button>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Unabhängige Sachverständige für Photovoltaik & Korrosionsschutz</h1>
+            <p class="hero-subtitle">Independent Expert Witnesses for Solar PV & Corrosion Protection</p>
+            <div class="hero-ctas">
+                <button class="cta-primary">Gutachten Anfragen</button>
+                <button class="cta-secondary">Our Services</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">15+ Years International Experience</div>
+                <div class="stat-item">Publicly Appointed Experts</div>
+                <div class="stat-item">500+ Projects Worldwide</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- USP SECTION -->
+    <section class="usp-section" id="services">
+        <div class="section-container">
+            <div class="section-title">
+                <h2>Why Choose SQE</h2>
+                <p class="section-subtitle">Our Commitment to Excellence and Expertise</p>
+            </div>
+            <div class="usp-grid">
+                <div class="usp-card scroll-reveal">
+                    <div class="usp-icon">🌍</div>
+                    <h3>Langjährige internationale Erfahrung</h3>
+                    <p>Extensive international project experience across multiple continents. We bring global best practices and proven methodologies to every assignment.</p>
+                </div>
+                <div class="usp-card scroll-reveal">
+                    <div class="usp-icon">✓</div>
+                    <h3>Öffentlich bestellte Gutachten</h3>
+                    <p>Officially certified as publicly appointed expert witnesses. Our reports carry legal weight and are recognized by authorities across jurisdictions.</p>
+                </div>
+                <div class="usp-card scroll-reveal">
+                    <div class="usp-icon">🛡</div>
+                    <h3>Spezialisierung im Korrosionsschutz</h3>
+                    <p>Deep expertise in corrosion protection and prevention. We ensure long-term durability and reliability of solar installations in harsh environments.</p>
+                </div>
+                <div class="usp-card scroll-reveal">
+                    <div class="usp-icon">⚙</div>
+                    <h3>Bereichsübergreifendes Know-how</h3>
+                    <p>Cross-disciplinary expertise combining engineering, materials science, and risk assessment. Holistic solutions for complex technical challenges.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLOATING STATS SECTION -->
+    <section class="floating-stats">
+        <div class="floating-stats-grid">
+            <div class="stat-card scroll-reveal">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Projects Worldwide</div>
+            </div>
+            <div class="stat-card scroll-reveal">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-card scroll-reveal">
+                <div class="stat-number">30+</div>
+                <div class="stat-label">Countries</div>
+            </div>
+            <div class="stat-card scroll-reveal">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Independent & Impartial</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICE EXPLORER -->
+    <section class="service-explorer" id="services-detail">
+        <div class="service-container">
+            <div class="service-list">
+                <div class="service-item active" data-service="0">
+                    <span class="service-number">01</span>
+                    <div>
+                        <div class="service-name">PV-Gutachten</div>
+                        <div class="service-name-en">Solar Expert Reports</div>
+                    </div>
+                </div>
+                <div class="service-item" data-service="1">
+                    <span class="service-number">02</span>
+                    <div>
+                        <div class="service-name">Korrosionsschutz</div>
+                        <div class="service-name-en">Corrosion Protection</div>
+                    </div>
+                </div>
+                <div class="service-item" data-service="2">
+                    <span class="service-number">03</span>
+                    <div>
+                        <div class="service-name">Thermografie & Messtechnik</div>
+                        <div class="service-name-en">Thermal Imaging & Measurement</div>
+                    </div>
+                </div>
+                <div class="service-item" data-service="3">
+                    <span class="service-number">04</span>
+                    <div>
+                        <div class="service-name">Baubegleitung & Überwachung</div>
+                        <div class="service-name-en">Construction Monitoring</div>
+                    </div>
+                </div>
+                <div class="service-item" data-service="4">
+                    <span class="service-number">05</span>
+                    <div>
+                        <div class="service-name">Planung & Machbarkeit</div>
+                        <div class="service-name-en">Planning & Feasibility</div>
+                    </div>
+                </div>
+                <div class="service-item" data-service="5">
+                    <span class="service-number">06</span>
+                    <div>
+                        <div class="service-name">Beratung & Sonderleistungen</div>
+                        <div class="service-name-en">Consulting & Special Services</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-detail" id="serviceDetail">
+                <h3>PV-Gutachten / Solar Expert Reports</h3>
+                <p>Comprehensive expert assessment of photovoltaic systems. Our reports provide detailed technical analysis, performance evaluation, and risk assessment for both new and existing installations. We evaluate system design, installation quality, safety compliance, and long-term performance potential.</p>
+                <div class="service-features">
+                    <div class="feature-tag">Performance Analysis</div>
+                    <div class="feature-tag">Safety Compliance</div>
+                    <div class="feature-tag">Risk Assessment</div>
+                    <div class="feature-tag">Officially Certified</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS SECTION -->
+    <section class="process-section" id="process">
+        <div class="process-timeline">
+            <div class="section-title">
+                <h2>Unser Prozess / Our Process</h2>
+                <p class="section-subtitle">5 Clear Steps to Expert Reports</p>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-step">
+                    <div class="step-number">1</div>
+                    <div class="step-name">Erstberatung</div>
+                    <div class="step-name-en">Initial Consultation</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">2</div>
+                    <div class="step-name">Vor-Ort-Analyse</div>
+                    <div class="step-name-en">On-Site Analysis</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">3</div>
+                    <div class="step-name">Technische Bewertung</div>
+                    <div class="step-name-en">Technical Assessment</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">4</div>
+                    <div class="step-name">Gutachten-Erstellung</div>
+                    <div class="step-name-en">Report Generation</div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">5</div>
+                    <div class="step-name">Nachbetreuung</div>
+                    <div class="step-name-en">Follow-up Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM SECTION -->
+    <section class="team-section" id="about">
+        <div class="team-container">
+            <div class="section-title">
+                <h2>Die Experten hinter den Gutachten</h2>
+                <p class="section-subtitle">The Experts Behind The Reports</p>
+            </div>
+
+            <div class="team-grid">
+                <div class="team-card scroll-reveal">
+                    <div class="team-photo">👨‍💼</div>
+                    <div class="team-info">
+                        <div class="team-name">Luis</div>
+                        <div class="team-title">Öffentlich bestellter Sachverständiger</div>
+                        <div class="team-title" style="color: var(--text-light); text-transform: none;">Publicly Appointed Expert Witness</div>
+                        <p class="team-bio">With over 15 years of experience in solar PV system assessment and certification, Luis brings international expertise in expert witness reports and technical compliance verification. Specialized in performance analysis and risk mitigation strategies.</p>
+                        <div class="team-tags">
+                            <span class="team-tag">PV Systems</span>
+                            <span class="team-tag">Corrosion</span>
+                            <span class="team-tag">Expert Reports</span>
+                            <span class="team-tag">International</span>
+                        </div>
+                        <div class="team-social">
+                            <div class="social-icon">💼</div>
+                            <span style="color: var(--text-light); font-size: 0.9rem;">LinkedIn</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card scroll-reveal">
+                    <div class="team-photo">👨‍💻</div>
+                    <div class="team-info">
+                        <div class="team-name">Ega</div>
+                        <div class="team-title">Öffentlich bestellter Sachverständiger</div>
+                        <div class="team-title" style="color: var(--text-light); text-transform: none;">Publicly Appointed Expert Witness</div>
+                        <p class="team-bio">Expert in corrosion protection and material durability assessment. Ega combines engineering excellence with practical on-site expertise, ensuring comprehensive evaluation of protective systems. Trusted partner for complex corrosion analysis and remediation strategies.</p>
+                        <div class="team-tags">
+                            <span class="team-tag">Corrosion Protection</span>
+                            <span class="team-tag">Materials Science</span>
+                            <span class="team-tag">Durability</span>
+                            <span class="team-tag">Engineering</span>
+                        </div>
+                        <div class="team-social">
+                            <div class="social-icon">💼</div>
+                            <span style="color: var(--text-light); font-size: 0.9rem;">LinkedIn</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECT SHOWCASE -->
+    <section class="projects-section" id="projects">
+        <div class="projects-container">
+            <div class="section-title">
+                <h2>Internationale Projekterfahrung</h2>
+                <p class="section-subtitle">International Project Experience</p>
+            </div>
+
+            <div class="featured-project" id="featuredProject" data-project="Germany: 50MW Solar Farm - Corrosion Assessment"></div>
+
+            <div class="project-thumbnails">
+                <div class="thumbnail active" data-project="Germany: 50MW Solar Farm - Corrosion Assessment">
+                    <span>Germany</span>
+                </div>
+                <div class="thumbnail" data-project="UK: Rooftop Installation - Performance Analysis">
+                    <span>United Kingdom</span>
+                </div>
+                <div class="thumbnail" data-project="Spain: Desert Array - Durability Study">
+                    <span>Spain</span>
+                </div>
+                <div class="thumbnail" data-project="Middle East: High-Temperature System - Expert Report">
+                    <span>Middle East</span>
+                </div>
+                <div class="thumbnail" data-project="Australia: Coastal Installation - Salt Corrosion Analysis">
+                    <span>Australia</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEFORE/AFTER SLIDER -->
+    <section class="slider-section">
+        <div class="slider-container">
+            <div class="section-title">
+                <h2>Inspektionsergebnisse / Inspection Results</h2>
+                <p class="section-subtitle">Thermal Imaging Comparison</p>
+            </div>
+
+            <div class="comparison-slider" id="comparisonSlider">
+                <div class="img-before" style="--position: 50%;">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">BEFORE INSPECTION</div>
+                </div>
+                <div class="img-after">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AFTER REMEDIATION</div>
+                </div>
+                <div class="comparison-handle">
+                    <div class="handle-button">→←</div>
+                </div>
+            </div>
+
+            <div class="slider-labels">
+                <span>Before Inspection</span>
+                <span>After Remediation</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section">
+        <div class="testimonials-container">
+            <div class="section-title" style="color: var(--white); margin-bottom: 2rem;">
+                <h2 style="color: var(--white);">Das sagen unsere Kunden / Our Clients Say</h2>
+            </div>
+
+            <div class="testimonial-card scroll-reveal" id="testimonial-0">
+                <div class="testimonial-quote">"SQE provided an exceptionally thorough assessment of our solar installations. Their expertise in corrosion protection gave us confidence in our long-term investments. Highly professional and reliable."</div>
+                <div class="testimonial-author">Michael Johnson</div>
+                <div class="testimonial-position">Project Manager, Energy Solutions GmbH</div>
+            </div>
+
+            <div class="testimonial-card scroll-reveal" id="testimonial-1" style="display: none;">
+                <div class="testimonial-quote">"Die Gutachten von SQE waren entscheidend für unsere Compliance-Audits. Die fachliche Kompetenz und Unabhängigkeit der Sachverständigen ist beeindruckend. Sehr empfehlenswert."</div>
+                <div class="testimonial-author">Dr. Hans Mueller</div>
+                <div class="testimonial-position">Technical Director, Renewable Energy Consulting</div>
+            </div>
+
+            <div class="testimonial-card scroll-reveal" id="testimonial-2" style="display: none;">
+                <div class="testimonial-quote">"Outstanding expertise in identifying and assessing corrosion risks. Their recommendations have significantly improved our system's durability and performance. A trusted partner for technical excellence."</div>
+                <div class="testimonial-author">Sarah Chen</div>
+                <div class="testimonial-position">Operations Manager, Solar Developments Ltd</div>
+            </div>
+
+            <div class="testimonial-nav">
+                <div class="nav-dot active" onclick="setTestimonial(0)"></div>
+                <div class="nav-dot" onclick="setTestimonial(1)"></div>
+                <div class="nav-dot" onclick="setTestimonial(2)"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST BANNER -->
+    <section class="trust-section">
+        <div class="trust-container">
+            <h3 class="trust-title">Zertifizierungen & Qualitätsstandards / Certifications & Quality Standards</h3>
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <div class="trust-item-title">Öffentlich bestellter Sachverständiger</div>
+                    <div class="trust-item-desc">Officially Appointed Expert</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-item-title">IHK-zertifiziert</div>
+                    <div class="trust-item-desc">Chamber of Commerce Certified</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-item-title">ISO 17025 konform</div>
+                    <div class="trust-item-desc">Laboratory Accreditation</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-item-title">DIN EN ISO 9001</div>
+                    <div class="trust-item-desc">Quality Management Certified</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section" id="faq">
+        <div class="faq-container">
+            <div class="section-title">
+                <h2>Häufig gestellte Fragen / FAQ</h2>
+                <p class="section-subtitle">Find answers to common questions about our expert services</p>
+            </div>
+
+            <div class="faq-tabs">
+                <div class="faq-tab active" onclick="setFAQCategory('general')">Allgemein / General</div>
+                <div class="faq-tab" onclick="setFAQCategory('technical')">Technisch / Technical</div>
+                <div class="faq-tab" onclick="setFAQCategory('reports')">Gutachten / Reports</div>
+                <div class="faq-tab" onclick="setFAQCategory('process')">Ablauf / Process</div>
+            </div>
+
+            <div id="faqContent">
+                <!-- General FAQs -->
+                <div class="faq-item active" data-category="general">
+                    <div class="faq-question">
+                        <span>What makes SQE different from other solar consultants?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>SQE is unique because all our experts are officially appointed and certified expert witnesses. We combine international experience with specialized expertise in corrosion protection and durability assessment. Our independence and impartiality ensure credible, legally-sound expert reports recognized across multiple jurisdictions.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="general">
+                    <div class="faq-question">
+                        <span>In how many countries do you operate?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We have successfully completed projects in over 30 countries across Europe, Asia, Middle East, Africa, and Australia. Our team's multilingual capabilities and international certifications enable us to serve clients globally while maintaining the highest standards of professional practice.</p>
+                    </div>
+                </div>
+
+                <!-- Technical FAQs -->
+                <div class="faq-item" data-category="technical">
+                    <div class="faq-question">
+                        <span>What exactly is corrosion protection assessment?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Corrosion protection assessment evaluates the effectiveness of protective systems for solar installations in challenging environments. We analyze material compatibility, environmental factors, protective coatings, and grounding systems to ensure long-term durability and safety. This is especially critical for coastal and industrial installations.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="technical">
+                    <div class="faq-question">
+                        <span>How do you conduct thermal imaging analysis?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our thermal imaging services use advanced infrared cameras to detect heat anomalies, potential defects, and performance issues in solar systems. We capture images under controlled conditions and provide detailed analysis identifying problem areas like faulty modules, bad connections, or installation defects.</p>
+                    </div>
+                </div>
+
+                <!-- Report FAQs -->
+                <div class="faq-item" data-category="reports">
+                    <div class="faq-question">
+                        <span>What is the legal validity of your expert reports?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our reports are prepared by publicly appointed and sworn expert witnesses, giving them full legal standing. They are accepted in courts, administrative proceedings, and regulatory bodies across multiple jurisdictions. Our findings carry the authority of official expertise and can be used as evidence in disputes or compliance audits.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="reports">
+                    <div class="faq-question">
+                        <span>How long does a typical expert report take?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Timelines vary depending on project scope and complexity. A standard PV assessment typically takes 2-4 weeks from initial consultation to final report. Complex installations or corrosion analysis may require additional time. We provide clear timelines at the initial consultation phase.</p>
+                    </div>
+                </div>
+
+                <!-- Process FAQs -->
+                <div class="faq-item" data-category="process">
+                    <div class="faq-question">
+                        <span>What happens during the on-site analysis phase?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>During on-site visits, our experts conduct comprehensive inspections including visual assessment, thermal imaging, electrical testing, and measurement of protective systems. We document all findings with photographs and technical data. This phase typically takes 1-3 days depending on system size and complexity.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-category="process">
+                    <div class="faq-question">
+                        <span>Do you provide ongoing support after the report?</span>
+                        <div class="faq-toggle">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we provide comprehensive follow-up support including clarification of findings, recommendations implementation guidance, and periodic re-assessment services. We're committed to long-term partnerships and ensuring our clients understand and act on our recommendations effectively.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWS & INSIGHTS -->
+    <section class="news-section">
+        <div class="news-container">
+            <div class="section-title">
+                <h2>Aktuelles & Fachwissen / News & Insights</h2>
+                <p class="section-subtitle">Latest industry developments and technical knowledge</p>
+            </div>
+
+            <div class="news-grid">
+                <div class="news-featured">
+                    <div class="news-featured-date">March 15, 2026</div>
+                    <h3>Corrosion Prevention Standards Update 2026</h3>
+                    <p>New international guidelines for corrosion protection in solar installations emphasize lifecycle assessment and predictive maintenance. Learn how these standards affect your installations and compliance requirements.</p>
+                </div>
+
+                <div class="news-items">
+                    <div class="news-item">
+                        <h4>Solar PV Performance in Extreme Weather</h4>
+                        <div class="news-item-date">March 8, 2026</div>
+                    </div>
+                    <div class="news-item">
+                        <h4>Advanced Thermal Imaging Techniques</h4>
+                        <div class="news-item-date">February 28, 2026</div>
+                    </div>
+                    <div class="news-item">
+                        <h4>Expert Witness Role in Solar Disputes</h4>
+                        <div class="news-item-date">February 20, 2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="cta-banner-section">
+        <div class="cta-banner-content">
+            <h2>Gutachten Anfragen oder Fragen Stellen? / Request an Expert Report or Ask Questions?</h2>
+            <div class="cta-banner-buttons">
+                <button class="cta-primary">Gutachten Anfragen</button>
+                <button class="cta-secondary">Kostenlose Beratung</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact-section" id="contact">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2>Kontakt / Contact Us</h2>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-details">
+                        <h4>Adresse / Address</h4>
+                        <p>Bridge House, Old Grantham Road, Whatton, Nottingham NG13 9FG, United Kingdom</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">☎</div>
+                    <div class="contact-details">
+                        <h4>Telefon / Phone</h4>
+                        <p>+44 (0) 1400 xxx xxx</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">✉</div>
+                    <div class="contact-details">
+                        <h4>Email</h4>
+                        <p>info@sqe-experts.co.uk</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">🗺</div>
+                    <div class="contact-details">
+                        <h4>Map / Karte</h4>
+                        <p>Located in Nottinghamshire, UK - accessible from all major transport links</p>
+                    </div>
+                </div>
+            </div>
+
+            <form class="contact-form" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Firma / Company *</label>
+                    <input type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Telefon / Phone</label>
+                    <input type="tel">
+                </div>
+
+                <div class="form-group">
+                    <label>Betreff / Subject *</label>
+                    <select required>
+                        <option value="">-- Please select --</option>
+                        <option value="report">Gutachten / Expert Report</option>
+                        <option value="consultation">Beratung / Consultation</option>
+                        <option value="other">Sonstiges / Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nachricht / Message *</label>
+                    <textarea required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Absenden / Submit</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- LEGAL NOTICE -->
+    <div class="legal-notice">
+        <p>Hinweis / Note: Alle Gutachten werden von öffentlich bestellten und vereidigten Sachverständigen erstellt. Rechtliche Prüfung durch unsere Partnerkanzlei in UK. / All expert reports are prepared by publicly appointed and sworn expert witnesses. Legal review by our partner law firm in the UK.</p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Unternehmen / Company</h4>
+                <ul>
+                    <li><a href="#about">Über uns / About</a></li>
+                    <li><a href="#about">Team</a></li>
+                    <li><a href="#">Karriere / Careers</a></li>
+                    <li><a href="#">Blog / Insights</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Leistungen / Services</h4>
+                <ul>
+                    <li><a href="#services">PV-Gutachten</a></li>
+                    <li><a href="#services">Korrosionsschutz</a></li>
+                    <li><a href="#services">Thermografie</a></li>
+                    <li><a href="#services">Baubegleitung</a></li>
+                    <li><a href="#services">Planung</a></li>
+                    <li><a href="#services">Beratung</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Rechtliches / Legal</h4>
+                <ul>
+                    <li><a href="#">Impressum / Imprint</a></li>
+                    <li><a href="#">Datenschutz / Privacy</a></li>
+                    <li><a href="#">AGB / Terms</a></li>
+                    <li><a href="#">Haftungsausschluss / Disclaimer</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Kontakt / Contact</h4>
+                <ul>
+                    <li><a href="mailto:info@sqe-experts.co.uk">info@sqe-experts.co.uk</a></li>
+                    <li><a href="tel:+441400">+44 (0) 1400 xxx xxx</a></li>
+                    <li>Bridge House<br>Whatton, Nottingham<br>NG13 9FG, UK</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="copyright">
+                © 2026 SQE Solar Quality Experts Ltd. / © 2026 SQE Sachverständige für Solarqualität GmbH<br>
+                All rights reserved. Alle Rechte vorbehalten.
+            </div>
+            <button class="back-to-top" id="backToTop">↑</button>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // MOBILE MENU TOGGLE
+        // ============================================================
+        const hamburger = document.getElementById('hamburger');
+        const mainNav = document.getElementById('mainNav');
+
+        hamburger.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+
+        document.querySelectorAll('#mainNav a').forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+            });
+        });
+
+        // ============================================================
+        // SCROLL REVEAL ANIMATION
+        // ============================================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ============================================================
+        // BACK TO TOP BUTTON
+        // ============================================================
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ============================================================
+        // SERVICE EXPLORER
+        // ============================================================
+        const serviceItems = document.querySelectorAll('.service-item');
+        const serviceDetail = document.getElementById('serviceDetail');
+
+        const serviceData = [
+            {
+                title: 'PV-Gutachten / Solar Expert Reports',
+                description: 'Comprehensive expert assessment of photovoltaic systems. Our reports provide detailed technical analysis, performance evaluation, and risk assessment for both new and existing installations. We evaluate system design, installation quality, safety compliance, and long-term performance potential.',
+                tags: ['Performance Analysis', 'Safety Compliance', 'Risk Assessment', 'Officially Certified']
+            },
+            {
+                title: 'Korrosionsschutz / Corrosion Protection',
+                description: 'Deep expertise in corrosion assessment and protection strategies. We evaluate material durability, protective coatings, and environmental factors affecting system longevity. Essential for coastal and industrial installations facing aggressive environmental conditions.',
+                tags: ['Material Analysis', 'Protective Coatings', 'Durability Assessment', 'Environmental Factors']
+            },
+            {
+                title: 'Thermografie & Messtechnik / Thermal Imaging & Measurement',
+                description: 'Advanced thermal imaging and measurement services detect anomalies and performance issues in solar systems. Our infrared analysis identifies faulty modules, connection problems, and installation defects that may not be visible to the naked eye.',
+                tags: ['Thermal Imaging', 'Defect Detection', 'Performance Analysis', 'Advanced Technology']
+            },
+            {
+                title: 'Baubegleitung & Überwachung / Construction Monitoring',
+                description: 'Professional supervision and monitoring during installation and construction phases. We ensure compliance with specifications, quality standards, and safety regulations. Regular inspections provide confidence in proper installation practices.',
+                tags: ['Quality Control', 'Safety Compliance', 'Regular Inspections', 'Documentation']
+            },
+            {
+                title: 'Planung & Machbarkeit / Planning & Feasibility',
+                description: 'Comprehensive planning and feasibility analysis for new solar projects. We assess site conditions, environmental factors, technical requirements, and risk mitigation strategies. Our analysis ensures optimal system design and implementation.',
+                tags: ['Site Assessment', 'Technical Planning', 'Risk Analysis', 'Optimization']
+            },
+            {
+                title: 'Beratung & Sonderleistungen / Consulting & Special Services',
+                description: 'Custom consulting services tailored to specific technical challenges and requirements. From dispute resolution to specialized analysis, we leverage our deep expertise to address unique client needs and complex technical questions.',
+                tags: ['Expert Consultation', 'Dispute Resolution', 'Custom Analysis', 'Special Projects']
+            }
+        ];
+
+        serviceItems.forEach(item => {
+            item.addEventListener('click', () => {
+                serviceItems.forEach(si => si.classList.remove('active'));
+                item.classList.add('active');
+
+                const serviceIndex = parseInt(item.getAttribute('data-service'));
+                const service = serviceData[serviceIndex];
+
+                serviceDetail.innerHTML = `
+                    <h3>${service.title}</h3>
+                    <p>${service.description}</p>
+                    <div class="service-features">
+                        ${service.tags.map(tag => `<div class="feature-tag">${tag}</div>`).join('')}
+                    </div>
+                `;
+            });
+        });
+
+        // ============================================================
+        // PROJECT THUMBNAILS
+        // ============================================================
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const featuredProject = document.getElementById('featuredProject');
+
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                thumbnails.forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+                const projectName = thumb.getAttribute('data-project');
+                featuredProject.setAttribute('data-project', projectName);
+            });
+        });
+
+        // ============================================================
+        // COMPARISON SLIDER
+        // ============================================================
+        const comparisonSlider = document.getElementById('comparisonSlider');
+        let isSliding = false;
+
+        comparisonSlider.addEventListener('mousedown', () => {
+            isSliding = true;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isSliding = false;
+        });
+
+        comparisonSlider.addEventListener('mousemove', (e) => {
+            if (!isSliding) return;
+
+            const rect = comparisonSlider.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+
+            if (percentage >= 0 && percentage <= 100) {
+                comparisonSlider.style.setProperty('--position', percentage + '%');
+            }
+        });
+
+        // Touch support
+        comparisonSlider.addEventListener('touchstart', () => {
+            isSliding = true;
+        });
+
+        comparisonSlider.addEventListener('touchend', () => {
+            isSliding = false;
+        });
+
+        comparisonSlider.addEventListener('touchmove', (e) => {
+            if (!isSliding) return;
+
+            const rect = comparisonSlider.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+
+            if (percentage >= 0 && percentage <= 100) {
+                comparisonSlider.style.setProperty('--position', percentage + '%');
+            }
+        });
+
+        // ============================================================
+        // TESTIMONIALS CAROUSEL
+        // ============================================================
+        let currentTestimonial = 0;
+        const testimonials = document.querySelectorAll('.testimonial-card');
+        const navDots = document.querySelectorAll('.nav-dot');
+
+        function setTestimonial(index) {
+            testimonials.forEach(t => t.style.display = 'none');
+            navDots.forEach(d => d.classList.remove('active'));
+
+            testimonials[index].style.display = 'block';
+            navDots[index].classList.add('active');
+            currentTestimonial = index;
+        }
+
+        // Auto-rotate testimonials
+        setInterval(() => {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            setTestimonial(currentTestimonial);
+        }, 8000);
+
+        // ============================================================
+        // FAQ ACCORDION
+        // ============================================================
+        const faqItems = document.querySelectorAll('.faq-item');
+        const faqTabs = document.querySelectorAll('.faq-tab');
+
+        faqItems.forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
+        function setFAQCategory(category) {
+            faqTabs.forEach(tab => tab.classList.remove('active'));
+            faqItems.forEach(item => {
+                if (item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+                item.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+        }
+
+        // ============================================================
+        // COUNTER ANIMATION
+        // ============================================================
+        const statCards = document.querySelectorAll('.stat-card');
+
+        function animateCounter(element) {
+            const text = element.querySelector('.stat-number').textContent;
+            const numbers = parseInt(text);
+            const duration = 2000;
+            const start = Date.now();
+
+            const animate = () => {
+                const elapsed = Date.now() - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = Math.floor(numbers * progress);
+
+                element.querySelector('.stat-number').textContent = current + (text.includes('+') ? '+' : text.includes('%') ? '%' : '');
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+
+            animate();
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statCards.forEach(card => {
+            statsObserver.observe(card);
+        });
+
+        // ============================================================
+        // FORM SUBMIT
+        // ============================================================
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            alert('Thank you for your inquiry! We will contact you shortly. / Danke für Ihre Anfrage! Wir werden Sie bald kontaktieren.');
+            e.target.reset();
+        }
+
+        // ============================================================
+        // INITIAL SETUP
+        // ============================================================
+        setTestimonial(0);
+    </script>
+</body>
+</html>
