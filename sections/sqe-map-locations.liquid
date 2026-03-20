@@ -1,848 +1,210 @@
-{% comment %}
-  SQE Interactive Map & Locations Section
-  Features: SVG map visualization, animated pins, tooltips, detail cards, responsive
-{% endcomment %}
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign background_color = section.settings.background_color
+  assign columns = section.settings.columns | default: 3
+-%}
 
-<div class="sqe-map-container">
-  <div class="sqe-map-header">
-    <h2 class="sqe-map-title">{{ section.settings.title }}</h2>
-    {% if section.settings.subtitle %}
-      <p class="sqe-map-subtitle">{{ section.settings.subtitle }}</p>
+<section id="section-{{ section.id }}" class="sqe-map-locations" style="background-color: {{ background_color }};">
+  <div class="locations-container">
+    {% if heading %}
+      <h2 class="locations-heading">{{ heading }}</h2>
     {% endif %}
-    {% if section.blocks.size > 0 %}
-      <div class="sqe-map-stats">
-        <div class="sqe-stat">
-          <span class="sqe-stat-number">{{ section.blocks.size }}</span>
-          <span class="sqe-stat-label">Active Regions</span>
-        </div>
-      </div>
+    {% if subheading %}
+      <p class="locations-subheading">{{ subheading }}</p>
     {% endif %}
-  </div>
 
-  <div class="sqe-map-content">
-    <!-- Interactive Map -->
-    <div class="sqe-map-visual">
-      <svg
-        class="sqe-map-svg"
-        viewBox="0 0 1000 600"
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label="Coverage map showing active inspection regions"
-      >
-        <!-- UK Outline (Simplified) -->
-        <defs>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-            <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-
-        <!-- Background -->
-        <rect width="1000" height="600" fill="#F2F4F7"/>
-
-        <!-- Map Base Shape (Stylized UK) -->
-        <g class="sqe-map-base">
-          <!-- England -->
-          <path d="M 350 200 L 450 150 L 500 160 L 520 250 L 480 350 L 400 380 L 300 350 Z" fill="#e0e7ff" stroke="#1F3A5F" stroke-width="2"/>
-          <!-- Scotland -->
-          <path d="M 380 100 L 420 80 L 440 140 L 400 160 Z" fill="#e0e7ff" stroke="#1F3A5F" stroke-width="2"/>
-          <!-- Wales -->
-          <path d="M 280 250 L 320 240 L 330 320 L 290 330 Z" fill="#e0e7ff" stroke="#1F3A5F" stroke-width="2"/>
-        </g>
-
-        <!-- Connection Lines (will be drawn dynamically) -->
-        <g class="sqe-map-connections" id="mapConnections"></g>
-
-        <!-- Location Pins (will be rendered via Liquid) -->
-        <g class="sqe-map-pins" id="mapPins">
-          {% for block in section.blocks %}
-            <g
-              class="sqe-map-pin"
-              data-location-index="{{ forloop.index0 }}"
-              data-x="{{ block.settings.coordinates_x }}"
-              data-y="{{ block.settings.coordinates_y }}"
-              style="cursor: pointer;"
-            >
-              <!-- Outer ring animation -->
-              <circle
-                cx="{{ block.settings.coordinates_x }}"
-                cy="{{ block.settings.coordinates_y }}"
-                r="25"
-                fill="none"
-                stroke="#F2B705"
-                stroke-width="2"
-                opacity="0.3"
-                class="sqe-pin-ring"
-              />
-
-              <!-- Middle circle -->
-              <circle
-                cx="{{ block.settings.coordinates_x }}"
-                cy="{{ block.settings.coordinates_y }}"
-                r="16"
-                fill="#F2B705"
-                class="sqe-pin-center"
-              />
-
-              <!-- Inner circle -->
-              <circle
-                cx="{{ block.settings.coordinates_x }}"
-                cy="{{ block.settings.coordinates_y }}"
-                r="10"
-                fill="white"
-                class="sqe-pin-inner"
-              />
-
-              <!-- Icon -->
-              <text
-                x="{{ block.settings.coordinates_x }}"
-                y="{{ block.settings.coordinates_y }}"
-                text-anchor="middle"
-                dy="0.3em"
-                font-size="16"
-                font-weight="bold"
-                fill="#1F3A5F"
-                class="sqe-pin-icon"
-                pointer-events="none"
-              >
-                📍
-              </text>
-            </g>
-
-            <!-- Tooltip (hidden by default) -->
-            <g class="sqe-map-tooltip" data-location-index="{{ forloop.index0 }}" style="display: none;">
-              <rect
-                x="{{ block.settings.coordinates_x | plus: 35 }}"
-                y="{{ block.settings.coordinates_y | minus: 60 }}"
-                width="180"
-                height="80"
-                rx="8"
-                fill="#1F3A5F"
-                filter="url(#glow)"
-              />
-              <text
-                x="{{ block.settings.coordinates_x | plus: 45 }}"
-                y="{{ block.settings.coordinates_y | minus: 40 }}"
-                font-size="14"
-                font-weight="bold"
-                fill="white"
-                class="sqe-tooltip-title"
-              >
-                {{ block.settings.location_name }}
-              </text>
-              <text
-                x="{{ block.settings.coordinates_x | plus: 45 }}"
-                y="{{ block.settings.coordinates_y | minus: 20 }}"
-                font-size="12"
-                fill="#F2B705"
-                class="sqe-tooltip-count"
-              >
-                {{ block.settings.project_count }} Projects
-              </text>
-            </g>
-          {% endfor %}
-        </g>
-      </svg>
-    </div>
-
-    <!-- Locations List & Detail Card -->
-    <div class="sqe-locations-panel">
-      <!-- Locations List -->
-      <div class="sqe-locations-list">
-        <h3 class="sqe-locations-list-title">Inspection Regions</h3>
-        <div class="sqe-locations-items">
-          {% for block in section.blocks %}
-            <button
-              class="sqe-location-item {% if forloop.first %}active{% endif %}"
-              data-location-index="{{ forloop.index0 }}"
-            >
-              <span class="sqe-location-badge">{{ block.settings.project_count }}</span>
-              <div class="sqe-location-item-content">
-                <h4 class="sqe-location-item-name">{{ block.settings.location_name }}</h4>
-                <p class="sqe-location-item-preview">{{ block.settings.description | strip_html | truncatewords: 6 }}</p>
-              </div>
-              <svg class="sqe-location-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </button>
-          {% endfor %}
-        </div>
-      </div>
-
-      <!-- Detail Card (slides in on click) -->
-      <div class="sqe-location-detail-card">
-        {% for block in section.blocks %}
-          <div
-            class="sqe-detail-content {% if forloop.first %}active{% endif %}"
-            data-location-index="{{ forloop.index0 }}"
-            style="display: {% if forloop.first %}block{% else %}none{% endif %};"
-          >
-            <div class="sqe-detail-header">
-              <h3 class="sqe-detail-title">{{ block.settings.location_name }}</h3>
-              <button class="sqe-detail-close" aria-label="Close detail panel">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </button>
-            </div>
-
-            <div class="sqe-detail-stats">
-              <div class="sqe-detail-stat">
-                <span class="sqe-detail-stat-value">{{ block.settings.project_count }}</span>
-                <span class="sqe-detail-stat-label">Active Projects</span>
-              </div>
-            </div>
-
-            <div class="sqe-detail-description">
-              {{ block.settings.description }}
-            </div>
-
-            {% if block.settings.cta_text and block.settings.cta_url %}
-              <a href="{{ block.settings.cta_url }}" class="sqe-detail-cta">
-                {{ block.settings.cta_text }}
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </a>
-            {% endif %}
+    <div class="locations-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      {% for block in section.blocks %}
+        <div class="location-card" data-location-id="{{ block.id }}" data-location-name="{{ block.settings.name | escape }}" data-location-description="{{ block.settings.description | escape }}" data-location-region="{{ block.settings.region | escape }}" data-project-count="{{ block.settings.project_count }}">
+          <div class="location-header">
+            <h3 class="location-name">{{ block.settings.name }}</h3>
+            <span class="location-badge">{{ block.settings.region }}</span>
           </div>
-        {% endfor %}
-      </div>
+          <p class="location-description">{{ block.settings.description }}</p>
+          <div class="location-meta">
+            <span class="project-count">{{ block.settings.project_count }} Projects</span>
+          </div>
+        </div>
+      {% endfor %}
     </div>
   </div>
-</div>
+</section>
 
 <style>
-  .sqe-map-container {
-    max-width: {{ section.settings.max_width }}px;
-    margin: {{ section.settings.margin_top }}px auto {{ section.settings.margin_bottom }}px;
-    padding: {{ section.settings.padding }}px;
+  #section-{{ section.id }} {
+    padding: 60px 20px;
   }
 
-  .sqe-map-header {
+  .sqe-map-locations {
+    transition: background-color 0.3s ease;
+  }
+
+  .locations-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .locations-heading {
+    font-size: 48px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin-bottom: 10px;
     text-align: center;
-    margin-bottom: 40px;
   }
 
-  .sqe-map-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: {{ section.settings.title_size }}px;
-    font-weight: 700;
-    color: #1F3A5F;
-    margin: 0 0 12px 0;
+  .locations-subheading {
+    font-size: 18px;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 50px;
   }
 
-  .sqe-map-subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    color: #666;
-    margin: 0 0 20px 0;
-    line-height: 1.6;
-  }
-
-  .sqe-map-stats {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #F2F4F7;
-  }
-
-  .sqe-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .sqe-stat-number {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: #F2B705;
-  }
-
-  .sqe-stat-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #999;
-    letter-spacing: 1px;
-  }
-
-  /* Map Content Layout */
-  .sqe-map-content {
+  .locations-grid {
     display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 30px;
-    align-items: start;
+    gap: 25px;
   }
 
-  /* SVG Map */
-  .sqe-map-visual {
-    position: relative;
+  .location-card {
     background: white;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    overflow: hidden;
-    box-shadow: 0 4px 16px rgba(31, 58, 95, 0.08);
-  }
-
-  .sqe-map-svg {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  /* Map Pins */
-  .sqe-map-pin {
-    transition: transform 0.3s ease;
-    cursor: pointer;
-  }
-
-  .sqe-map-pin:hover {
-    transform: scale(1.15);
-  }
-
-  .sqe-map-pin circle {
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
+    border-left: 5px solid #1F3A5F;
   }
 
-  .sqe-map-pin:hover .sqe-pin-center {
-    r: 18;
-    filter: drop-shadow(0 4px 12px rgba(242, 183, 5, 0.4));
-  }
-
-  .sqe-map-pin:hover .sqe-pin-ring {
-    animation: sqe-pin-pulse 0.8s ease-out;
-  }
-
-  @keyframes sqe-pin-pulse {
-    0% {
-      r: 25;
-      opacity: 0.8;
-    }
-    100% {
-      r: 40;
-      opacity: 0;
-    }
-  }
-
-  /* Tooltips */
-  .sqe-map-tooltip {
-    pointer-events: none;
-  }
-
-  .sqe-map-pin:hover ~ .sqe-map-tooltip {
-    display: block !important;
-  }
-
-  /* Connections */
-  .sqe-map-connections line {
-    stroke: #F2B705;
-    stroke-width: 1.5;
-    opacity: 0.3;
-    animation: sqe-draw-line 2s ease-out forwards;
-  }
-
-  @keyframes sqe-draw-line {
-    from {
-      stroke-dasharray: 1000;
-      stroke-dashoffset: 1000;
-    }
-    to {
-      stroke-dasharray: 1000;
-      stroke-dashoffset: 0;
-    }
-  }
-
-  /* Locations Panel */
-  .sqe-locations-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    height: 100%;
-  }
-
-  .sqe-locations-list {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    overflow: hidden;
-  }
-
-  .sqe-locations-list-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #1F3A5F;
-    padding: 16px;
-    margin: 0;
-    border-bottom: 2px solid #F2F4F7;
-  }
-
-  .sqe-locations-items {
-    max-height: 350px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .sqe-locations-items::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .sqe-locations-items::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .sqe-locations-items::-webkit-scrollbar-thumb {
-    background: #ddd;
-    border-radius: 3px;
-  }
-
-  .sqe-locations-items::-webkit-scrollbar-thumb:hover {
-    background: #bbb;
-  }
-
-  .sqe-location-item {
-    width: 100%;
-    padding: 12px 16px;
-    border: none;
-    background: transparent;
-    text-align: left;
-    cursor: pointer;
-    border-left: 4px solid transparent;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-  }
-
-  .sqe-location-item:hover {
-    background: #F2F4F7;
+  .location-card:hover {
+    box-shadow: 0 8px 24px rgba(31, 58, 95, 0.15);
+    transform: translateY(-8px);
     border-left-color: #F2B705;
   }
 
-  .sqe-location-item.active {
-    background: linear-gradient(90deg, rgba(31, 58, 95, 0.05) 0%, transparent 100%);
-    border-left-color: #1F3A5F;
-  }
-
-  .sqe-location-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: #F2B705;
-    color: white;
-    border-radius: 50%;
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .sqe-location-item-content {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .sqe-location-item-name {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: #1F3A5F;
-    margin: 0 0 4px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .sqe-location-item-preview {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    color: #999;
-    margin: 0;
-    line-height: 1.4;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .sqe-location-arrow {
-    color: #F2B705;
-    opacity: 0;
-    transition: all 0.3s ease;
-  }
-
-  .sqe-location-item:hover .sqe-location-arrow {
-    opacity: 1;
-    transform: translateX(4px);
-  }
-
-  /* Detail Card */
-  .sqe-location-detail-card {
-    flex: 1;
-    min-height: 300px;
-    position: relative;
-  }
-
-  .sqe-detail-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    padding: 24px;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    pointer-events: none;
-  }
-
-  .sqe-detail-content.active {
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
-  }
-
-  .sqe-detail-header {
+  .location-header {
     display: flex;
     justify-content: space-between;
-    align-items: start;
-    margin-bottom: 16px;
-    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    gap: 15px;
   }
 
-  .sqe-detail-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 18px;
+  .location-name {
+    font-size: 24px;
     font-weight: 700;
     color: #1F3A5F;
     margin: 0;
-    flex: 1;
   }
 
-  .sqe-detail-close {
-    border: none;
-    background: transparent;
-    color: #999;
-    cursor: pointer;
-    padding: 4px;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-  }
-
-  .sqe-detail-close:hover {
-    color: #1F3A5F;
-    transform: rotate(90deg);
-  }
-
-  .sqe-detail-stats {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid #F2F4F7;
-    margin-bottom: 16px;
-  }
-
-  .sqe-detail-stat {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .sqe-detail-stat-value {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: #F2B705;
-  }
-
-  .sqe-detail-stat-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
+  .location-badge {
+    display: inline-block;
+    background-color: #F2F4F7;
+    color: #333333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
     text-transform: uppercase;
-    color: #999;
-    letter-spacing: 0.5px;
+    white-space: nowrap;
   }
 
-  .sqe-detail-description {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
+  .location-description {
+    font-size: 15px;
     color: #666;
-    line-height: 1.8;
-    margin-bottom: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
   }
 
-  .sqe-detail-description p {
-    margin: 0 0 12px 0;
-  }
-
-  .sqe-detail-description p:last-child {
-    margin-bottom: 0;
-  }
-
-  .sqe-detail-cta {
-    display: inline-flex;
+  .location-meta {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: linear-gradient(135deg, #1F3A5F 0%, #2a5080 100%);
+    padding-top: 15px;
+    border-top: 1px solid #F2F4F7;
+  }
+
+  .project-count {
+    display: inline-block;
+    background-color: #1F3A5F;
     color: white;
-    text-decoration: none;
+    padding: 8px 16px;
     border-radius: 6px;
-    font-family: 'Inter', sans-serif;
     font-size: 13px;
     font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
   }
 
-  .sqe-detail-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(31, 58, 95, 0.2);
-  }
-
-  /* Responsive */
   @media (max-width: 768px) {
-    .sqe-map-container {
-      padding: 16px;
-    }
-
-    .sqe-map-content {
+    .locations-grid {
       grid-template-columns: 1fr;
-      gap: 24px;
     }
-
-    .sqe-map-title {
-      font-size: 24px;
+    .locations-heading {
+      font-size: 32px;
     }
-
-    .sqe-locations-panel {
-      position: relative;
+    .location-header {
+      flex-direction: column;
     }
-
-    .sqe-location-detail-card {
-      position: static;
-      min-height: auto;
-    }
-
-    .sqe-detail-content {
-      position: static;
-      opacity: 1;
-      transform: none;
-      pointer-events: auto;
-      display: none;
-      padding: 16px;
-    }
-
-    .sqe-detail-content.active {
-      display: block;
-    }
-
-    .sqe-locations-items {
-      max-height: none;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .sqe-map-stats {
-      gap: 20px;
-    }
-
-    .sqe-stat-number {
-      font-size: 24px;
-    }
-
-    .sqe-location-item {
-      padding: 10px 12px;
-      gap: 10px;
-    }
-
-    .sqe-location-item-name {
-      font-size: 12px;
+    .location-card {
+      padding: 20px;
     }
   }
 </style>
 
 <script>
-(function() {
-  const container = document.querySelector('.sqe-map-container');
-  if (!container) return;
+  (function() {
+    var el = document.getElementById('section-' + '{{ section.id }}');
+    var cards = el.querySelectorAll('.location-card');
 
-  const mapPins = container.querySelectorAll('.sqe-map-pin');
-  const locationItems = container.querySelectorAll('.sqe-location-item');
-  const detailContents = container.querySelectorAll('.sqe-detail-content');
-  const detailCloses = container.querySelectorAll('.sqe-detail-close');
-
-  function selectLocation(index) {
-    // Update active states
-    locationItems.forEach((item, i) => {
-      item.classList.toggle('active', i === index);
+    cards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() {
+        this.style.borderLeftColor = '#F2B705';
+      });
+      card.addEventListener('mouseleave', function() {
+        this.style.borderLeftColor = '#1F3A5F';
+      });
     });
-
-    detailContents.forEach((content, i) => {
-      content.classList.toggle('active', i === index);
-    });
-
-    // Highlight map pin
-    mapPins.forEach((pin, i) => {
-      if (i === index) {
-        pin.style.transform = 'scale(1.2)';
-      } else {
-        pin.style.transform = 'scale(1)';
-      }
-    });
-  }
-
-  // Location item clicks
-  locationItems.forEach((item, index) => {
-    item.addEventListener('click', () => {
-      selectLocation(index);
-
-      // Scroll location item into view
-      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-  });
-
-  // Map pin clicks
-  mapPins.forEach((pin, index) => {
-    pin.addEventListener('click', () => {
-      selectLocation(index);
-
-      // Scroll location item into view
-      locationItems[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-  });
-
-  // Close detail card
-  detailCloses.forEach(closeBtn => {
-    closeBtn.addEventListener('click', () => {
-      detailContents.forEach(content => content.classList.remove('active'));
-      locationItems.forEach(item => item.classList.remove('active'));
-    });
-  });
-
-  // Draw connection lines between pins
-  function drawConnections() {
-    const pins = Array.from(mapPins);
-    if (pins.length < 2) return;
-
-    const connectionsGroup = container.querySelector('#mapConnections');
-    connectionsGroup.innerHTML = '';
-
-    for (let i = 0; i < pins.length - 1; i++) {
-      const x1 = parseFloat(pins[i].getAttribute('data-x'));
-      const y1 = parseFloat(pins[i].getAttribute('data-y'));
-      const x2 = parseFloat(pins[i + 1].getAttribute('data-x'));
-      const y2 = parseFloat(pins[i + 1].getAttribute('data-y'));
-
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', x1);
-      line.setAttribute('y1', y1);
-      line.setAttribute('x2', x2);
-      line.setAttribute('y2', y2);
-      connectionsGroup.appendChild(line);
-    }
-  }
-
-  drawConnections();
-
-  // Keyboard navigation
-  locationItems.forEach((item, index) => {
-    item.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const nextIndex = (index + 1) % locationItems.length;
-        locationItems[nextIndex].focus();
-        selectLocation(nextIndex);
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prevIndex = (index - 1 + locationItems.length) % locationItems.length;
-        locationItems[prevIndex].focus();
-        selectLocation(prevIndex);
-      }
-    });
-  });
-})();
+  })();
 </script>
 
 {% schema %}
 {
-  "name": "SQE Map & Locations",
+  "name": "Map Locations",
   "settings": [
     {
       "type": "text",
-      "id": "title",
-      "label": "Section Title",
-      "default": "Our Coverage Areas"
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Locations"
     },
     {
       "type": "text",
-      "id": "subtitle",
-      "label": "Section Subtitle",
-      "default": "Providing expert solar inspections across the UK"
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Where we work"
     },
     {
-      "type": "range",
-      "id": "title_size",
-      "label": "Title Size (px)",
-      "min": 24,
-      "max": 48,
-      "step": 2,
-      "unit": "px",
-      "default": 32
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
     },
     {
-      "type": "range",
-      "id": "max_width",
-      "label": "Max Width (px)",
-      "min": 1000,
-      "max": 1600,
-      "step": 50,
-      "unit": "px",
-      "default": 1200
-    },
-    {
-      "type": "range",
-      "id": "padding",
-      "label": "Padding (px)",
-      "min": 0,
-      "max": 60,
-      "step": 10,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "margin_top",
-      "label": "Top Margin (px)",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "unit": "px",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "margin_bottom",
-      "label": "Bottom Margin (px)",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "unit": "px",
-      "default": 40
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        {
+          "value": "2",
+          "label": "2 Columns"
+        },
+        {
+          "value": "3",
+          "label": "3 Columns"
+        },
+        {
+          "value": "4",
+          "label": "4 Columns"
+        }
+      ],
+      "default": "3"
     }
   ],
   "blocks": [
@@ -852,93 +214,31 @@
       "settings": [
         {
           "type": "text",
-          "id": "location_name",
-          "label": "Location Name",
-          "default": "London & South East"
+          "id": "name",
+          "label": "Location Name"
         },
         {
-          "type": "range",
-          "id": "coordinates_x",
-          "label": "X Coordinate (%)",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "%",
-          "default": 50
-        },
-        {
-          "type": "range",
-          "id": "coordinates_y",
-          "label": "Y Coordinate (%)",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "%",
-          "default": 50
-        },
-        {
-          "type": "richtext",
+          "type": "textarea",
           "id": "description",
-          "label": "Description",
-          "default": "<p>Leading solar inspection services across the South East region with rapid response times and expert analysis.</p>"
-        },
-        {
-          "type": "range",
-          "id": "project_count",
-          "label": "Number of Projects",
-          "min": 1,
-          "max": 500,
-          "step": 5,
-          "default": 120
+          "label": "Description"
         },
         {
           "type": "text",
-          "id": "cta_text",
-          "label": "CTA Button Text"
+          "id": "region",
+          "label": "Region"
         },
         {
-          "type": "url",
-          "id": "cta_url",
-          "label": "CTA Button URL"
+          "type": "number",
+          "id": "project_count",
+          "label": "Project Count",
+          "default": 0
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "SQE Map & Locations",
-      "blocks": [
-        {
-          "type": "location",
-          "settings": {
-            "location_name": "London & South East",
-            "coordinates_x": 55,
-            "coordinates_y": 65,
-            "description": "<p>Leading solar inspection services across the South East region with rapid response times and expert analysis.</p>",
-            "project_count": 156
-          }
-        },
-        {
-          "type": "location",
-          "settings": {
-            "location_name": "Midlands",
-            "coordinates_x": 40,
-            "coordinates_y": 45,
-            "description": "<p>Comprehensive coverage of the Midlands with specialized thermal imaging capabilities.</p>",
-            "project_count": 98
-          }
-        },
-        {
-          "type": "location",
-          "settings": {
-            "location_name": "North West",
-            "coordinates_x": 35,
-            "coordinates_y": 25,
-            "description": "<p>Serving Lancashire, Cheshire, and surrounding areas with premium inspection services.</p>",
-            "project_count": 87
-          }
-        }
-      ]
+      "name": "Map Locations"
     }
   ]
 }

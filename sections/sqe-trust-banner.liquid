@@ -1,177 +1,152 @@
-{% comment %}
-  SQE Trust & Credentials Banner - Animated Trust Signals
-  Premium credentials showcase with animated ticker, 3D cards,
-  and verified badges to build customer confidence.
-{% endcomment %}
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign show_ticker = section.settings.show_ticker
+  assign bg_color = section.settings.background_color
+-%}
 
-<div class="sqe-trust-banner" data-section-id="{{ section.id }}">
-  <!-- Animated Ticker Background -->
-  <div class="ticker-container">
-    <div class="ticker-content">
-      <div class="ticker-track">
-        {% for block in section.blocks %}
-          {% if block.type == 'credential' %}
-            <span class="ticker-item">
-              <span class="ticker-badge">{{ block.settings.credential_name }}</span>
-            </span>
-          {% endif %}
-        {% endfor %}
-        <!-- Duplicate for infinite scroll -->
-        {% for block in section.blocks %}
-          {% if block.type == 'credential' %}
-            <span class="ticker-item">
-              <span class="ticker-badge">{{ block.settings.credential_name }}</span>
-            </span>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-  </div>
+<section id="sqe-trust-banner-{{ section.id }}" class="sqe-trust-banner" style="background-color: {{ bg_color }};">
+  <div class="sqe-trust-container">
+    {% if heading != blank %}
+      <h2 class="sqe-trust-heading">{{ heading }}</h2>
+    {% endif %}
 
-  <!-- Main Content Section -->
-  <div class="trust-content-wrapper">
-    <div class="trust-header">
-      <h2 class="trust-title">{{ section.settings.header_title }}</h2>
-      <p class="trust-subtitle">{{ section.settings.header_subtitle }}</p>
+    {% if subheading != blank %}
+      <p class="sqe-trust-subheading">{{ subheading }}</p>
+    {% endif %}
 
-      {% if section.settings.show_years_certified %}
-        <div class="years-certified-counter">
-          <div class="counter-number" data-years="{{ section.settings.years_in_business }}">
-            {{ section.settings.years_in_business }}
-          </div>
-          <div class="counter-label">Years Certified</div>
-        </div>
-      {% endif %}
-    </div>
-
-    <!-- Certification Cards Grid -->
-    <div class="credentials-grid">
+    <div class="sqe-credentials-grid">
       {% for block in section.blocks %}
         {% if block.type == 'credential' %}
-          <div class="credential-card" data-tilt>
-            <!-- Card Front -->
-            <div class="card-front">
-              <div class="card-icon-area">
-                {% if block.settings.credential_icon %}
-                  <img
-                    src="{{ block.settings.credential_icon | image_url: width: 120 }}"
-                    alt="{{ block.settings.credential_name }}"
-                    class="credential-icon"
-                  >
-                {% else %}
-                  <div class="credential-icon-placeholder">
-                    {% if block.settings.icon_emoji != blank %}
-                      {{ block.settings.icon_emoji }}
-                    {% else %}
-                      🏆
-                    {% endif %}
-                  </div>
-                {% endif %}
-              </div>
+          <div class="sqe-credential-card" {{ block.shopify_attributes }}>
+            {% if block.settings.credential_name != blank %}
+              <h3 class="sqe-credential-name">{{ block.settings.credential_name }}</h3>
+            {% endif %}
 
-              <div class="verified-badge">
-                <span class="badge-checkmark">✓</span>
-                <span class="badge-text">Verified</span>
-              </div>
-            </div>
+            {% if block.settings.description != blank %}
+              <p class="sqe-credential-description">{{ block.settings.description }}</p>
+            {% endif %}
 
-            <!-- Card Content -->
-            <div class="card-content">
-              <h3 class="credential-name">{{ block.settings.credential_name }}</h3>
-              <p class="credential-issuer">by {{ block.settings.issuing_body }}</p>
-              <p class="credential-description">{{ block.settings.credential_description }}</p>
-
-              {% if block.settings.certification_year != blank %}
-                <div class="credential-meta">
-                  <span class="meta-badge">{{ block.settings.certification_year }}</span>
-                </div>
-              {% endif %}
-            </div>
+            {% if block.settings.issuer != blank %}
+              <p class="sqe-credential-issuer">{{ block.settings.issuer }}</p>
+            {% endif %}
           </div>
         {% endif %}
       {% endfor %}
     </div>
 
-    <!-- Trust Stats Footer -->
-    {% if section.settings.show_trust_stats %}
-      <div class="trust-stats">
-        <div class="stat-box">
-          <div class="stat-number" data-number="{{ section.settings.customers_served }}">0</div>
-          <div class="stat-text">Customers Served</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number" data-number="{{ section.settings.success_rate }}">0</div>
-          <span class="stat-percent">%</span>
-          <div class="stat-text">Success Rate</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number" data-number="{{ section.settings.kw_installed }}">0</div>
-          <span class="stat-unit">kW</span>
-          <div class="stat-text">Installed</div>
+    {% if show_ticker %}
+      <div class="sqe-ticker-wrapper">
+        <div class="sqe-ticker-track">
+          {% for block in section.blocks %}
+            {% if block.type == 'credential' %}
+              <span class="sqe-ticker-badge">{{ block.settings.credential_name }}</span>
+            {% endif %}
+          {% endfor %}
+          {% for block in section.blocks %}
+            {% if block.type == 'credential' %}
+              <span class="sqe-ticker-badge">{{ block.settings.credential_name }}</span>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
     {% endif %}
   </div>
-
-  <!-- Background Pattern -->
-  <div class="background-pattern"></div>
-</div>
+</section>
 
 <style>
-  .sqe-trust-banner {
-    position: relative;
-    width: 100%;
-    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
-    background: linear-gradient(135deg, {{ section.settings.bg_color_1 }}, {{ section.settings.bg_color_2 }});
-    font-family: 'Inter', sans-serif;
+  #sqe-trust-banner-{{ section.id }} {
+    padding: 60px 20px;
+  }
+
+  .sqe-trust-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sqe-trust-heading {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1F3A5F;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .sqe-trust-subheading {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .sqe-credentials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .sqe-credential-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .sqe-credential-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .sqe-credential-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin-bottom: 10px;
+  }
+
+  .sqe-credential-description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .sqe-credential-issuer {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+  }
+
+  .sqe-ticker-wrapper {
+    background: white;
+    padding: 20px 0;
+    border-radius: 8px;
     overflow: hidden;
+    margin-top: 40px;
   }
 
-  /* BACKGROUND PATTERN */
-  .background-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0.05;
-    background-image:
-      linear-gradient(90deg, #1F3A5F 1px, transparent 1px),
-      linear-gradient(0deg, #1F3A5F 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-  }
-
-  /* ANIMATED TICKER */
-  .ticker-container {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    background: rgba(31, 58, 95, 0.05);
-    border-top: 1px solid rgba(31, 58, 95, 0.1);
-    border-bottom: 1px solid rgba(31, 58, 95, 0.1);
+  .sqe-ticker-track {
     display: flex;
-    align-items: center;
-    margin-bottom: 60px;
-    overflow: hidden;
+    gap: 30px;
+    animation: sqe-ticker-scroll 30s linear infinite;
+    width: max-content;
   }
 
-  .ticker-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
+  .sqe-ticker-badge {
+    display: inline-block;
+    background: #F2F4F7;
+    color: #1F3A5F;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
   }
 
-  .ticker-track {
-    display: flex;
-    gap: 40px;
-    padding: 0 20px;
-    animation: tickerScroll linear infinite;
-    animation-duration: 30s;
-    will-change: transform;
-  }
-
-  @keyframes tickerScroll {
+  @keyframes sqe-ticker-scroll {
     0% {
       transform: translateX(0);
     }
@@ -180,482 +155,40 @@
     }
   }
 
-  .ticker-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .ticker-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background: rgba(242, 183, 5, 0.1);
-    color: #F2B705;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-
-  .ticker-badge::before {
-    content: '★';
-    font-size: 10px;
-  }
-
-  /* MAIN CONTENT */
-  .trust-content-wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .trust-header {
-    text-align: center;
-    margin-bottom: 60px;
-    position: relative;
-  }
-
-  .trust-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 44px;
-    font-weight: 700;
-    color: #1F3A5F;
-    margin: 0 0 15px 0;
-    line-height: 1.2;
-  }
-
-  .trust-subtitle {
-    font-size: 16px;
-    color: #666;
-    margin: 0 0 30px 0;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
-  }
-
-  .years-certified-counter {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    margin-top: 20px;
-    padding: 20px 30px;
-    background: linear-gradient(135deg, rgba(242, 183, 5, 0.1), rgba(31, 58, 95, 0.05));
-    border: 1px solid rgba(242, 183, 5, 0.2);
-    border-radius: 12px;
-  }
-
-  .counter-number {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: #F2B705;
-  }
-
-  .counter-label {
-    font-size: 12px;
-    color: #666;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  /* CREDENTIALS GRID */
-  .credentials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-bottom: 60px;
-  }
-
-  .credential-card {
-    position: relative;
-    background: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 10px 40px rgba(31, 58, 95, 0.1);
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transform-style: preserve-3d;
-    cursor: pointer;
-    overflow: hidden;
-  }
-
-  .credential-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(242, 183, 5, 0.05), transparent);
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    z-index: 0;
-  }
-
-  .credential-card:hover {
-    box-shadow: 0 20px 60px rgba(31, 58, 95, 0.15);
-    transform: translateY(-8px);
-  }
-
-  .credential-card:hover::before {
-    opacity: 1;
-  }
-
-  .card-front {
-    text-align: center;
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .card-icon-area {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 20px;
-    background: linear-gradient(135deg, rgba(31, 58, 95, 0.05), rgba(242, 183, 5, 0.08));
-    border-radius: 12px;
-    border: 2px solid rgba(242, 183, 5, 0.2);
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .credential-card:hover .card-icon-area {
-    border-color: #F2B705;
-    background: linear-gradient(135deg, rgba(31, 58, 95, 0.1), rgba(242, 183, 5, 0.15));
-    transform: scale(1.08) rotateY(5deg);
-  }
-
-  .credential-icon {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-  }
-
-  .credential-icon-placeholder {
-    font-size: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: floatIcon 3s ease-in-out infinite;
-  }
-
-  @keyframes floatIcon {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  .verified-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background: #F2B705;
-    color: #1F3A5F;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin-top: 10px;
-    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  @keyframes popIn {
-    from {
-      transform: scale(0);
-    }
-    to {
-      transform: scale(1);
-    }
-  }
-
-  .badge-checkmark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    background: #1F3A5F;
-    color: white;
-    border-radius: 50%;
-    font-size: 10px;
-    font-weight: 700;
-  }
-
-  .card-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  .credential-name {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #1F3A5F;
-    margin: 0 0 8px 0;
-    line-height: 1.2;
-  }
-
-  .credential-issuer {
-    font-size: 12px;
-    color: #F2B705;
-    font-weight: 700;
-    margin: 0 0 15px 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .credential-description {
-    font-size: 14px;
-    color: #666;
-    line-height: 1.6;
-    margin: 0 0 15px 0;
-  }
-
-  .credential-meta {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .meta-badge {
-    display: inline-block;
-    padding: 6px 12px;
-    background: rgba(31, 58, 95, 0.08);
-    color: #1F3A5F;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-
-  /* TRUST STATS FOOTER */
-  .trust-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    padding: 40px;
-    background: linear-gradient(135deg, rgba(31, 58, 95, 0.05), rgba(242, 183, 5, 0.05));
-    border-radius: 12px;
-    border: 1px solid rgba(31, 58, 95, 0.1);
-  }
-
-  .stat-box {
-    position: relative;
-    text-align: center;
-    padding: 20px;
-  }
-
-  .stat-box::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 3px;
-    height: 40%;
-    background: #F2B705;
-    border-radius: 2px;
-    transform: translateY(-50%);
-  }
-
-  .stat-box:first-child::before {
-    display: none;
-  }
-
-  .stat-number {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 42px;
-    font-weight: 700;
-    color: #1F3A5F;
-    display: inline-block;
-    margin-right: 4px;
-  }
-
-  .stat-percent,
-  .stat-unit {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #F2B705;
-    margin-left: 4px;
-  }
-
-  .stat-text {
-    font-size: 13px;
-    color: #666;
-    margin-top: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
-  }
-
-  /* MOBILE RESPONSIVE */
-  @media (max-width: 1024px) {
-    .trust-title {
-      font-size: 36px;
+  @media (max-width: 768px) {
+    .sqe-credentials-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    .credentials-grid {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .credential-card {
-      padding: 25px;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .trust-content-wrapper {
-      padding: 0 15px;
-    }
-
-    .trust-title {
+    .sqe-trust-heading {
       font-size: 28px;
     }
+  }
 
-    .trust-subtitle {
-      font-size: 14px;
-    }
-
-    .years-certified-counter {
-      padding: 15px 20px;
-    }
-
-    .counter-number {
-      font-size: 36px;
-    }
-
-    .credentials-grid {
+  @media (max-width: 480px) {
+    .sqe-credentials-grid {
       grid-template-columns: 1fr;
-      gap: 15px;
     }
 
-    .credential-card {
-      padding: 20px;
-    }
-
-    .card-icon-area {
-      width: 80px;
-      height: 80px;
-    }
-
-    .credential-icon {
-      width: 48px;
-      height: 48px;
-    }
-
-    .credential-icon-placeholder {
-      font-size: 36px;
-    }
-
-    .credential-name {
-      font-size: 18px;
-    }
-
-    .trust-stats {
-      padding: 25px;
-      gap: 15px;
-    }
-
-    .stat-number {
-      font-size: 32px;
-    }
-
-    .stat-text {
-      font-size: 12px;
+    .sqe-trust-heading {
+      font-size: 24px;
     }
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const banner = document.querySelector('[data-section-id="{{ section.id }}"]');
-
-    // 3D Tilt Effect on Cards
-    const cards = banner.querySelectorAll('.credential-card');
-
-    cards.forEach(card => {
-      card.addEventListener('mousemove', function(e) {
-        if (window.innerWidth > 768) {
-          const rect = this.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-
-          const rotateX = (y - centerY) / 10;
-          const rotateY = (centerX - x) / 10;
-
-          this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
-        }
+  var trustBannerSection = document.getElementById('sqe-trust-banner-' + '{{ section.id }}');
+  if (trustBannerSection) {
+    var cards = trustBannerSection.querySelectorAll('.sqe-credential-card');
+    cards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-4px)';
       });
-
       card.addEventListener('mouseleave', function() {
-        this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+        this.style.transform = 'translateY(0)';
       });
     });
-
-    // Counter Animation
-    const counterElement = banner.querySelector('.counter-number');
-    if (counterElement) {
-      const years = parseInt(counterElement.dataset.years);
-      animateCounter(counterElement, years, 2000);
-    }
-
-    // Stats Counter Animation
-    const statNumbers = banner.querySelectorAll('.stat-number');
-    statNumbers.forEach(stat => {
-      const number = parseInt(stat.dataset.number);
-      if (!isNaN(number)) {
-        animateCounter(stat, number, 2500);
-      }
-    });
-
-    function animateCounter(element, target, duration) {
-      let current = 0;
-      const increment = target / (duration / 16);
-
-      const counter = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          element.textContent = target;
-          clearInterval(counter);
-        } else {
-          element.textContent = Math.floor(current);
-        }
-      }, 16);
-    }
-
-    // Scroll trigger for animations
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
-        }
-      });
-    }, observerOptions);
-
-    cards.forEach(card => observer.observe(card));
-  });
+  }
 </script>
 
 {% schema %}
@@ -664,165 +197,62 @@
   "settings": [
     {
       "type": "text",
-      "id": "header_title",
-      "label": "Section Title",
-      "default": "Trusted & Certified"
+      "id": "heading",
+      "label": "Heading",
+      "default": "Trust & Certifications"
     },
     {
       "type": "text",
-      "id": "header_subtitle",
-      "label": "Section Subtitle",
-      "default": "Industry-leading certifications and credentials you can trust"
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Industry recognized credentials"
     },
     {
       "type": "checkbox",
-      "id": "show_years_certified",
-      "label": "Show Years Certified Counter",
+      "id": "show_ticker",
+      "label": "Show Ticker",
       "default": true
-    },
-    {
-      "type": "range",
-      "id": "years_in_business",
-      "min": 1,
-      "max": 50,
-      "step": 1,
-      "unit": "years",
-      "label": "Years in Business",
-      "default": 15
-    },
-    {
-      "type": "checkbox",
-      "id": "show_trust_stats",
-      "label": "Show Trust Statistics",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "customers_served",
-      "label": "Customers Served",
-      "default": "5000"
-    },
-    {
-      "type": "text",
-      "id": "success_rate",
-      "label": "Success Rate (%)",
-      "default": "98"
-    },
-    {
-      "type": "text",
-      "id": "kw_installed",
-      "label": "Total kW Installed",
-      "default": "50000"
     },
     {
       "type": "color",
-      "id": "bg_color_1",
-      "label": "Background Color 1",
+      "id": "background_color",
+      "label": "Background Color",
       "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "bg_color_2",
-      "label": "Background Color 2",
-      "default": "#F2F4F7"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "unit": "px",
-      "label": "Padding Top",
-      "default": 80
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "unit": "px",
-      "label": "Padding Bottom",
-      "default": 60
     }
   ],
   "blocks": [
     {
       "type": "credential",
-      "name": "Certification",
+      "name": "Credential",
       "settings": [
         {
           "type": "text",
           "id": "credential_name",
-          "label": "Certification Name",
-          "default": "Certification Name"
+          "label": "Credential Name",
+          "default": "Certification"
         },
         {
           "type": "text",
-          "id": "issuing_body",
-          "label": "Issuing Body",
-          "default": "Issuing Organization"
-        },
-        {
-          "type": "richtext",
-          "id": "credential_description",
-          "label": "Description"
-        },
-        {
-          "type": "image_picker",
-          "id": "credential_icon",
-          "label": "Certification Icon/Logo"
+          "id": "description",
+          "label": "Description",
+          "default": "Credential details"
         },
         {
           "type": "text",
-          "id": "icon_emoji",
-          "label": "Or use Emoji",
-          "default": "🏆"
-        },
-        {
-          "type": "text",
-          "id": "certification_year",
-          "label": "Certification Year",
-          "default": "2024"
+          "id": "issuer",
+          "label": "Issuer",
+          "default": "Organization"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "SQE Trust & Credentials",
+      "name": "SQE Trust Banner",
       "blocks": [
-        {
-          "type": "credential",
-          "settings": {
-            "credential_name": "NABCEP Certified",
-            "issuing_body": "North American Board of Certified Energy Practitioners",
-            "credential_description": "Comprehensive solar photovoltaic system installation and design certification.",
-            "icon_emoji": "⭐",
-            "certification_year": "2024"
-          }
-        },
-        {
-          "type": "credential",
-          "settings": {
-            "credential_name": "Licensed Installer",
-            "issuing_body": "State Solar Board",
-            "credential_description": "Authorized and licensed solar installation contractor for all residential and commercial work.",
-            "icon_emoji": "✓",
-            "certification_year": "2023"
-          }
-        },
-        {
-          "type": "credential",
-          "settings": {
-            "credential_name": "Warranty Certified",
-            "issuing_body": "Major Panel Manufacturers",
-            "credential_description": "Authorized service partner with extended warranty coverage and manufacturer support.",
-            "icon_emoji": "🛡️",
-            "certification_year": "2024"
-          }
-        }
+        { "type": "credential" },
+        { "type": "credential" },
+        { "type": "credential" }
       ]
     }
   ]

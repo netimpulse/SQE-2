@@ -1,94 +1,105 @@
-{% comment %}
-SQE Testimonials Section
-Displays client testimonials with customizable layout options
-{% endcomment %}
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign layout = section.settings.layout
+  assign bg_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+-%}
 
-<section class="sqe-testimonials" id="sqe-testimonials-{{ section.id }}">
-  <div class="testimonials-container">
-    {% if section.settings.show_heading %}
-      <div class="testimonials-header">
-        {% if section.settings.heading %}
-          <h2 class="testimonials-title">{{ section.settings.heading }}</h2>
-        {% endif %}
-        {% if section.settings.subheading %}
-          <p class="testimonials-subheading">{{ section.settings.subheading }}</p>
-        {% endif %}
-      </div>
+<section id="sqe-testimonials-{{ section.id }}" class="sqe-testimonials" style="background-color: {{ bg_color }};">
+  <div class="sqe-testimonials-container">
+    {% if heading != blank %}
+      <h2 class="sqe-testimonials-heading" style="color: {{ text_color }};">{{ heading }}</h2>
     {% endif %}
 
-    {% if section.settings.layout == 'slider' %}
-      <div class="testimonials-slider">
-        <div class="slider-wrapper">
-          {% for block in section.blocks %}
-            <div class="testimonial-card slider-slide">
-              <div class="testimonial-content">
-                {% if block.settings.show_rating %}
-                  <div class="testimonial-rating">
-                    {% for i in (1..block.settings.rating) %}
-                      <span class="star filled">★</span>
-                    {% endfor %}
-                    {% for i in (1..5 | minus: block.settings.rating) %}
-                      <span class="star empty">★</span>
-                    {% endfor %}
-                  </div>
+    {% if subheading != blank %}
+      <p class="sqe-testimonials-subheading">{{ subheading }}</p>
+    {% endif %}
+
+    {% if layout == 'slider' %}
+      <div class="sqe-testimonials-slider" data-layout="slider">
+        {% for block in section.blocks %}
+          {% if block.type == 'testimonial' %}
+            <div class="sqe-testimonial-card" {{ block.shopify_attributes }}>
+              {% if block.settings.quote != blank %}
+                <p class="sqe-testimonial-quote">{{ block.settings.quote }}</p>
+              {% endif %}
+
+              {% if block.settings.rating != blank %}
+                <div class="sqe-testimonial-rating" data-rating="{{ block.settings.rating }}">
+                  <span class="star">★</span>
+                  <span class="star">★</span>
+                  <span class="star">★</span>
+                  <span class="star">★</span>
+                  <span class="star">★</span>
+                </div>
+              {% endif %}
+
+              <div class="sqe-testimonial-author">
+                {% if block.settings.photo != blank %}
+                  <img
+                    src="{{ block.settings.photo | image_url: width: 56 }}"
+                    alt="{{ block.settings.client_name }}"
+                    class="sqe-author-photo"
+                    loading="lazy"
+                  >
                 {% endif %}
-                <p class="testimonial-quote">{{ block.settings.quote }}</p>
-              </div>
-              <div class="testimonial-footer">
-                {% if block.settings.client_photo %}
-                  <div class="client-photo">
-                    {{ block.settings.client_photo | image_url: width: 48 | image_tag: alt: block.settings.client_name }}
-                  </div>
-                {% endif %}
-                <div class="client-info">
-                  <p class="client-name">{{ block.settings.client_name }}</p>
-                  {% if block.settings.company_name %}
-                    <p class="client-company">{{ block.settings.company_name }}</p>
+
+                <div class="sqe-author-info">
+                  {% if block.settings.client_name != blank %}
+                    <p class="sqe-author-name">{{ block.settings.client_name }}</p>
+                  {% endif %}
+
+                  {% if block.settings.company != blank %}
+                    <p class="sqe-author-company">{{ block.settings.company }}</p>
                   {% endif %}
                 </div>
               </div>
             </div>
-          {% endfor %}
-        </div>
-        <button class="slider-prev" aria-label="Previous">‹</button>
-        <button class="slider-next" aria-label="Next">›</button>
-        <div class="slider-dots">
-          {% for i in (1..section.blocks.size) %}
-            <button class="dot {% if i == 1 %}active{% endif %}" data-slide="{{ i | minus: 1 }}" aria-label="Go to slide {{ i }}"></button>
-          {% endfor %}
-        </div>
+          {% endif %}
+        {% endfor %}
       </div>
     {% else %}
-      <div class="testimonials-grid" style="grid-template-columns: repeat({{ section.settings.columns }}, 1fr);">
+      <div class="sqe-testimonials-grid" data-layout="grid">
         {% for block in section.blocks %}
-          <div class="testimonial-card">
-            <div class="testimonial-content">
-              {% if block.settings.show_rating %}
-                <div class="testimonial-rating">
-                  {% for i in (1..block.settings.rating) %}
-                    <span class="star filled">★</span>
-                  {% endfor %}
-                  {% for i in (1..5 | minus: block.settings.rating) %}
-                    <span class="star empty">★</span>
-                  {% endfor %}
+          {% if block.type == 'testimonial' %}
+            <div class="sqe-testimonial-card" {{ block.shopify_attributes }}>
+              {% if block.settings.quote != blank %}
+                <p class="sqe-testimonial-quote">{{ block.settings.quote }}</p>
+              {% endif %}
+
+              {% if block.settings.rating != blank %}
+                <div class="sqe-testimonial-rating" data-rating="{{ block.settings.rating }}">
+                  <span class="star">★</span>
+                  <span class="star">★</span>
+                  <span class="star">★</span>
+                  <span class="star">★</span>
+                  <span class="star">★</span>
                 </div>
               {% endif %}
-              <p class="testimonial-quote">{{ block.settings.quote }}</p>
-            </div>
-            <div class="testimonial-footer">
-              {% if block.settings.client_photo %}
-                <div class="client-photo">
-                  {{ block.settings.client_photo | image_url: width: 48 | image_tag: alt: block.settings.client_name }}
-                </div>
-              {% endif %}
-              <div class="client-info">
-                <p class="client-name">{{ block.settings.client_name }}</p>
-                {% if block.settings.company_name %}
-                  <p class="client-company">{{ block.settings.company_name }}</p>
+
+              <div class="sqe-testimonial-author">
+                {% if block.settings.photo != blank %}
+                  <img
+                    src="{{ block.settings.photo | image_url: width: 56 }}"
+                    alt="{{ block.settings.client_name }}"
+                    class="sqe-author-photo"
+                    loading="lazy"
+                  >
                 {% endif %}
+
+                <div class="sqe-author-info">
+                  {% if block.settings.client_name != blank %}
+                    <p class="sqe-author-name">{{ block.settings.client_name }}</p>
+                  {% endif %}
+
+                  {% if block.settings.company != blank %}
+                    <p class="sqe-author-company">{{ block.settings.company }}</p>
+                  {% endif %}
+                </div>
               </div>
             </div>
-          </div>
+          {% endif %}
         {% endfor %}
       </div>
     {% endif %}
@@ -96,423 +107,192 @@ Displays client testimonials with customizable layout options
 </section>
 
 <style>
-  .sqe-testimonials {
-    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_side }}px {{ section.settings.padding_bottom }}px {{ section.settings.padding_side }}px;
-    background-color: {{ section.settings.background_color }};
+  #sqe-testimonials-{{ section.id }} {
+    padding: 60px 20px;
   }
 
-  .testimonials-container {
+  .sqe-testimonials-container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  .testimonials-header {
-    text-align: center;
-    margin-bottom: 48px;
-  }
-
-  .testimonials-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 42px;
+  .sqe-testimonials-heading {
+    font-size: 36px;
     font-weight: 700;
-    color: {{ section.settings.title_color }};
-    margin: 0 0 16px 0;
+    text-align: center;
+    margin-bottom: 10px;
   }
 
-  .testimonials-subheading {
-    font-family: 'Inter', sans-serif;
+  .sqe-testimonials-subheading {
     font-size: 16px;
     color: #666;
-    margin: 0;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    text-align: center;
+    margin-bottom: 40px;
   }
 
-  .testimonials-grid {
+  .sqe-testimonials-grid {
     display: grid;
-    gap: 32px;
-    margin-bottom: 32px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
   }
 
-  .testimonials-slider {
-    position: relative;
-    margin-bottom: 32px;
-  }
-
-  .slider-wrapper {
+  .sqe-testimonials-slider {
     display: flex;
-    gap: 24px;
+    gap: 30px;
     overflow-x: auto;
+    padding: 20px 0;
     scroll-behavior: smooth;
-    padding: 16px 0;
   }
 
-  .slider-slide {
-    flex: 0 0 calc(100% / {{ section.settings.slider_items_per_view }});
+  .sqe-testimonials-slider .sqe-testimonial-card {
+    flex: 0 0 calc(100% / 2);
     min-width: 0;
   }
 
-  .testimonial-card {
-    background: {{ section.settings.card_background_color }};
-    border-radius: {{ section.settings.card_border_radius }}px;
-    padding: 32px;
+  .sqe-testimonial-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    border: 1px solid {{ section.settings.card_border_color }};
-    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .testimonial-card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  .sqe-testimonial-card:hover {
     transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
 
-  .testimonial-content {
-    flex-grow: 1;
-    margin-bottom: 24px;
-  }
-
-  .testimonial-rating {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 16px;
-  }
-
-  .star {
-    font-size: 18px;
-    transition: all 0.2s ease;
-  }
-
-  .star.filled {
-    color: {{ section.settings.accent_color }};
-  }
-
-  .star.empty {
-    color: #ddd;
-  }
-
-  .testimonial-quote {
-    font-family: 'Inter', sans-serif;
+  .sqe-testimonial-quote {
     font-size: 16px;
+    color: #333;
     line-height: 1.6;
-    color: {{ section.settings.quote_color }};
-    margin: 0;
-    font-style: italic;
+    margin-bottom: 20px;
+    flex-grow: 1;
   }
 
-  .testimonial-footer {
+  .sqe-testimonial-rating {
+    margin-bottom: 20px;
+  }
+
+  .sqe-testimonial-rating .star {
+    color: #F2B705;
+    font-size: 16px;
+  }
+
+  .sqe-testimonial-rating[data-rating="1"] .star:nth-child(n+2),
+  .sqe-testimonial-rating[data-rating="2"] .star:nth-child(n+3),
+  .sqe-testimonial-rating[data-rating="3"] .star:nth-child(n+4),
+  .sqe-testimonial-rating[data-rating="4"] .star:nth-child(n+5),
+  .sqe-testimonial-rating[data-rating="5"] .star:nth-child(n+6) {
+    color: #E8E8E8;
+  }
+
+  .sqe-testimonial-author {
     display: flex;
-    gap: 12px;
     align-items: center;
-    padding-top: 16px;
-    border-top: 1px solid {{ section.settings.card_border_color }};
+    gap: 12px;
   }
 
-  .client-photo {
-    width: 48px;
-    height: 48px;
+  .sqe-author-photo {
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: #f0f0f0;
-  }
-
-  .client-photo img {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
   }
 
-  .client-info {
+  .sqe-author-info {
     flex-grow: 1;
   }
 
-  .client-name {
-    font-family: 'Source Sans 3', sans-serif;
+  .sqe-author-name {
     font-size: 14px;
-    font-weight: 600;
-    color: {{ section.settings.primary_color }};
-    margin: 0 0 2px 0;
-  }
-
-  .client-company {
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    color: #999;
+    font-weight: 700;
+    color: #1F3A5F;
     margin: 0;
   }
 
-  .slider-prev,
-  .slider-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: {{ section.settings.primary_color }};
-    color: white;
-    border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 10;
-  }
-
-  .slider-prev:hover,
-  .slider-next:hover {
-    background: {{ section.settings.accent_color }};
-  }
-
-  .slider-prev {
-    left: -22px;
-  }
-
-  .slider-next {
-    right: -22px;
-  }
-
-  .slider-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
-  }
-
-  .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: none;
-    background: #ddd;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .dot.active {
-    background: {{ section.settings.primary_color }};
-    width: 30px;
-    border-radius: 5px;
+  .sqe-author-company {
+    font-size: 12px;
+    color: #999;
+    margin: 4px 0 0 0;
   }
 
   @media (max-width: 768px) {
-    .testimonials-grid {
+    .sqe-testimonials-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sqe-testimonials-slider .sqe-testimonial-card {
+      flex: 0 0 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sqe-testimonials-grid {
       grid-template-columns: 1fr;
     }
 
-    .testimonials-title {
-      font-size: 32px;
-    }
-
-    .testimonial-card {
-      padding: 24px;
-    }
-
-    .slider-prev,
-    .slider-next {
-      width: 36px;
-      height: 36px;
-      font-size: 20px;
-    }
-
-    .slider-prev {
-      left: -18px;
-    }
-
-    .slider-next {
-      right: -18px;
+    .sqe-testimonials-heading {
+      font-size: 24px;
     }
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const section = document.getElementById('sqe-testimonials-{{ section.id }}');
-    if (!section) return;
-
-    const sliderPrev = section.querySelector('.slider-prev');
-    const sliderNext = section.querySelector('.slider-next');
-    const sliderWrapper = section.querySelector('.slider-wrapper');
-    const dots = section.querySelectorAll('.dot');
-
-    if (sliderPrev && sliderNext && sliderWrapper) {
-      const scrollAmount = 400;
-      let currentSlide = 0;
-
-      sliderPrev.addEventListener('click', function() {
-        sliderWrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-        currentSlide = Math.max(0, currentSlide - 1);
-        updateDots();
+  var testimonialsSection = document.getElementById('sqe-testimonials-' + '{{ section.id }}');
+  if (testimonialsSection) {
+    var cards = testimonialsSection.querySelectorAll('.sqe-testimonial-card');
+    cards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-4px)';
       });
-
-      sliderNext.addEventListener('click', function() {
-        sliderWrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        currentSlide = Math.min(dots.length - 1, currentSlide + 1);
-        updateDots();
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
       });
-
-      dots.forEach((dot, index) => {
-        dot.addEventListener('click', function() {
-          const slides = section.querySelectorAll('.slider-slide');
-          const slideWidth = slides[0].offsetWidth + 24;
-          sliderWrapper.scrollTo({ left: index * slideWidth, behavior: 'smooth' });
-          currentSlide = index;
-          updateDots();
-        });
-      });
-
-      function updateDots() {
-        dots.forEach((dot, index) => {
-          if (index === currentSlide) {
-            dot.classList.add('active');
-          } else {
-            dot.classList.remove('active');
-          }
-        });
-      }
-    }
-  });
+    });
+  }
 </script>
 
 {% schema %}
 {
-  "name": "Testimonials",
+  "name": "SQE Testimonials",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_heading",
-      "label": "Show heading",
-      "default": true
-    },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "What Our Clients Say"
+      "default": "Client Testimonials"
     },
     {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Hear from our satisfied customers"
+      "default": "What our clients say"
     },
     {
       "type": "select",
       "id": "layout",
       "label": "Layout",
       "options": [
-        {
-          "value": "grid",
-          "label": "Grid"
-        },
-        {
-          "value": "slider",
-          "label": "Slider"
-        }
+        { "value": "grid", "label": "Grid" },
+        { "value": "slider", "label": "Slider" }
       ],
-      "default": "slider"
-    },
-    {
-      "type": "range",
-      "id": "columns",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "label": "Columns (grid layout)",
-      "default": 3
-    },
-    {
-      "type": "range",
-      "id": "slider_items_per_view",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "label": "Items per view (slider layout)",
-      "default": 3
-    },
-    {
-      "type": "color",
-      "id": "primary_color",
-      "label": "Primary color",
-      "default": "#1F3A5F"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent color",
-      "default": "#F2B705"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Heading color",
-      "default": "#1F3A5F"
-    },
-    {
-      "type": "color",
-      "id": "quote_color",
-      "label": "Quote text color",
-      "default": "#333"
+      "default": "grid"
     },
     {
       "type": "color",
       "id": "background_color",
-      "label": "Section background color",
-      "default": "white"
-    },
-    {
-      "type": "color",
-      "id": "card_background_color",
-      "label": "Card background color",
+      "label": "Background Color",
       "default": "#F2F4F7"
     },
     {
       "type": "color",
-      "id": "card_border_color",
-      "label": "Card border color",
-      "default": "#E8EBF0"
-    },
-    {
-      "type": "range",
-      "id": "card_border_radius",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "label": "Card border radius",
-      "default": 8
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "label": "Padding top",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "label": "Padding bottom",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_side",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "label": "Padding sides",
-      "default": 20
+      "id": "text_color",
+      "label": "Heading Color",
+      "default": "#1F3A5F"
     }
   ],
   "blocks": [
@@ -524,30 +304,19 @@ Displays client testimonials with customizable layout options
           "type": "textarea",
           "id": "quote",
           "label": "Quote",
-          "default": "SQE Solar provided exceptional service and expertise. Our solar installation was completed on time and the system has exceeded our expectations."
+          "default": "This is a client testimonial"
         },
         {
           "type": "text",
           "id": "client_name",
-          "label": "Client name",
-          "default": "John Smith"
+          "label": "Client Name",
+          "default": "John Doe"
         },
         {
           "type": "text",
-          "id": "company_name",
-          "label": "Company name",
-          "default": "Smith Manufacturing Ltd"
-        },
-        {
-          "type": "image_picker",
-          "id": "client_photo",
-          "label": "Client photo"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_rating",
-          "label": "Show rating",
-          "default": true
+          "id": "company",
+          "label": "Company",
+          "default": "Company Name"
         },
         {
           "type": "range",
@@ -555,43 +324,24 @@ Displays client testimonials with customizable layout options
           "min": 1,
           "max": 5,
           "step": 1,
-          "label": "Star rating",
+          "label": "Rating",
           "default": 5
+        },
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Client Photo"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Testimonials",
+      "name": "SQE Testimonials",
       "blocks": [
-        {
-          "type": "testimonial",
-          "settings": {
-            "quote": "SQE Solar provided exceptional service from start to finish. Our solar installation was completed on time and budget.",
-            "client_name": "Sarah Johnson",
-            "company_name": "Johnson Properties",
-            "rating": 5
-          }
-        },
-        {
-          "type": "testimonial",
-          "settings": {
-            "quote": "Professional team, excellent communication, and outstanding results. We've already saved significantly on energy costs.",
-            "client_name": "Michael Chen",
-            "company_name": "Chen Industrial Group",
-            "rating": 5
-          }
-        },
-        {
-          "type": "testimonial",
-          "settings": {
-            "quote": "The expertise and attention to detail shown by SQE Solar was remarkable. Highly recommend their services.",
-            "client_name": "Emma Thompson",
-            "company_name": "Thompson Logistics",
-            "rating": 5
-          }
-        }
+        { "type": "testimonial" },
+        { "type": "testimonial" },
+        { "type": "testimonial" }
       ]
     }
   ]

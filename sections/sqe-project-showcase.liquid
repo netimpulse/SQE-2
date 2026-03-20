@@ -1,682 +1,254 @@
-{% comment %}
-  SQE Project Showcase - Premium Project Gallery with Transitions
-  An immersive portfolio experience with featured projects and
-  scrolling thumbnail navigation with crossfade transitions.
-{% endcomment %}
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign background_color = section.settings.background_color
+-%}
 
-<div class="sqe-project-showcase" data-section-id="{{ section.id }}">
-  <div class="showcase-header">
-    <h2 class="showcase-title">{{ section.settings.header_title }}</h2>
-    <p class="showcase-subtitle">{{ section.settings.header_subtitle }}</p>
-  </div>
-
+<section id="section-{{ section.id }}" class="sqe-project-showcase" style="background-color: {{ background_color }};">
   <div class="showcase-container">
-    <!-- Featured Project Card -->
-    <div class="featured-project-wrapper">
-      {% for block in section.blocks %}
-        {% if block.type == 'project' %}
-          <div
-            class="featured-project"
-            data-project-id="project-{{ forloop.index }}"
-            {% if forloop.first %}data-active="true"{% endif %}
-          >
-            <div class="featured-image-container">
-              {% if block.settings.project_image %}
-                <img
-                  src="{{ block.settings.project_image | image_url: width: 1200 }}"
-                  alt="{{ block.settings.project_title }}"
-                  class="featured-image"
-                >
-              {% else %}
-                <div class="featured-image-placeholder"></div>
-              {% endif %}
-              <div class="featured-overlay"></div>
-            </div>
+    {% if heading %}
+      <h2 class="showcase-heading">{{ heading }}</h2>
+    {% endif %}
+    {% if subheading %}
+      <p class="showcase-subheading">{{ subheading }}</p>
+    {% endif %}
 
-            <div class="featured-content">
-              <div class="featured-top">
-                <div class="featured-meta">
-                  <span class="meta-item">
-                    <span class="meta-icon">📍</span>
-                    {{ block.settings.project_location }}
-                  </span>
-                  <span class="meta-divider"></span>
-                  <span class="meta-item">
-                    <span class="meta-icon">📅</span>
-                    {{ block.settings.project_year }}
-                  </span>
-                </div>
-              </div>
-
-              <h3 class="featured-title">{{ block.settings.project_title }}</h3>
-
-              <div class="featured-stats">
-                {% if block.settings.stat_capacity != blank %}
-                  <div class="stat-pill">
-                    <span class="pill-label">Capacity</span>
-                    <span class="pill-value">{{ block.settings.stat_capacity }}</span>
-                  </div>
-                {% endif %}
-                {% if block.settings.stat_type != blank %}
-                  <div class="stat-pill">
-                    <span class="pill-label">Type</span>
-                    <span class="pill-value">{{ block.settings.stat_type }}</span>
-                  </div>
-                {% endif %}
-                {% if block.settings.stat_savings != blank %}
-                  <div class="stat-pill">
-                    <span class="pill-label">Annual Savings</span>
-                    <span class="pill-value">{{ block.settings.stat_savings }}</span>
-                  </div>
-                {% endif %}
-              </div>
-
-              <p class="featured-description">{{ block.settings.project_description }}</p>
-
-              <div class="featured-cta">
-                <button class="view-project-btn" data-project="{{ block.settings.project_title }}">
-                  View Full Project
-                  <span class="btn-arrow">→</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-
-    <!-- Thumbnail Strip Navigation -->
-    <div class="thumbnail-nav-container">
-      <button class="nav-arrow nav-prev" id="thumbnails-prev" aria-label="Previous project">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </button>
-
-      <div class="thumbnails-wrapper">
-        <div class="thumbnails-scroll">
-          {% for block in section.blocks %}
-            {% if block.type == 'project' %}
-              <div
-                class="thumbnail-item"
-                data-project-id="project-{{ forloop.index }}"
-                {% if forloop.first %}data-active="true"{% endif %}
-              >
-                {% if block.settings.thumbnail_image %}
-                  <img
-                    src="{{ block.settings.thumbnail_image | image_url: width: 300 }}"
-                    alt="{{ block.settings.project_title }}"
-                    class="thumbnail-image"
-                  >
-                {% else %}
-                  <div class="thumbnail-placeholder"></div>
-                {% endif %}
-                <div class="thumbnail-overlay"></div>
-                <div class="thumbnail-title">{{ block.settings.project_title }}</div>
-              </div>
+    <div class="showcase-main">
+      {% if section.blocks.size > 0 %}
+        {% assign first_block = section.blocks.first %}
+        <div class="featured-project" data-project-id="{{ first_block.id }}">
+          {% if first_block.settings.image %}
+            <img src="{{ first_block.settings.image | img_url: '800x600' }}" alt="{{ first_block.settings.title }}" class="featured-image">
+          {% endif %}
+          <div class="featured-info">
+            <h3 class="project-title">{{ first_block.settings.title }}</h3>
+            {% if first_block.settings.location %}
+              <p class="project-meta"><strong>Location:</strong> {{ first_block.settings.location }}</p>
             {% endif %}
-          {% endfor %}
+            {% if first_block.settings.capacity %}
+              <p class="project-meta"><strong>Capacity:</strong> {{ first_block.settings.capacity }}</p>
+            {% endif %}
+            {% if first_block.settings.project_type %}
+              <p class="project-meta"><strong>Type:</strong> {{ first_block.settings.project_type }}</p>
+            {% endif %}
+            {% if first_block.settings.year %}
+              <p class="project-meta"><strong>Year:</strong> {{ first_block.settings.year }}</p>
+            {% endif %}
+            {% if first_block.settings.description %}
+              <p class="project-description">{{ first_block.settings.description }}</p>
+            {% endif %}
+          </div>
         </div>
-      </div>
-
-      <button class="nav-arrow nav-next" id="thumbnails-next" aria-label="Next project">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-      </button>
+      {% endif %}
     </div>
+
+    {% if section.blocks.size > 1 %}
+      <div class="thumbnail-strip">
+        {% for block in section.blocks %}
+          <div class="thumbnail-item" data-project-id="{{ block.id }}" data-project-title="{{ block.settings.title | escape }}" data-project-location="{{ block.settings.location | escape }}" data-project-capacity="{{ block.settings.capacity | escape }}" data-project-type="{{ block.settings.project_type | escape }}" data-project-year="{{ block.settings.year | escape }}" data-project-description="{{ block.settings.description | escape }}" {% if block.settings.image %}data-project-image="{{ block.settings.image | img_url: '800x600' }}"{% endif %}>
+            {% if block.settings.image %}
+              <img src="{{ block.settings.image | img_url: '150x150' }}" alt="{{ block.settings.title }}" class="thumbnail-image">
+            {% endif %}
+            <p class="thumbnail-title">{{ block.settings.title }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
-</div>
+</section>
 
 <style>
+  #section-{{ section.id }} {
+    padding: 60px 20px;
+  }
+
   .sqe-project-showcase {
-    width: 100%;
-    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
-    background: linear-gradient(135deg, {{ section.settings.bg_color_1 }}, {{ section.settings.bg_color_2 }});
-    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease;
   }
 
-  .showcase-header {
-    max-width: 1400px;
-    margin: 0 auto 50px;
-    padding: 0 20px;
-    text-align: center;
+  .showcase-container {
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
-  .showcase-title {
-    font-family: 'Source Sans 3', sans-serif;
+  .showcase-heading {
     font-size: 48px;
     font-weight: 700;
     color: #1F3A5F;
-    margin: 0 0 15px 0;
-    line-height: 1.2;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
-  .showcase-subtitle {
-    font-size: 16px;
-    color: #666;
-    margin: 0;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* FEATURED PROJECT */
-  .showcase-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  .featured-project-wrapper {
-    position: relative;
+  .showcase-subheading {
+    font-size: 18px;
+    color: #333333;
+    text-align: center;
     margin-bottom: 50px;
   }
 
+  .showcase-main {
+    margin-bottom: 40px;
+  }
+
   .featured-project {
-    display: none;
-    animation: fadeInUp 0.8s ease forwards;
-  }
-
-  .featured-project[data-active="true"] {
-    display: block;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .featured-image-container {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 30px 80px rgba(31, 58, 95, 0.2);
-    cursor: pointer;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
   }
 
   .featured-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
+    border-radius: 8px;
     object-fit: cover;
-    animation: kenBurnsZoom 8s ease-out infinite;
   }
 
-  @keyframes kenBurnsZoom {
-    from {
-      transform: scale(1);
-    }
-    to {
-      transform: scale(1.05);
-    }
+  .featured-info {
+    padding: 20px 0;
   }
 
-  .featured-image-placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #F2F4F7, #E8EEF7);
-  }
-
-  .featured-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(31, 58, 95, 0.4), transparent);
-    opacity: 0;
-    transition: opacity 0.35s ease;
-  }
-
-  .featured-image-container:hover .featured-overlay {
-    opacity: 1;
-  }
-
-  .featured-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 40px;
-    color: white;
-    z-index: 5;
-  }
-
-  .featured-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 15px;
-    font-size: 13px;
-    font-weight: 600;
-    opacity: 0.95;
-  }
-
-  .meta-icon {
-    display: inline-block;
-    font-size: 14px;
-  }
-
-  .meta-divider {
-    width: 1px;
-    height: 16px;
-    background: rgba(255, 255, 255, 0.5);
-  }
-
-  .featured-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 44px;
+  .project-title {
+    font-size: 36px;
     font-weight: 700;
-    margin: 0 0 20px 0;
-    line-height: 1.2;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  }
-
-  .featured-stats {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-
-  .stat-pill {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 10px 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .pill-label {
-    opacity: 0.85;
-  }
-
-  .pill-value {
-    font-weight: 700;
-    color: #F2B705;
-  }
-
-  .featured-description {
-    font-size: 15px;
-    line-height: 1.7;
-    margin: 0 0 25px 0;
-    max-width: 500px;
-    opacity: 0.95;
-  }
-
-  .featured-cta {
-    display: inline-block;
-  }
-
-  .view-project-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 14px 30px;
-    background: #F2B705;
     color: #1F3A5F;
-    border: none;
-    border-radius: 6px;
-    font-family: 'Inter', sans-serif;
+    margin-bottom: 20px;
+  }
+
+  .project-meta {
     font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    letter-spacing: 0.5px;
+    color: #666;
+    margin-bottom: 10px;
   }
 
-  .view-project-btn:hover {
-    background: white;
-    transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(242, 183, 5, 0.4);
-  }
-
-  .btn-arrow {
-    transition: transform 0.35s ease;
-  }
-
-  .view-project-btn:hover .btn-arrow {
-    transform: translateX(4px);
-  }
-
-  /* THUMBNAIL NAVIGATION */
-  .thumbnail-nav-container {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  .project-description {
+    font-size: 16px;
+    color: #333333;
+    line-height: 1.6;
     margin-top: 20px;
   }
 
-  .nav-arrow {
+  .thumbnail-strip {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: white;
-    border: 2px solid #E0E0E0;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #1F3A5F;
-    transition: all 0.35s ease;
-    flex-shrink: 0;
-  }
-
-  .nav-arrow:hover {
-    background: #1F3A5F;
-    color: white;
-    border-color: #1F3A5F;
-    transform: scale(1.08);
-  }
-
-  .nav-arrow svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .thumbnails-wrapper {
-    flex: 1;
-    overflow: hidden;
-    border-radius: 8px;
-  }
-
-  .thumbnails-scroll {
-    display: flex;
-    gap: 12px;
+    gap: 15px;
     overflow-x: auto;
-    scroll-behavior: smooth;
-    padding: 4px 0;
-    scrollbar-width: thin;
-    scrollbar-color: #F2B705 #F2F4F7;
-  }
-
-  .thumbnails-scroll::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  .thumbnails-scroll::-webkit-scrollbar-track {
-    background: #F2F4F7;
-    border-radius: 3px;
-  }
-
-  .thumbnails-scroll::-webkit-scrollbar-thumb {
-    background: #F2B705;
-    border-radius: 3px;
-  }
-
-  .thumbnails-scroll::-webkit-scrollbar-thumb:hover {
-    background: #e09d00;
+    padding-bottom: 10px;
   }
 
   .thumbnail-item {
-    position: relative;
-    min-width: 180px;
-    height: 120px;
-    border-radius: 8px;
-    overflow: hidden;
+    flex: 0 0 150px;
+    text-align: center;
     cursor: pointer;
     border: 3px solid transparent;
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    flex-shrink: 0;
+    border-radius: 8px;
+    padding: 10px;
+    transition: all 0.3s ease;
   }
 
-  .thumbnail-item[data-active="true"] {
+  .thumbnail-item:hover,
+  .thumbnail-item.active {
     border-color: #F2B705;
-    box-shadow: 0 0 0 3px rgba(242, 183, 5, 0.2);
-  }
-
-  .thumbnail-item:hover {
-    transform: scale(1.05);
+    background-color: #F2F4F7;
   }
 
   .thumbnail-image {
     width: 100%;
-    height: 100%;
+    height: 120px;
     object-fit: cover;
-    transition: transform 0.35s ease;
-  }
-
-  .thumbnail-item:hover .thumbnail-image {
-    transform: scale(1.08);
-  }
-
-  .thumbnail-placeholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #F2F4F7, #E8EEF7);
-  }
-
-  .thumbnail-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, transparent, rgba(31, 58, 95, 0.2));
-    opacity: 0;
-    transition: opacity 0.35s ease;
-  }
-
-  .thumbnail-item:hover .thumbnail-overlay {
-    opacity: 1;
+    border-radius: 6px;
+    margin-bottom: 10px;
   }
 
   .thumbnail-title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 10px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-    color: white;
-    font-size: 11px;
-    font-weight: 700;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333333;
   }
 
-  .thumbnail-item:hover .thumbnail-title {
-    opacity: 1;
-  }
-
-  /* MOBILE RESPONSIVE */
-  @media (max-width: 1024px) {
-    .showcase-title {
-      font-size: 36px;
-    }
-
-    .featured-title {
-      font-size: 32px;
-    }
-
-    .featured-content {
-      padding: 30px;
-    }
-
-    .thumbnail-item {
-      min-width: 140px;
-      height: 100px;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .showcase-container {
-      padding: 0 15px;
-    }
-
-    .showcase-title {
-      font-size: 28px;
-    }
-
-    .featured-title {
-      font-size: 24px;
-    }
-
-    .featured-content {
+  @media (max-width: 768px) {
+    .featured-project {
+      grid-template-columns: 1fr;
+      gap: 20px;
       padding: 20px;
     }
-
-    .featured-stats {
-      gap: 8px;
+    .showcase-heading {
+      font-size: 32px;
     }
-
-    .stat-pill {
-      padding: 8px 12px;
-      font-size: 11px;
-    }
-
-    .featured-description {
-      font-size: 14px;
-    }
-
-    .view-project-btn {
-      padding: 12px 24px;
-      font-size: 13px;
-    }
-
-    .thumbnail-nav-container {
-      gap: 10px;
-    }
-
-    .nav-arrow {
-      width: 40px;
-      height: 40px;
-    }
-
-    .thumbnail-item {
-      min-width: 100px;
-      height: 75px;
+    .project-title {
+      font-size: 24px;
     }
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const showcase = document.querySelector('[data-section-id="{{ section.id }}"]');
-    const thumbnailItems = showcase.querySelectorAll('.thumbnail-item');
-    const featuredProjects = showcase.querySelectorAll('.featured-project');
-    const thumbnailsScroll = showcase.querySelector('.thumbnails-scroll');
-    const prevBtn = showcase.querySelector('#thumbnails-prev');
-    const nextBtn = showcase.querySelector('#thumbnails-next');
+  (function() {
+    var el = document.getElementById('section-' + '{{ section.id }}');
+    var thumbnails = el.querySelectorAll('.thumbnail-item');
+    var featured = el.querySelector('.featured-project');
 
-    function setActiveProject(projectId) {
-      // Update thumbnails
-      thumbnailItems.forEach(item => {
-        if (item.dataset.projectId === projectId) {
-          item.setAttribute('data-active', 'true');
-          // Scroll thumbnail into view
-          item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        } else {
-          item.removeAttribute('data-active');
-        }
-      });
+    thumbnails.forEach(function(thumb) {
+      thumb.addEventListener('click', function() {
+        thumbnails.forEach(function(t) { t.classList.remove('active'); });
+        this.classList.add('active');
 
-      // Update featured project
-      featuredProjects.forEach(project => {
-        if (project.dataset.projectId === projectId) {
-          project.setAttribute('data-active', 'true');
-        } else {
-          project.removeAttribute('data-active');
+        var title = this.getAttribute('data-project-title');
+        var location = this.getAttribute('data-project-location');
+        var capacity = this.getAttribute('data-project-capacity');
+        var type = this.getAttribute('data-project-type');
+        var year = this.getAttribute('data-project-year');
+        var desc = this.getAttribute('data-project-description');
+        var img = this.getAttribute('data-project-image');
+
+        var html = '<div class="featured-info"><h3 class="project-title">' + title + '</h3>';
+        if (location) html += '<p class="project-meta"><strong>Location:</strong> ' + location + '</p>';
+        if (capacity) html += '<p class="project-meta"><strong>Capacity:</strong> ' + capacity + '</p>';
+        if (type) html += '<p class="project-meta"><strong>Type:</strong> ' + type + '</p>';
+        if (year) html += '<p class="project-meta"><strong>Year:</strong> ' + year + '</p>';
+        if (desc) html += '<p class="project-description">' + desc + '</p>';
+        html += '</div>';
+
+        featured.innerHTML = '';
+        if (img) {
+          var imgEl = document.createElement('img');
+          imgEl.src = img;
+          imgEl.alt = title;
+          imgEl.className = 'featured-image';
+          featured.appendChild(imgEl);
         }
+        featured.innerHTML += html;
       });
+    });
+
+    if (thumbnails.length > 0) {
+      thumbnails[0].classList.add('active');
     }
-
-    // Thumbnail click handlers
-    thumbnailItems.forEach(item => {
-      item.addEventListener('click', function() {
-        setActiveProject(this.dataset.projectId);
-      });
-    });
-
-    // Navigation arrows
-    prevBtn.addEventListener('click', function() {
-      thumbnailsScroll.scrollBy({ left: -220, behavior: 'smooth' });
-    });
-
-    nextBtn.addEventListener('click', function() {
-      thumbnailsScroll.scrollBy({ left: 220, behavior: 'smooth' });
-    });
-
-    // CTA buttons
-    showcase.querySelectorAll('.view-project-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const projectName = this.dataset.project;
-        console.log('Project viewed:', projectName);
-        // Add your logic here
-      });
-    });
-  });
+  })();
 </script>
 
 {% schema %}
 {
-  "name": "SQE Project Showcase",
+  "name": "Project Showcase",
   "settings": [
     {
       "type": "text",
-      "id": "header_title",
-      "label": "Section Title",
+      "id": "heading",
+      "label": "Heading",
       "default": "Featured Projects"
     },
     {
       "type": "text",
-      "id": "header_subtitle",
-      "label": "Section Subtitle",
-      "default": "Explore our portfolio of successful solar installations"
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Browse our latest work"
     },
     {
       "type": "color",
-      "id": "bg_color_1",
-      "label": "Background Color 1",
+      "id": "background_color",
+      "label": "Background Color",
       "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "bg_color_2",
-      "label": "Background Color 2",
-      "default": "#F2F4F7"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "unit": "px",
-      "label": "Padding Top",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "unit": "px",
-      "label": "Padding Bottom",
-      "default": 60
     }
   ],
   "blocks": [
@@ -685,88 +257,46 @@
       "name": "Project",
       "settings": [
         {
-          "type": "text",
-          "id": "project_title",
-          "label": "Project Title",
-          "default": "Project Name"
-        },
-        {
-          "type": "text",
-          "id": "project_location",
-          "label": "Location",
-          "default": "City, State"
-        },
-        {
-          "type": "text",
-          "id": "project_year",
-          "label": "Completion Year",
-          "default": "2024"
-        },
-        {
           "type": "image_picker",
-          "id": "project_image",
-          "label": "Featured Image (1200x675)"
-        },
-        {
-          "type": "image_picker",
-          "id": "thumbnail_image",
-          "label": "Thumbnail Image (300x200)"
-        },
-        {
-          "type": "richtext",
-          "id": "project_description",
-          "label": "Project Description"
+          "id": "image",
+          "label": "Project Image"
         },
         {
           "type": "text",
-          "id": "stat_capacity",
-          "label": "System Capacity",
-          "default": "25 kW"
+          "id": "title",
+          "label": "Project Title"
         },
         {
           "type": "text",
-          "id": "stat_type",
-          "label": "System Type",
-          "default": "Residential"
+          "id": "location",
+          "label": "Location"
         },
         {
           "type": "text",
-          "id": "stat_savings",
-          "label": "Annual Savings",
-          "default": "$3,200"
+          "id": "capacity",
+          "label": "Capacity"
+        },
+        {
+          "type": "text",
+          "id": "project_type",
+          "label": "Project Type"
+        },
+        {
+          "type": "text",
+          "id": "year",
+          "label": "Year"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "SQE Project Showcase",
-      "blocks": [
-        {
-          "type": "project",
-          "settings": {
-            "project_title": "Residential Rooftop Installation",
-            "project_location": "California",
-            "project_year": "2024",
-            "project_description": "A comprehensive 25 kW solar installation on a residential rooftop.",
-            "stat_capacity": "25 kW",
-            "stat_type": "Residential",
-            "stat_savings": "$3,200/year"
-          }
-        },
-        {
-          "type": "project",
-          "settings": {
-            "project_title": "Commercial Solar Farm",
-            "project_location": "Texas",
-            "project_year": "2023",
-            "project_description": "Large-scale commercial solar farm installation.",
-            "stat_capacity": "100 kW",
-            "stat_type": "Commercial",
-            "stat_savings": "$15,000/year"
-          }
-        }
-      ]
+      "name": "Project Showcase"
     }
   ]
 }

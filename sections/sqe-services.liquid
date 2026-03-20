@@ -1,405 +1,254 @@
-{%- style -%}
-  .sqe-services {
-    --color-primary-blue: #1F3A5F;
-    --color-yellow: #F2B705;
-    --color-light-grey: #F2F4F7;
-    --color-dark-grey: #333333;
-    --color-orange: #C75B12;
-    --font-heading: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --section-padding-top: {{ section.settings.padding_top }}px;
-    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
-    --card-padding: {{ section.settings.card_padding }}px;
-    --grid-gap: {{ section.settings.grid_gap }}px;
-    --icon-size: {{ section.settings.icon_size }}px;
-    --icon-color: {{ section.settings.icon_color }};
-    --grid-columns: {% if section.settings.grid_columns == '2' %}2{% elsif section.settings.grid_columns == '3' %}3{% else %}4{% endif %};
-  }
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign columns = section.settings.columns
+  assign bg_color = section.settings.background_color
+  assign card_style = section.settings.card_style
+-%}
 
-  @media (max-width: 768px) {
-    .sqe-services {
-      --grid-columns: {% if section.settings.grid_columns == '2' %}2{% elsif section.settings.grid_columns == '3' %}2{% else %}2{% endif %};
-    }
-  }
-
-  @media (max-width: 480px) {
-    .sqe-services {
-      --grid-columns: 1;
-    }
-  }
-
-  .sqe-services {
-    padding-top: var(--section-padding-top);
-    padding-bottom: var(--section-padding-bottom);
-    background-color: {{ section.settings.background_color }};
-  }
-
-  .sqe-services__container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  .sqe-services__header {
-    margin-bottom: 48px;
-    text-align: {{ section.settings.header_alignment }};
-  }
-
-  .sqe-services__heading {
-    font-family: var(--font-heading);
-    font-size: 36px;
-    font-weight: 600;
-    line-height: 1.2;
-    margin: 0 0 12px 0;
-    color: var(--color-primary-blue);
-  }
-
-  @media (max-width: 768px) {
-    .sqe-services__heading {
-      font-size: 28px;
-    }
-  }
-
-  .sqe-services__subheading {
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.6;
-    margin: 0;
-    color: var(--color-dark-grey);
-    opacity: 0.8;
-  }
-
-  .sqe-services__grid {
-    display: grid;
-    grid-template-columns: repeat(var(--grid-columns), 1fr);
-    gap: var(--grid-gap);
-  }
-
-  .sqe-services__card {
-    padding: var(--card-padding);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background-color: #ffffff;
-  }
-
-  /* Card style: bordered */
-  .sqe-services__card--bordered {
-    border: 2px solid var(--color-light-grey);
-  }
-
-  .sqe-services__card--bordered:hover {
-    border-color: var(--color-primary-blue);
-  }
-
-  /* Card style: shadow */
-  .sqe-services__card--shadow {
-    box-shadow: 0 2px 8px rgba(31, 58, 95, 0.08);
-  }
-
-  .sqe-services__card--shadow:hover {
-    box-shadow: 0 8px 24px rgba(31, 58, 95, 0.16);
-  }
-
-  /* Card style: flat */
-  .sqe-services__card--flat {
-    background-color: var(--color-light-grey);
-  }
-
-  .sqe-services__card--flat:hover {
-    background-color: #e8ebf0;
-  }
-
-  /* Hover effect for all cards */
-  .sqe-services__card:hover {
-    transform: translateY(-4px);
-  }
-
-  .sqe-services__card-icon {
-    width: var(--icon-size);
-    height: var(--icon-size);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    background-color: rgba(242, 183, 5, 0.1);
-    flex-shrink: 0;
-  }
-
-  .sqe-services__card-icon svg {
-    width: 100%;
-    height: 100%;
-    color: var(--icon-color);
-    fill: currentColor;
-  }
-
-  .sqe-services__card-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 8px;
-  }
-
-  .sqe-services__card-title {
-    font-family: var(--font-heading);
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.4;
-    margin: 0 0 12px 0;
-    color: var(--color-primary-blue);
-  }
-
-  .sqe-services__card-description {
-    font-family: var(--font-body);
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 0 0 16px 0;
-    color: var(--color-dark-grey);
-    opacity: 0.8;
-    flex-grow: 1;
-  }
-
-  .sqe-services__card-link {
-    font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-primary-blue);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    transition: color 0.3s ease;
-    margin-top: auto;
-  }
-
-  .sqe-services__card-link:hover {
-    color: var(--color-orange);
-  }
-
-  .sqe-services__card-link::after {
-    content: '→';
-    margin-left: 8px;
-    transition: margin-left 0.3s ease;
-  }
-
-  .sqe-services__card-link:hover::after {
-    margin-left: 12px;
-  }
-
-  /* Empty state */
-  .sqe-services__empty {
-    padding: 48px 20px;
-    text-align: center;
-    color: var(--color-dark-grey);
-    opacity: 0.6;
-  }
-{%- endstyle -%}
-
-<div class="sqe-services">
-  <div class="sqe-services__container">
-    {% if section.settings.heading != blank or section.settings.subheading != blank %}
-      <div class="sqe-services__header">
-        {% if section.settings.heading != blank %}
-          <h2 class="sqe-services__heading">{{ section.settings.heading }}</h2>
-        {% endif %}
-        {% if section.settings.subheading != blank %}
-          <p class="sqe-services__subheading">{{ section.settings.subheading }}</p>
-        {% endif %}
-      </div>
+<section id="sqe-services-{{ section.id }}" class="sqe-services" style="background-color: {{ bg_color }};">
+  <div class="sqe-services-container">
+    {% if heading != blank %}
+      <h2 class="sqe-services-heading">{{ heading }}</h2>
     {% endif %}
 
-    {% if section.blocks.size > 0 %}
-      <div class="sqe-services__grid">
-        {% for block in section.blocks %}
-          <div class="sqe-services__card sqe-services__card--{{ block.settings.card_style }}" {{ block.shopify_attributes }}>
-            {% if block.settings.icon_type == 'upload' and block.settings.icon_image != blank %}
-              <div class="sqe-services__card-icon">
+    {% if subheading != blank %}
+      <p class="sqe-services-subheading">{{ subheading }}</p>
+    {% endif %}
+
+    <div class="sqe-services-grid" data-columns="{{ columns }}" data-style="{{ card_style }}">
+      {% for block in section.blocks %}
+        {% if block.type == 'service_card' %}
+          <div class="sqe-service-card" {{ block.shopify_attributes }}>
+            {% if block.settings.icon != blank %}
+              <div class="sqe-service-icon">
                 <img
-                  src="{{ block.settings.icon_image | image_url: width: 100 }}"
+                  src="{{ block.settings.icon | image_url: width: 80 }}"
                   alt="{{ block.settings.title }}"
                   loading="lazy"
                 >
               </div>
-            {% elsif block.settings.icon_type == 'svg' and block.settings.icon_svg != blank %}
-              <div class="sqe-services__card-icon">
-                {{ block.settings.icon_svg }}
-              </div>
             {% endif %}
 
-            <h3 class="sqe-services__card-title">{{ block.settings.title }}</h3>
+            <div class="sqe-service-content">
+              {% if block.settings.title != blank %}
+                <h3 class="sqe-service-title">{{ block.settings.title }}</h3>
+              {% endif %}
 
-            {% if block.settings.description != blank %}
-              <p class="sqe-services__card-description">{{ block.settings.description }}</p>
-            {% endif %}
+              {% if block.settings.description != blank %}
+                <p class="sqe-service-description">{{ block.settings.description }}</p>
+              {% endif %}
 
-            {% if block.settings.link_text != blank and block.settings.link_url != blank %}
-              <a href="{{ block.settings.link_url }}" class="sqe-services__card-link">
-                {{ block.settings.link_text }}
-              </a>
-            {% endif %}
+              {% if block.settings.link_text != blank and block.settings.link_url != blank %}
+                <a href="{{ block.settings.link_url }}" class="sqe-service-link">{{ block.settings.link_text }}</a>
+              {% endif %}
+            </div>
           </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="sqe-services__empty">
-        <p>Add service cards to display them here</p>
-      </div>
-    {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
-</div>
+</section>
+
+<style>
+  #sqe-services-{{ section.id }} {
+    padding: 60px 20px;
+  }
+
+  .sqe-services-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sqe-services-heading {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1F3A5F;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .sqe-services-subheading {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .sqe-services-grid {
+    display: grid;
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .sqe-services-grid[data-columns="2"] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sqe-services-grid[data-columns="3"] {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sqe-services-grid[data-columns="4"] {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .sqe-service-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: all 0.3s ease;
+  }
+
+  .sqe-services-grid[data-style="bordered"] .sqe-service-card {
+    border: 2px solid #E8E8E8;
+  }
+
+  .sqe-services-grid[data-style="bordered"] .sqe-service-card:hover {
+    border-color: #1F3A5F;
+  }
+
+  .sqe-services-grid[data-style="shadow"] .sqe-service-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .sqe-services-grid[data-style="shadow"] .sqe-service-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .sqe-service-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .sqe-service-icon {
+    width: 80px;
+    height: 80px;
+    background-color: #F2F4F7;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .sqe-service-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .sqe-service-content {
+    flex-grow: 1;
+  }
+
+  .sqe-service-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1F3A5F;
+    margin-bottom: 12px;
+  }
+
+  .sqe-service-description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+
+  .sqe-service-link {
+    color: #1F3A5F;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+  }
+
+  .sqe-service-link:hover {
+    color: #C75B12;
+  }
+
+  @media (max-width: 768px) {
+    .sqe-services-grid[data-columns="3"],
+    .sqe-services-grid[data-columns="4"] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sqe-services-grid[data-columns="2"] {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sqe-services-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    .sqe-services-heading {
+      font-size: 24px;
+    }
+  }
+</style>
+
+<script>
+  var servicesSection = document.getElementById('sqe-services-' + '{{ section.id }}');
+  if (servicesSection) {
+    var cards = servicesSection.querySelectorAll('.sqe-service-card');
+    cards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-4px)';
+      });
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+      });
+    });
+  }
+</script>
 
 {% schema %}
 {
-  "name": "SQE Services Grid",
-  "description": "A customizable services grid section for Solar Quality Experts Ltd",
+  "name": "SQE Services",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Section Heading",
-      "default": "Our Services",
-      "info": "Main heading for the section"
+      "label": "Heading",
+      "default": "Our Services"
     },
     {
-      "type": "textarea",
+      "type": "text",
       "id": "subheading",
-      "label": "Section Subheading",
-      "default": "Comprehensive solar PV quality assurance and consultancy services",
-      "info": "Secondary heading or description"
+      "label": "Subheading",
+      "default": "Professional solutions for your needs"
     },
     {
       "type": "select",
-      "id": "header_alignment",
-      "label": "Header Text Alignment",
+      "id": "columns",
+      "label": "Columns",
       "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "select",
-      "id": "grid_columns",
-      "label": "Grid Columns (Desktop)",
-      "options": [
-        {
-          "value": "2",
-          "label": "2 Columns"
-        },
-        {
-          "value": "3",
-          "label": "3 Columns"
-        },
-        {
-          "value": "4",
-          "label": "4 Columns"
-        }
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
       ],
       "default": "3"
     },
     {
-      "type": "select",
+      "type": "color",
       "id": "background_color",
       "label": "Background Color",
-      "options": [
-        {
-          "value": "#ffffff",
-          "label": "White"
-        },
-        {
-          "value": "#F2F4F7",
-          "label": "Light Grey"
-        }
-      ],
-      "default": "#ffffff"
+      "default": "#FFFFFF"
     },
     {
       "type": "select",
       "id": "card_style",
-      "label": "Default Card Style",
+      "label": "Card Style",
       "options": [
-        {
-          "value": "bordered",
-          "label": "Bordered"
-        },
-        {
-          "value": "shadow",
-          "label": "Shadow"
-        },
-        {
-          "value": "flat",
-          "label": "Flat"
-        }
+        { "value": "bordered", "label": "Bordered" },
+        { "value": "shadow", "label": "Shadow" }
       ],
       "default": "shadow"
-    },
-    {
-      "type": "color",
-      "id": "icon_color",
-      "label": "Icon Color",
-      "default": "#F2B705"
-    },
-    {
-      "type": "range",
-      "id": "icon_size",
-      "min": 40,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Icon Size",
-      "default": 56
-    },
-    {
-      "type": "range",
-      "id": "card_padding",
-      "min": 16,
-      "max": 48,
-      "step": 4,
-      "unit": "px",
-      "label": "Card Padding",
-      "default": 28
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "min": 12,
-      "max": 48,
-      "step": 4,
-      "unit": "px",
-      "label": "Grid Gap",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 20,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Section Padding Top",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 20,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Section Padding Bottom",
-      "default": 60
     }
   ],
   "blocks": [
@@ -408,140 +257,43 @@
       "name": "Service Card",
       "settings": [
         {
-          "type": "select",
-          "id": "icon_type",
-          "label": "Icon Type",
-          "options": [
-            {
-              "value": "upload",
-              "label": "Image Upload"
-            },
-            {
-              "value": "svg",
-              "label": "SVG Code"
-            }
-          ],
-          "default": "upload"
-        },
-        {
           "type": "image_picker",
-          "id": "icon_image",
-          "label": "Icon Image",
-          "info": "Upload a square image (recommended 100x100px)"
-        },
-        {
-          "type": "textarea",
-          "id": "icon_svg",
-          "label": "Icon SVG Code",
-          "info": "Paste SVG code here. Example: <svg>...</svg>",
-          "placeholder": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"...\"/></svg>"
+          "id": "icon",
+          "label": "Icon"
         },
         {
           "type": "text",
           "id": "title",
-          "label": "Service Title",
-          "default": "Service Title",
-          "info": "Name of the service"
+          "label": "Title",
+          "default": "Service Title"
         },
         {
           "type": "textarea",
           "id": "description",
-          "label": "Service Description",
-          "default": "Brief description of the service offering",
-          "info": "2-3 sentences describing the service"
+          "label": "Description",
+          "default": "Brief service description"
         },
         {
           "type": "text",
           "id": "link_text",
           "label": "Link Text",
-          "default": "Learn More",
-          "info": "Text for the card link"
+          "default": "Learn More"
         },
         {
           "type": "url",
           "id": "link_url",
-          "label": "Link URL",
-          "info": "Where the link should go"
-        },
-        {
-          "type": "select",
-          "id": "card_style",
-          "label": "Card Style",
-          "options": [
-            {
-              "value": "bordered",
-              "label": "Bordered"
-            },
-            {
-              "value": "shadow",
-              "label": "Shadow"
-            },
-            {
-              "value": "flat",
-              "label": "Flat"
-            }
-          ],
-          "default": "shadow"
+          "label": "Link URL"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "SQE Services Grid",
-      "settings": {
-        "heading": "Our Services",
-        "subheading": "Comprehensive solar PV quality assurance and consultancy services"
-      },
+      "name": "SQE Services",
       "blocks": [
-        {
-          "type": "service_card",
-          "settings": {
-            "title": "Solar Farm Inspections",
-            "description": "Comprehensive electrical, mounting, corrosion, and pipeline inspections of solar PV installations.",
-            "link_text": "Learn More"
-          }
-        },
-        {
-          "type": "service_card",
-          "settings": {
-            "title": "Energy Yield Expertise",
-            "description": "Detailed analysis and optimization of solar farm energy output and performance metrics.",
-            "link_text": "Learn More"
-          }
-        },
-        {
-          "type": "service_card",
-          "settings": {
-            "title": "Fault Finding & Damage",
-            "description": "Expert identification and assessment of faults, damage, and issues affecting solar installations.",
-            "link_text": "Learn More"
-          }
-        },
-        {
-          "type": "service_card",
-          "settings": {
-            "title": "Project QA & Management",
-            "description": "Quality assurance and comprehensive project management throughout the solar PV lifecycle.",
-            "link_text": "Learn More"
-          }
-        },
-        {
-          "type": "service_card",
-          "settings": {
-            "title": "Corrosion Protection",
-            "description": "Specialized corrosion protection strategies and solutions for solar PV plant longevity.",
-            "link_text": "Learn More"
-          }
-        },
-        {
-          "type": "service_card",
-          "settings": {
-            "title": "Supplier Audits",
-            "description": "Thorough evaluation and auditing of solar equipment suppliers and components.",
-            "link_text": "Learn More"
-          }
-        }
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" }
       ]
     }
   ]

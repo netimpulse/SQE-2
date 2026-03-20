@@ -1,498 +1,245 @@
-{% comment %}
-SQE Case Studies Section
-Displays case study/project showcase cards with customizable layout options
-{% endcomment %}
+{%- liquid
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+  assign columns = section.settings.columns
+  assign bg_color = section.settings.background_color
+-%}
 
-<section class="sqe-case-studies" id="sqe-case-studies-{{ section.id }}">
-  <div class="case-studies-container">
-    {% if section.settings.show_heading %}
-      <div class="case-studies-header">
-        {% if section.settings.heading %}
-          <h2 class="case-studies-title">{{ section.settings.heading }}</h2>
-        {% endif %}
-        {% if section.settings.subheading %}
-          <p class="case-studies-subheading">{{ section.settings.subheading }}</p>
-        {% endif %}
-      </div>
+<section id="sqe-case-studies-{{ section.id }}" class="sqe-case-studies" style="background-color: {{ bg_color }};">
+  <div class="sqe-case-studies-container">
+    {% if heading != blank %}
+      <h2 class="sqe-case-studies-heading">{{ heading }}</h2>
     {% endif %}
 
-    {% if section.settings.show_filter and section.blocks.size > 0 %}
-      <div class="case-studies-filters">
-        <button class="filter-btn active" data-filter="all">All Projects</button>
-        {% assign categories = '' | split: ',' %}
-        {% for block in section.blocks %}
-          {% if block.settings.category != '' and categories contains block.settings.category == false %}
-            {% assign categories = categories | push: block.settings.category %}
-          {% endif %}
-        {% endfor %}
-        {% for category in categories %}
-          {% if category != '' %}
-            <button class="filter-btn" data-filter="{{ category | slugify }}">{{ category }}</button>
-          {% endif %}
-        {% endfor %}
-      </div>
+    {% if subheading != blank %}
+      <p class="sqe-case-studies-subheading">{{ subheading }}</p>
     {% endif %}
 
-    {% if section.settings.layout == 'slider' %}
-      <div class="case-studies-slider">
-        <div class="slider-wrapper">
-          {% for block in section.blocks %}
-            <div class="case-study-card slider-slide" data-category="{{ block.settings.category | slugify }}">
-              {% if block.settings.image %}
-                <div class="case-study-image">
-                  {{ block.settings.image | image_url: width: 600 | image_tag: alt: block.settings.title }}
-                </div>
-              {% endif %}
-              <div class="case-study-content">
-                {% if block.settings.category %}
-                  <span class="case-study-category">{{ block.settings.category }}</span>
-                {% endif %}
-                <h3 class="case-study-title">{{ block.settings.title }}</h3>
-                {% if block.settings.location %}
-                  <p class="case-study-location">📍 {{ block.settings.location }}</p>
-                {% endif %}
-                {% if block.settings.description %}
-                  <p class="case-study-description">{{ block.settings.description }}</p>
-                {% endif %}
-                {% if block.settings.link_text and block.settings.link_url %}
-                  <a href="{{ block.settings.link_url }}" class="case-study-link">{{ block.settings.link_text }}</a>
-                {% endif %}
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-        <button class="slider-prev" aria-label="Previous">‹</button>
-        <button class="slider-next" aria-label="Next">›</button>
-      </div>
-    {% else %}
-      <div class="case-studies-grid" style="grid-template-columns: repeat({{ section.settings.columns }}, 1fr);">
-        {% for block in section.blocks %}
-          <div class="case-study-card" data-category="{{ block.settings.category | slugify }}">
-            {% if block.settings.image %}
-              <div class="case-study-image">
-                {{ block.settings.image | image_url: width: 600 | image_tag: alt: block.settings.title }}
+    <div class="sqe-case-studies-grid" data-columns="{{ columns }}">
+      {% for block in section.blocks %}
+        {% if block.type == 'case_study' %}
+          <div class="sqe-case-study-card" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <div class="sqe-case-study-image">
+                <img
+                  src="{{ block.settings.image | image_url: width: 600 }}"
+                  alt="{{ block.settings.title }}"
+                  loading="lazy"
+                >
               </div>
             {% endif %}
-            <div class="case-study-content">
-              {% if block.settings.category %}
-                <span class="case-study-category">{{ block.settings.category }}</span>
+
+            <div class="sqe-case-study-content">
+              {% if block.settings.category != blank %}
+                <span class="sqe-case-study-category">{{ block.settings.category }}</span>
               {% endif %}
-              <h3 class="case-study-title">{{ block.settings.title }}</h3>
-              {% if block.settings.location %}
-                <p class="case-study-location">📍 {{ block.settings.location }}</p>
+
+              {% if block.settings.title != blank %}
+                <h3 class="sqe-case-study-title">{{ block.settings.title }}</h3>
               {% endif %}
-              {% if block.settings.description %}
-                <p class="case-study-description">{{ block.settings.description }}</p>
+
+              {% if block.settings.location != blank %}
+                <p class="sqe-case-study-location">{{ block.settings.location }}</p>
               {% endif %}
-              {% if block.settings.link_text and block.settings.link_url %}
-                <a href="{{ block.settings.link_url }}" class="case-study-link">{{ block.settings.link_text }}</a>
+
+              {% if block.settings.description != blank %}
+                <p class="sqe-case-study-description">{{ block.settings.description }}</p>
+              {% endif %}
+
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" class="sqe-case-study-link">Read More</a>
               {% endif %}
             </div>
           </div>
-        {% endfor %}
-      </div>
-    {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
 </section>
 
 <style>
-  .sqe-case-studies {
-    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_side }}px {{ section.settings.padding_bottom }}px {{ section.settings.padding_side }}px;
-    background-color: {{ section.settings.background_color }};
+  #sqe-case-studies-{{ section.id }} {
+    padding: 60px 20px;
   }
 
-  .case-studies-container {
+  .sqe-case-studies-container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  .case-studies-header {
-    text-align: center;
-    margin-bottom: 48px;
-  }
-
-  .case-studies-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 42px;
+  .sqe-case-studies-heading {
+    font-size: 36px;
     font-weight: 700;
-    color: {{ section.settings.title_color }};
-    margin: 0 0 16px 0;
+    color: #1F3A5F;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
-  .case-studies-subheading {
-    font-family: 'Inter', sans-serif;
+  .sqe-case-studies-subheading {
     font-size: 16px;
     color: #666;
-    margin: 0;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .case-studies-filters {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
+    text-align: center;
     margin-bottom: 40px;
-    flex-wrap: wrap;
   }
 
-  .filter-btn {
-    padding: 10px 20px;
-    border: 2px solid {{ section.settings.primary_color }};
-    background: white;
-    color: {{ section.settings.primary_color }};
-    border-radius: 4px;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .filter-btn:hover,
-  .filter-btn.active {
-    background: {{ section.settings.primary_color }};
-    color: white;
-  }
-
-  .case-studies-grid {
+  .sqe-case-studies-grid {
     display: grid;
-    gap: 32px;
-    margin-bottom: 32px;
+    gap: 30px;
+    margin-top: 40px;
   }
 
-  .case-studies-slider {
-    position: relative;
-    margin-bottom: 32px;
+  .sqe-case-studies-grid[data-columns="2"] {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .slider-wrapper {
-    display: flex;
-    gap: 24px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding: 16px 0;
+  .sqe-case-studies-grid[data-columns="3"] {
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .slider-slide {
-    flex: 0 0 calc(100% / {{ section.settings.slider_items_per_view }});
-    min-width: 0;
+  .sqe-case-studies-grid[data-columns="4"] {
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .slider-prev,
-  .slider-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: {{ section.settings.primary_color }};
-    color: white;
-    border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 10;
-  }
-
-  .slider-prev:hover,
-  .slider-next:hover {
-    background: {{ section.settings.accent_color }};
-  }
-
-  .slider-prev {
-    left: -22px;
-  }
-
-  .slider-next {
-    right: -22px;
-  }
-
-  .case-study-card {
+  .sqe-case-study-card {
     background: white;
-    border-radius: {{ section.settings.card_border_radius }}px;
+    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .case-study-card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  .sqe-case-study-card:hover {
     transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
 
-  .case-study-card[style*="display: none"] {
-    display: none;
-  }
-
-  .case-study-image {
+  .sqe-case-study-image {
     width: 100%;
-    height: 280px;
+    height: 250px;
     overflow: hidden;
-    background: #f0f0f0;
+    background-color: #F2F4F7;
   }
 
-  .case-study-image img {
+  .sqe-case-study-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    display: block;
   }
 
-  .case-study-card:hover .case-study-image img {
-    transform: scale(1.05);
+  .sqe-case-study-content {
+    padding: 25px;
   }
 
-  .case-study-content {
-    padding: 24px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .case-study-category {
-    font-family: 'Inter', sans-serif;
+  .sqe-case-study-category {
+    display: inline-block;
     font-size: 12px;
     font-weight: 600;
+    color: #C75B12;
     text-transform: uppercase;
-    color: {{ section.settings.accent_color }};
+    margin-bottom: 10px;
+  }
+
+  .sqe-case-study-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1F3A5F;
     margin-bottom: 8px;
-    letter-spacing: 0.5px;
   }
 
-  .case-study-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    color: {{ section.settings.primary_color }};
-    margin: 0 0 12px 0;
-  }
-
-  .case-study-location {
-    font-family: 'Inter', sans-serif;
+  .sqe-case-study-location {
     font-size: 14px;
     color: #999;
-    margin: 0 0 12px 0;
+    margin-bottom: 12px;
   }
 
-  .case-study-description {
-    font-family: 'Inter', sans-serif;
+  .sqe-case-study-description {
     font-size: 14px;
     color: #666;
-    margin: 0 0 16px 0;
-    flex-grow: 1;
+    line-height: 1.6;
+    margin-bottom: 15px;
   }
 
-  .case-study-link {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: {{ section.settings.primary_color }};
+  .sqe-case-study-link {
+    color: #1F3A5F;
     text-decoration: none;
-    display: inline-block;
-    padding: 10px 0;
-    border-bottom: 2px solid {{ section.settings.accent_color }};
-    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 14px;
   }
 
-  .case-study-link:hover {
-    border-bottom-color: {{ section.settings.primary_color }};
+  .sqe-case-study-link:hover {
+    color: #C75B12;
   }
 
   @media (max-width: 768px) {
-    .case-studies-grid {
+    .sqe-case-studies-grid[data-columns="3"],
+    .sqe-case-studies-grid[data-columns="4"] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sqe-case-studies-grid[data-columns="2"] {
       grid-template-columns: 1fr;
     }
+  }
 
-    .case-studies-title {
-      font-size: 32px;
+  @media (max-width: 480px) {
+    .sqe-case-studies-grid {
+      grid-template-columns: 1fr !important;
     }
 
-    .case-study-image {
-      height: 220px;
-    }
-
-    .slider-prev,
-    .slider-next {
-      width: 36px;
-      height: 36px;
-      font-size: 20px;
+    .sqe-case-studies-heading {
+      font-size: 24px;
     }
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const section = document.getElementById('sqe-case-studies-{{ section.id }}');
-    if (!section) return;
-
-    const filterBtns = section.querySelectorAll('.filter-btn');
-    const cards = section.querySelectorAll('.case-study-card');
-
-    if (filterBtns.length > 0) {
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const filter = this.getAttribute('data-filter');
-          filterBtns.forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-
-          cards.forEach(card => {
-            const category = card.getAttribute('data-category');
-            if (filter === 'all' || category === filter) {
-              card.style.display = '';
-            } else {
-              card.style.display = 'none';
-            }
-          });
-        });
+  var caseStudiesSection = document.getElementById('sqe-case-studies-' + '{{ section.id }}');
+  if (caseStudiesSection) {
+    var cards = caseStudiesSection.querySelectorAll('.sqe-case-study-card');
+    cards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() {
+        this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.15)';
       });
-    }
-
-    const sliderPrev = section.querySelector('.slider-prev');
-    const sliderNext = section.querySelector('.slider-next');
-    const sliderWrapper = section.querySelector('.slider-wrapper');
-
-    if (sliderPrev && sliderNext && sliderWrapper) {
-      const scrollAmount = 320;
-
-      sliderPrev.addEventListener('click', function() {
-        sliderWrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      card.addEventListener('mouseleave', function() {
+        this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
       });
-
-      sliderNext.addEventListener('click', function() {
-        sliderWrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      });
-    }
-  });
+    });
+  }
 </script>
 
 {% schema %}
 {
-  "name": "Case Studies",
+  "name": "SQE Case Studies",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_heading",
-      "label": "Show heading",
-      "default": true
-    },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Case Studies"
+      "default": "Our Case Studies"
     },
     {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Explore our successful projects and results"
+      "default": "Real results from real clients"
     },
     {
       "type": "select",
-      "id": "layout",
-      "label": "Layout",
-      "options": [
-        {
-          "value": "grid",
-          "label": "Grid"
-        },
-        {
-          "value": "slider",
-          "label": "Slider"
-        }
-      ],
-      "default": "grid"
-    },
-    {
-      "type": "range",
       "id": "columns",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "label": "Columns (grid layout)",
-      "default": 3
-    },
-    {
-      "type": "range",
-      "id": "slider_items_per_view",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "label": "Items per view (slider layout)",
-      "default": 3
-    },
-    {
-      "type": "checkbox",
-      "id": "show_filter",
-      "label": "Show category filter",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "primary_color",
-      "label": "Primary color",
-      "default": "#1F3A5F"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent color",
-      "default": "#F2B705"
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Heading color",
-      "default": "#1F3A5F"
+      "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
     },
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background color",
-      "default": "#F2F4F7"
-    },
-    {
-      "type": "range",
-      "id": "card_border_radius",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "label": "Card border radius",
-      "default": 8
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "label": "Padding top",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "label": "Padding bottom",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_side",
-      "min": 0,
-      "max": 80,
-      "step": 4,
-      "label": "Padding sides",
-      "default": 20
+      "label": "Background Color",
+      "default": "#FFFFFF"
     }
   ],
   "blocks": [
@@ -508,7 +255,7 @@ Displays case study/project showcase cards with customizable layout options
         {
           "type": "text",
           "id": "title",
-          "label": "Project title",
+          "label": "Title",
           "default": "Project Title"
         },
         {
@@ -518,65 +265,32 @@ Displays case study/project showcase cards with customizable layout options
           "default": "City, Country"
         },
         {
-          "type": "text",
-          "id": "category",
-          "label": "Category",
-          "default": "Solar Installation"
-        },
-        {
           "type": "textarea",
           "id": "description",
           "label": "Description",
-          "default": "Brief description of the project and results achieved."
+          "default": "Brief description"
         },
         {
           "type": "text",
-          "id": "link_text",
-          "label": "Link text",
-          "default": "Read More"
+          "id": "category",
+          "label": "Category",
+          "default": "Category"
         },
         {
           "type": "url",
-          "id": "link_url",
-          "label": "Link URL"
+          "id": "link",
+          "label": "Link"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Case Studies",
+      "name": "SQE Case Studies",
       "blocks": [
-        {
-          "type": "case_study",
-          "settings": {
-            "title": "Commercial Solar Install",
-            "location": "Manchester, UK",
-            "category": "Commercial",
-            "description": "Successfully installed 50kW solar system for manufacturing facility, reducing energy costs by 40%.",
-            "link_text": "View Project"
-          }
-        },
-        {
-          "type": "case_study",
-          "settings": {
-            "title": "Residential Solar System",
-            "location": "London, UK",
-            "category": "Residential",
-            "description": "10kW residential solar installation with battery storage for optimal energy independence.",
-            "link_text": "View Project"
-          }
-        },
-        {
-          "type": "case_study",
-          "settings": {
-            "title": "Industrial Solar Farm",
-            "location": "Birmingham, UK",
-            "category": "Industrial",
-            "description": "Large-scale 500kW industrial solar project with advanced monitoring systems.",
-            "link_text": "View Project"
-          }
-        }
+        { "type": "case_study" },
+        { "type": "case_study" },
+        { "type": "case_study" }
       ]
     }
   ]
