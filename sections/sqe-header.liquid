@@ -62,48 +62,37 @@
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
 
 <style>
-  /* ===== FIXED HEADER (replaces sticky – sticky fails inside section groups) ===== */
-  {%- if sticky_type != 'none' -%}
-    #sqe-header-{{ section.id }} {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      background-color: {{ bg_color }};
-      color: {{ text_color }};
-    }
-    #sqe-header-{{ section.id }}.sqe-header-hidden {
-      transform: translateY(-100%);
-    }
-    #sqe-header-{{ section.id }}.sqe-header-animate {
-      transition: transform 0.35s ease;
-    }
-    .sqe-header-spacer {
-      display: block;
-    }
-  {%- else -%}
-    #sqe-header-{{ section.id }} {
-      position: relative;
-      z-index: 1000;
-      background-color: {{ bg_color }};
-      color: {{ text_color }};
-    }
-    .sqe-header-spacer {
-      display: none;
-    }
-  {%- endif -%}
+  /* ===== BASE (always present) ===== */
+  #sqe-header-{{ section.id }} {
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
+    z-index: 1000;
+  }
 
-  {%- if show_border -%}
-    #sqe-header-{{ section.id }} {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    }
-  {%- endif -%}
+  /* ===== STICKY: controlled by data-sticky attribute (NO Liquid conditionals) ===== */
+  #sqe-header-{{ section.id }}[data-sticky="none"] {
+    position: relative !important;
+  }
+  #sqe-header-{{ section.id }}[data-sticky="always"],
+  #sqe-header-{{ section.id }}[data-sticky="on-scroll-up"] {
+    position: fixed !important;
+    top: 0; left: 0; right: 0;
+  }
+  #sqe-header-{{ section.id }}.sqe-header-hidden {
+    transform: translateY(-100%);
+  }
+  #sqe-header-{{ section.id }}.sqe-header-animate {
+    transition: transform 0.35s ease;
+  }
+
+  /* Spacer: visible only when sticky */
+  .sqe-header-spacer--{{ section.id }}[data-show="true"] { display: block; }
+  .sqe-header-spacer--{{ section.id }}[data-show="false"] { display: none; }
 
   #sqe-header-{{ section.id }} .sqe-header__inner {
     display: flex;
     align-items: center;
-    height: {{ header_height }}px;
+    height: var(--sqe-h-height, 80px);
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
@@ -113,34 +102,27 @@
   /* ===== LOGO ===== */
   #sqe-header-{{ section.id }} .sqe-header__logo-wrap {
     position: absolute;
-    left: {{ logo_pos_x }}%;
+    left: var(--sqe-logo-x, 2%);
     top: 50%;
-    transform: translateY(-50%) translateY({{ logo_pos_y }}px);
+    transform: translateY(-50%) translateY(var(--sqe-logo-y, 0px));
     z-index: 10;
   }
 
   #sqe-header-{{ section.id }} .sqe-header__logo-wrap a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: inherit;
+    display: flex; align-items: center; text-decoration: none; color: inherit;
   }
 
   #sqe-header-{{ section.id }} .sqe-header__logo-wrap img {
-    max-height: {{ header_height | minus: 20 }}px;
+    max-height: calc(var(--sqe-h-height, 80px) - 20px);
     width: auto;
   }
 
   #sqe-header-{{ section.id }} .sqe-header__logo-wrap .h2 {
     font-family: 'Source Sans 3', 'Source Sans Pro', sans-serif;
-    font-weight: 700;
-    font-size: 1.4rem;
-    margin: 0;
-    color: inherit;
-    white-space: nowrap;
+    font-weight: 700; font-size: 1.4rem; margin: 0; color: inherit; white-space: nowrap;
   }
 
-  /* ===== NAVIGATION - ALIGNMENT BASED ===== */
+  /* ===== NAVIGATION: controlled by data-align attribute (NO Liquid conditionals) ===== */
   #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
     position: absolute;
     top: 50%;
@@ -148,25 +130,26 @@
     display: flex;
   }
 
-  {%- if nav_align == 'left' -%}
-    #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-      left: 2rem;
-      right: auto;
-      transform: translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
-    }
-  {%- elsif nav_align == 'right' -%}
-    #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-      left: auto;
-      right: 2rem;
-      transform: translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
-    }
-  {%- else -%}
-    #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-      left: 50%;
-      right: auto;
-      transform: translateX(-50%) translateY(-50%) translateX({{ menu_nudge_x }}px) translateY({{ menu_pos_y }}px);
-    }
-  {%- endif -%}
+  /* LEFT alignment */
+  #sqe-header-{{ section.id }} .sqe-header__nav-wrap[data-align="left"] {
+    left: 2rem !important;
+    right: auto !important;
+    transform: translateY(-50%) translateX(var(--sqe-nudge-x, 0px)) translateY(var(--sqe-nudge-y, 0px));
+  }
+
+  /* CENTER alignment */
+  #sqe-header-{{ section.id }} .sqe-header__nav-wrap[data-align="center"] {
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) translateY(-50%) translateX(var(--sqe-nudge-x, 0px)) translateY(var(--sqe-nudge-y, 0px));
+  }
+
+  /* RIGHT alignment */
+  #sqe-header-{{ section.id }} .sqe-header__nav-wrap[data-align="right"] {
+    left: auto !important;
+    right: 2rem !important;
+    transform: translateY(-50%) translateX(var(--sqe-nudge-x, 0px)) translateY(var(--sqe-nudge-y, 0px));
+  }
 
   #sqe-header-{{ section.id }} .sqe-header__nav-list {
     display: flex;
@@ -443,14 +426,21 @@
     margin: 0;
   }
 
-  {%- if menu_type == 'drawer' -%}
-    #sqe-header-{{ section.id }} .sqe-header__nav-wrap {
-      display: none;
-    }
-    #sqe-header-{{ section.id }} .sqe-header__hamburger-wrap {
-      display: flex;
-    }
-  {%- endif -%}
+  /* DRAWER MODE: controlled by data-menu-type attribute */
+  #sqe-header-{{ section.id }}[data-menu-type="drawer"] .sqe-header__nav-wrap {
+    display: none !important;
+  }
+  #sqe-header-{{ section.id }}[data-menu-type="drawer"] .sqe-header__hamburger-wrap {
+    display: flex;
+  }
+
+  /* BORDER: controlled by data-border attribute */
+  #sqe-header-{{ section.id }}[data-border="true"] {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  #sqe-header-{{ section.id }}[data-border="false"] {
+    border-bottom: none;
+  }
 
   /* ===== MOBILE (max-width: 989px) ===== */
   @media screen and (max-width: 989px) {
@@ -573,7 +563,7 @@
   }
 </style>
 
-<section id="sqe-header-{{ section.id }}" class="sqe-header" data-sqe-sticky-type="{{ sticky_type }}">
+<section id="sqe-header-{{ section.id }}" class="sqe-header" data-sticky="{{ sticky_type }}" data-menu-type="{{ menu_type }}" data-border="{{ show_border }}" style="--sqe-h-height: {{ header_height }}px; --sqe-logo-x: {{ logo_pos_x }}%; --sqe-logo-y: {{ logo_pos_y }}px;">
   <div class="sqe-header__inner">
 
     {%- comment -%} Mobile hamburger / drawer {%- endcomment -%}
@@ -618,7 +608,7 @@
     </div>
 
     {%- comment -%} Desktop Navigation {%- endcomment -%}
-    <nav class="sqe-header__nav-wrap" aria-label="Main navigation">
+    <nav class="sqe-header__nav-wrap" data-align="{{ nav_align }}" aria-label="Main navigation" style="--sqe-nudge-x: {{ menu_nudge_x }}px; --sqe-nudge-y: {{ menu_pos_y }}px;">
       {%- if menu != blank -%}
         <ul class="sqe-header__nav-list" role="list">
           {%- for link in menu.links -%}
@@ -731,7 +721,7 @@
 </section>
 
 {%- comment -%} Spacer compensates for fixed header height {%- endcomment -%}
-<div class="sqe-header-spacer" style="height: {{ header_height }}px;" aria-hidden="true"></div>
+<div class="sqe-header-spacer--{{ section.id }}" data-show="{% if sticky_type != 'none' %}true{% else %}false{% endif %}" style="height: {{ header_height }}px;" aria-hidden="true"></div>
 
 {%- if settings.cart_type == 'notification' -%}
   {%- render 'cart-notification',
@@ -764,7 +754,7 @@
     }
 
     /* === FIXED HEADER (scroll-up / always) === */
-    var stickyType = section.getAttribute('data-sqe-sticky-type');
+    var stickyType = section.getAttribute('data-sticky');
     if (!stickyType || stickyType === 'none') return;
 
     var isAlwaysSticky = (stickyType === 'always');
