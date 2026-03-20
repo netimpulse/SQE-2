@@ -1,0 +1,3095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQE Solar Quality Experts - Premium Solar PV Inspection & Analysis</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1F3A5F;
+            --accent-yellow: #F2B705;
+            --light-grey: #F2F4F7;
+            --dark-grey: #333333;
+            --accent-orange: #C75B12;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-grey);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+        }
+
+        /* ============================================
+           SCROLL ANIMATIONS & OBSERVER
+           ============================================ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           STICKY HEADER (SECTION 1)
+           ============================================ */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, rgba(31, 58, 95, 0.98) 100%);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        .logo::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-yellow);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-yellow);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #FFC800 100%);
+            color: var(--primary-blue);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(242, 183, 5, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(242, 183, 5, 0.4);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2.5px;
+            background: white;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* ============================================
+           HERO SECTION (SECTION 2)
+           ============================================ */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0F1E35 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 70px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(242, 183, 5, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(199, 91, 18, 0.1) 0%, transparent 50%);
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 20px); }
+        }
+
+        .particles {
+            position: absolute;
+            inset: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-yellow);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-highlight {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #FFC800 100%);
+            color: var(--primary-blue);
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(242, 183, 5, 0.3);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(242, 183, 5, 0.4);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: white;
+            padding: 1rem 2.5rem;
+            border: 2px solid white;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .secondary-btn:hover {
+            background: white;
+            color: var(--primary-blue);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .scroll-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-yellow);
+            opacity: 0.6;
+        }
+
+        /* ============================================
+           FLOATING STATS SECTION (SECTION 3)
+           ============================================ */
+        .floating-stats {
+            padding: 6rem 2rem;
+            background: var(--light-grey);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floating-stats::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 0% 50%, rgba(31, 58, 95, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 100% 50%, rgba(242, 183, 5, 0.05) 0%, transparent 50%);
+            animation: orbs 8s ease-in-out infinite;
+        }
+
+        @keyframes orbs {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
+        }
+
+        .stats-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: #666;
+            margin-top: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* ============================================
+           INTERACTIVE PROCESS SECTION (SECTION 4)
+           ============================================ */
+        .interactive-process {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .timeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .timeline-steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-yellow) 0%, var(--light-grey) 100%);
+        }
+
+        .timeline-step {
+            flex: 1;
+            min-width: 160px;
+            position: relative;
+            cursor: pointer;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 3px solid var(--light-grey);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--primary-blue);
+            transition: var(--transition);
+        }
+
+        .timeline-step:hover .step-circle {
+            border-color: var(--accent-yellow);
+            background: var(--light-grey);
+            transform: scale(1.1);
+        }
+
+        .timeline-step.active .step-circle {
+            background: var(--accent-yellow);
+            border-color: var(--accent-yellow);
+            color: var(--primary-blue);
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--dark-grey);
+            margin-top: 0.5rem;
+        }
+
+        .timeline-detail {
+            background: var(--light-grey);
+            padding: 3rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .timeline-detail h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .timeline-detail p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* ============================================
+           SERVICE EXPLORER SECTION (SECTION 5)
+           ============================================ */
+        .service-explorer {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .explorer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .service-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .service-item {
+            padding: 1.5rem;
+            border-left: 4px solid var(--light-grey);
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .service-item:hover {
+            border-left-color: var(--accent-yellow);
+            background: var(--light-grey);
+            transform: translateX(10px);
+        }
+
+        .service-item.active {
+            border-left-color: var(--accent-yellow);
+            background: var(--light-grey);
+        }
+
+        .service-number {
+            font-size: 0.85rem;
+            color: var(--accent-orange);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .service-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .service-detail {
+            background: linear-gradient(135deg, var(--light-grey) 0%, rgba(242, 183, 5, 0.05) 100%);
+            padding: 3rem;
+            border-radius: 12px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .service-detail h3 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-detail p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .service-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .service-tag {
+            background: white;
+            border: 1px solid var(--light-grey);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--primary-blue);
+        }
+
+        /* ============================================
+           BEFORE/AFTER SLIDER (SECTION 6)
+           ============================================ */
+        .before-after-section {
+            padding: 6rem 2rem;
+            background: var(--light-grey);
+        }
+
+        .slider-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .slider-before {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0F1E35 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .slider-after {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #FF6B35 0%, var(--accent-orange) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            width: 50%;
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: ew-resize;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            user-select: none;
+        }
+
+        .slider-arrows {
+            display: flex;
+            gap: 0.5rem;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+
+        .slider-label {
+            position: absolute;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 5;
+        }
+
+        .label-before {
+            top: 30px;
+            left: 30px;
+            color: white;
+        }
+
+        .label-after {
+            top: 30px;
+            right: 30px;
+            color: white;
+        }
+
+        .slider-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .slider-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .slider-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* ============================================
+           PROJECT SHOWCASE SECTION (SECTION 7)
+           ============================================ */
+        .project-showcase {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .showcase-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .featured-project {
+            position: relative;
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-image {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #2A5298 0%, #1E3A8A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            opacity: 0;
+            transition: opacity 0.6s ease-out;
+        }
+
+        .project-image.active {
+            opacity: 1;
+        }
+
+        .project-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(31, 58, 95, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%);
+            display: flex;
+            align-items: flex-end;
+            padding: 3rem;
+            z-index: 5;
+        }
+
+        .project-info {
+            color: white;
+        }
+
+        .project-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .project-stat {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            font-size: 0.9rem;
+        }
+
+        .project-thumbnails {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-thumb {
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, var(--light-grey) 0%, rgba(242, 183, 5, 0.1) 100%);
+            border-radius: 12px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 3px solid transparent;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .project-thumb:hover {
+            border-color: var(--accent-yellow);
+            transform: scale(1.05);
+        }
+
+        .project-thumb.active {
+            border-color: var(--accent-yellow);
+        }
+
+        /* ============================================
+           TEAM V2 SECTION (SECTION 8)
+           ============================================ */
+        .team-section {
+            padding: 6rem 2rem;
+            background: var(--light-grey);
+        }
+
+        .team-scroll {
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow-x: auto;
+            padding-bottom: 2rem;
+            scroll-behavior: smooth;
+        }
+
+        .team-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .team-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+        }
+
+        .team-scroll::-webkit-scrollbar-thumb {
+            background: var(--accent-yellow);
+            border-radius: 3px;
+        }
+
+        .team-cards {
+            display: flex;
+            gap: 2rem;
+            width: fit-content;
+        }
+
+        .team-card {
+            flex: 0 0 300px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 250px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-info {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .team-name {
+            font-size: 1.3rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.25rem;
+        }
+
+        .team-role {
+            color: var(--accent-orange);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .team-bio {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Team Modal */
+        .team-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .team-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            padding: 3rem;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: var(--light-grey);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+        }
+
+        .modal-photo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .modal-name {
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-role {
+            color: var(--accent-orange);
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .modal-bio {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .expertise-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .expertise-tag {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #FFC800 100%);
+            color: var(--primary-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light-grey);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .social-link:hover {
+            background: var(--accent-yellow);
+            transform: scale(1.1);
+        }
+
+        /* ============================================
+           TESTIMONIALS V2 SECTION (SECTION 9)
+           ============================================ */
+        .testimonials-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .testimonials-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .quotation-mark {
+            font-size: 5rem;
+            color: var(--accent-yellow);
+            opacity: 0.3;
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+
+        .featured-quote {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            min-height: 150px;
+        }
+
+        .typewriter-char {
+            opacity: 0;
+            animation: typewriter 0.05s ease-out forwards;
+        }
+
+        @keyframes typewriter {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .testimonial-client {
+            margin-bottom: 3rem;
+        }
+
+        .client-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .client-name {
+            font-weight: 700;
+            color: var(--dark-grey);
+            margin-bottom: 0.25rem;
+        }
+
+        .client-company {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-dots {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--light-grey);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            background: var(--accent-yellow);
+            transform: scale(1.2);
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: var(--light-grey);
+            border-radius: 2px;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
+            animation: progress 8s linear;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* ============================================
+           TRUST BANNER SECTION (SECTION 10)
+           ============================================ */
+        .trust-banner {
+            padding: 4rem 2rem;
+            background: var(--primary-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(242, 183, 5, 0.05) 0%, transparent 50%);
+            opacity: 0.5;
+        }
+
+        .ticker-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ticker-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .cert-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .cert-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            transition: var(--transition);
+            perspective: 1000px;
+        }
+
+        .cert-card:hover {
+            transform: rotateY(5deg) rotateX(-5deg) translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cert-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cert-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-badge {
+            display: inline-block;
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+
+        /* ============================================
+           FAQ ACCORDION SECTION (SECTION 11)
+           ============================================ */
+        .faq-section {
+            padding: 6rem 2rem;
+            background: var(--light-grey);
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .faq-search {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .faq-search:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 3px rgba(242, 183, 5, 0.1);
+        }
+
+        .faq-categories {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .faq-tab {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid white;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            color: var(--dark-grey);
+        }
+
+        .faq-tab:hover {
+            border-color: var(--accent-yellow);
+        }
+
+        .faq-tab.active {
+            background: var(--accent-yellow);
+            border-color: var(--accent-yellow);
+            color: var(--primary-blue);
+        }
+
+        .faq-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            background: white;
+            border-left: 4px solid transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-item.active {
+            border-left-color: var(--accent-yellow);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary-blue);
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .faq-item:hover .faq-question {
+            background: var(--light-grey);
+        }
+
+        .faq-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: var(--light-grey);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 1.5rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* ============================================
+           VIDEO SHOWCASE SECTION (SECTION 12)
+           ============================================ */
+        .video-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .video-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .video-player {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-button {
+            width: 100px;
+            height: 100px;
+            background: var(--accent-yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 8px 25px rgba(242, 183, 5, 0.3);
+        }
+
+        .play-button::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            border: 2px solid var(--accent-yellow);
+            border-radius: 50%;
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .video-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--light-grey);
+        }
+
+        .video-tab {
+            padding: 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #999;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .video-tab.active {
+            color: var(--accent-yellow);
+            border-bottom-color: var(--accent-yellow);
+        }
+
+        .video-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .video-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .video-details {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .playlist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .playlist-item {
+            aspect-ratio: 16 / 9;
+            background: var(--light-grey);
+            border-radius: 8px;
+            cursor: pointer;
+            overflow: hidden;
+            border: 3px solid transparent;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .playlist-item:hover {
+            border-color: var(--accent-yellow);
+            transform: scale(1.05);
+        }
+
+        .playlist-item.active {
+            border-color: var(--accent-yellow);
+        }
+
+        /* ============================================
+           MAP/LOCATIONS SECTION (SECTION 13)
+           ============================================ */
+        .map-section {
+            padding: 6rem 2rem;
+            background: var(--light-grey);
+        }
+
+        .map-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .map-area {
+            position: relative;
+            height: 500px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .location-pin {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .location-pin:hover {
+            filter: brightness(1.2);
+        }
+
+        .pin-pulse {
+            animation: pinPulse 2s ease-out infinite;
+        }
+
+        @keyframes pinPulse {
+            0% {
+                r: 4;
+                opacity: 1;
+            }
+            100% {
+                r: 12;
+                opacity: 0;
+            }
+        }
+
+        .location-tooltip {
+            position: absolute;
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+            z-index: 20;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            white-space: nowrap;
+        }
+
+        .location-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .location-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 4px solid var(--light-grey);
+        }
+
+        .location-item:hover {
+            border-left-color: var(--accent-yellow);
+            transform: translateX(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .location-name {
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .location-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* ============================================
+           NEWS & INSIGHTS SECTION (SECTION 14)
+           ============================================ */
+        .news-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .news-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .featured-article {
+            background: linear-gradient(135deg, var(--light-grey) 0%, rgba(242, 183, 5, 0.05) 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .featured-image {
+            background: linear-gradient(135deg, #2A5298 0%, #1E3A8A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(242, 183, 5, 0.2) 0%, transparent 70%);
+        }
+
+        .featured-content {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .article-category {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #FFC800 100%);
+            color: var(--primary-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .article-title {
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .article-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-orange) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-category {
+            display: inline-block;
+            background: rgba(242, 183, 5, 0.2);
+            color: var(--accent-orange);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: var(--primary-blue);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .read-time {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        /* ============================================
+           CTA BANNER SECTION (SECTION 15)
+           ============================================ */
+        .cta-banner {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0F1E35 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(242, 183, 5, 0.03) 10px,
+                rgba(242, 183, 5, 0.03) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100px); }
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            color: white;
+        }
+
+        .cta-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .cta-banner-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+           CONTACT SECTION (SECTION 16)
+           ============================================ */
+        .contact-section {
+            padding: 6rem 2rem;
+            background: var(--light-grey);
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-block {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-yellow);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            color: var(--primary-blue);
+        }
+
+        .info-text h3 {
+            color: var(--primary-blue);
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .info-text p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .contact-map {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0F1E35 100%);
+            border-radius: 12px;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--light-grey);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 3px rgba(242, 183, 5, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-label {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            color: #999;
+            pointer-events: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .form-input:focus ~ .form-label,
+        .form-input:not(:placeholder-shown) ~ .form-label,
+        .form-textarea:focus ~ .form-label,
+        .form-textarea:not(:placeholder-shown) ~ .form-label {
+            top: -1.5rem;
+            color: var(--accent-yellow);
+            font-size: 0.85rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent-yellow) 0%, #FFC800 100%);
+            color: var(--primary-blue);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(242, 183, 5, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(242, 183, 5, 0.4);
+        }
+
+        /* ============================================
+           FOOTER SECTION (SECTION 17)
+           ============================================ */
+        footer {
+            background: var(--primary-blue);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .back-to-top {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-yellow);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(242, 183, 5, 0.3);
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                justify-content: space-between;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                margin-top: 60px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .explorer-content,
+            .container,
+            .map-container,
+            .contact-container,
+            .featured-article {
+                grid-template-columns: 1fr;
+            }
+
+            .slider-container {
+                height: 300px;
+            }
+
+            .timeline-steps {
+                flex-direction: column;
+            }
+
+            .timeline-steps::before {
+                top: 0;
+                left: 25px;
+                right: auto;
+                width: 2px;
+                height: 100%;
+            }
+
+            .timeline-step {
+                margin-left: 50px;
+                text-align: left;
+            }
+
+            .step-circle {
+                margin: 0 0 1rem;
+            }
+
+            .featured-article {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .featured-image {
+                min-height: 250px;
+            }
+
+            .faq-categories {
+                flex-direction: column;
+            }
+
+            .faq-tab {
+                width: 100%;
+            }
+
+            .team-cards {
+                gap: 1.5rem;
+                padding: 0 1rem;
+            }
+
+            .team-card {
+                flex: 0 0 calc(100vw - 4rem);
+            }
+
+            .cert-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SECTION 1: STICKY HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo">SQE</div>
+            <nav>
+                <a href="#services">Services</a>
+                <a href="#process">Process</a>
+                <a href="#team">Team</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button class="cta-button">Get a Quote</button>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 2: HERO -->
+    <section class="hero">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content fade-in">
+            <h1>Independent Solar PV <span class="hero-highlight">Quality Experts</span></h1>
+            <p>Comprehensive inspection, analysis, and quality assurance services for solar energy systems worldwide</p>
+            <div class="hero-buttons">
+                <button class="primary-btn">Start Assessment</button>
+                <button class="secondary-btn">Learn More</button>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-dot"></div>
+            <div class="scroll-dot"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: FLOATING STATS -->
+    <section class="floating-stats fade-in">
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" data-target="500">0</div>
+                <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="15">0</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="50">0</div>
+                <div class="stat-label">GW+ Assessed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="99">0</div>
+                <div class="stat-label">% Satisfaction Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: INTERACTIVE PROCESS -->
+    <section class="interactive-process fade-in">
+        <div class="section-header">
+            <h2>How We Work</h2>
+            <p>Our proven methodology ensures comprehensive analysis and actionable insights</p>
+        </div>
+        <div class="timeline-container">
+            <div class="timeline-steps">
+                <div class="timeline-step active" data-step="0">
+                    <div class="step-circle">1</div>
+                    <div class="step-title">Consultation</div>
+                </div>
+                <div class="timeline-step" data-step="1">
+                    <div class="step-circle">2</div>
+                    <div class="step-title">Assessment</div>
+                </div>
+                <div class="timeline-step" data-step="2">
+                    <div class="step-circle">3</div>
+                    <div class="step-title">Analysis</div>
+                </div>
+                <div class="timeline-step" data-step="3">
+                    <div class="step-circle">4</div>
+                    <div class="step-title">Report</div>
+                </div>
+                <div class="timeline-step" data-step="4">
+                    <div class="step-circle">5</div>
+                    <div class="step-title">Support</div>
+                </div>
+            </div>
+            <div class="timeline-detail">
+                <div>
+                    <h3>Consultation</h3>
+                    <p>We begin with an in-depth consultation to understand your solar infrastructure, specific concerns, and objectives. Our experts assess the scope and complexity of your systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: SERVICE EXPLORER -->
+    <section class="service-explorer fade-in" id="services">
+        <div class="section-header">
+            <h2>Our Services</h2>
+            <p>Comprehensive solutions for solar quality assurance</p>
+        </div>
+        <div class="explorer-content">
+            <div class="service-list">
+                <div class="service-item active" data-service="0">
+                    <div class="service-number">01</div>
+                    <div class="service-name">Solar Inspections</div>
+                </div>
+                <div class="service-item" data-service="1">
+                    <div class="service-number">02</div>
+                    <div class="service-name">Energy Yield Analysis</div>
+                </div>
+                <div class="service-item" data-service="2">
+                    <div class="service-number">03</div>
+                    <div class="service-name">Fault Finding</div>
+                </div>
+                <div class="service-item" data-service="3">
+                    <div class="service-number">04</div>
+                    <div class="service-name">Quality Assurance</div>
+                </div>
+                <div class="service-item" data-service="4">
+                    <div class="service-number">05</div>
+                    <div class="service-name">Corrosion Analysis</div>
+                </div>
+                <div class="service-item" data-service="5">
+                    <div class="service-number">06</div>
+                    <div class="service-name">Drone Imaging</div>
+                </div>
+            </div>
+            <div class="service-detail" id="serviceDetail">
+                <h3>Solar Inspections</h3>
+                <p>Our expert team conducts detailed visual and thermal inspections of your solar PV systems. Using state-of-the-art equipment, we identify potential issues early and provide recommendations for optimization.</p>
+                <div class="service-tags">
+                    <span class="service-tag">Visual Assessment</span>
+                    <span class="service-tag">Thermal Imaging</span>
+                    <span class="service-tag">Performance Review</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: BEFORE/AFTER SLIDER -->
+    <section class="before-after-section fade-in">
+        <div class="section-header">
+            <h2>Thermal Analysis</h2>
+            <p>See the difference our thermal imaging reveals</p>
+        </div>
+        <div class="slider-container">
+            <div class="slider-before">
+                <div class="slider-content">
+                    <div class="slider-icon">☀️</div>
+                    <div class="slider-text">Standard View</div>
+                </div>
+            </div>
+            <div class="slider-after" id="sliderAfter">
+                <div class="slider-content">
+                    <div class="slider-icon">🔴</div>
+                    <div class="slider-text">Thermal Analysis</div>
+                </div>
+            </div>
+            <div class="slider-handle" id="sliderHandle">
+                <div class="slider-arrows">
+                    <span>←</span>
+                    <span>→</span>
+                </div>
+            </div>
+            <div class="slider-label label-before">Before</div>
+            <div class="slider-label label-after">After</div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: PROJECT SHOWCASE -->
+    <section class="project-showcase fade-in">
+        <div class="section-header">
+            <h2>Featured Projects</h2>
+            <p>Showcasing successful assessments across various installations</p>
+        </div>
+        <div class="showcase-container">
+            <div class="featured-project">
+                <div class="project-image active" data-project="0">🏭</div>
+                <div class="project-image" data-project="1">🏗️</div>
+                <div class="project-image" data-project="2">🏢</div>
+                <div class="project-image" data-project="3">⚡</div>
+                <div class="project-overlay">
+                    <div class="project-info">
+                        <div class="project-title" id="projectTitle">Industrial Solar Farm Assessment</div>
+                        <div class="project-stats">
+                            <div class="project-stat">50 MW Capacity</div>
+                            <div class="project-stat">15,000+ Modules</div>
+                            <div class="project-stat">98.5% Efficiency</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-thumbnails">
+                <div class="project-thumb active" data-project="0">🏭</div>
+                <div class="project-thumb" data-project="1">🏗️</div>
+                <div class="project-thumb" data-project="2">🏢</div>
+                <div class="project-thumb" data-project="3">⚡</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8: TEAM V2 -->
+    <section class="team-section fade-in" id="team">
+        <div class="section-header">
+            <h2>Expert Team</h2>
+            <p>Meet our certified specialists</p>
+        </div>
+        <div class="team-scroll">
+            <div class="team-cards">
+                <div class="team-card" data-member="0">
+                    <div class="team-photo" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">👨‍🔬</div>
+                    <div class="team-info">
+                        <div class="team-name">Dr. James Mitchell</div>
+                        <div class="team-role">Chief Inspector</div>
+                        <div class="team-bio">20+ years in solar quality assurance and thermal imaging</div>
+                    </div>
+                </div>
+                <div class="team-card" data-member="1">
+                    <div class="team-photo" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">👩‍💼</div>
+                    <div class="team-info">
+                        <div class="team-name">Sarah Johnson</div>
+                        <div class="team-role">Lead Analyst</div>
+                        <div class="team-bio">Energy yield specialist with IEC certifications</div>
+                    </div>
+                </div>
+                <div class="team-card" data-member="2">
+                    <div class="team-photo" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">👨‍💻</div>
+                    <div class="team-info">
+                        <div class="team-name">Alex Chen</div>
+                        <div class="team-role">Drone Specialist</div>
+                        <div class="team-bio">Expert in aerial surveys and thermal drone operations</div>
+                    </div>
+                </div>
+                <div class="team-card" data-member="3">
+                    <div class="team-photo" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">👩‍🔬</div>
+                    <div class="team-info">
+                        <div class="team-name">Emma Williams</div>
+                        <div class="team-role">QA Coordinator</div>
+                        <div class="team-bio">ISO certified quality systems and documentation expert</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="team-modal" id="teamModal">
+            <div class="modal-content">
+                <button class="modal-close" id="modalClose">+</button>
+                <div class="modal-photo" id="modalPhoto"></div>
+                <h3 class="modal-name" id="modalName"></h3>
+                <p class="modal-role" id="modalRole"></p>
+                <p class="modal-bio" id="modalBio"></p>
+                <div class="expertise-tags" id="expertiseTags"></div>
+                <div class="social-links">
+                    <div class="social-link">in</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 9: TESTIMONIALS V2 -->
+    <section class="testimonials-section fade-in">
+        <div class="section-header">
+            <h2>Client Testimonials</h2>
+            <p>Trusted by leading solar energy providers worldwide</p>
+        </div>
+        <div class="testimonials-container">
+            <div class="quotation-mark">"</div>
+            <div class="featured-quote" id="featuredQuote"></div>
+            <div class="testimonial-client">
+                <div class="client-photo" id="clientPhoto"></div>
+                <div class="client-name" id="clientName"></div>
+                <div class="client-company" id="clientCompany"></div>
+            </div>
+            <div class="testimonial-dots" id="testimonialDots"></div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 10: TRUST BANNER -->
+    <section class="trust-banner fade-in">
+        <div class="ticker-content">
+            <div class="ticker-title">Industry Recognized & Certified</div>
+            <div class="cert-cards">
+                <div class="cert-card">
+                    <div class="cert-icon">🏆</div>
+                    <div class="cert-name">ISO 9001:2015</div>
+                    <div class="cert-badge">Verified</div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-icon">⚡</div>
+                    <div class="cert-name">IEC 61215 Certified</div>
+                    <div class="cert-badge">Verified</div>
+                </div>
+                <div class="cert-card">
+                    <div class="cert-icon">🔒</div>
+                    <div class="cert-name">NABCEP Accredited</div>
+                    <div class="cert-badge">Verified</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 11: FAQ ACCORDION -->
+    <section class="faq-section fade-in">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Find answers to common questions about our services</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-controls">
+                <input type="text" class="faq-search" id="faqSearch" placeholder="Search FAQs...">
+                <div class="faq-categories">
+                    <button class="faq-tab active" data-category="all">All Questions</button>
+                    <button class="faq-tab" data-category="general">General</button>
+                    <button class="faq-tab" data-category="technical">Technical</button>
+                    <button class="faq-tab" data-category="commercial">Commercial</button>
+                </div>
+            </div>
+            <div class="faq-items" id="faqItems">
+                <div class="faq-item" data-category="general">
+                    <div class="faq-question">
+                        <span>What types of solar systems do you inspect?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">We inspect residential, commercial, and utility-scale solar PV systems. Our expertise covers crystalline silicon, thin-film, and emerging PV technologies.</div>
+                    </div>
+                </div>
+                <div class="faq-item" data-category="technical">
+                    <div class="faq-question">
+                        <span>How long does a thermal inspection typically take?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">Thermal inspection duration depends on system size. A 5-10 kW residential system typically takes 2-3 hours, while larger commercial systems may require 1-2 days.</div>
+                    </div>
+                </div>
+                <div class="faq-item" data-category="general">
+                    <div class="faq-question">
+                        <span>Do you provide reports with recommendations?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">Yes, all inspections include comprehensive reports with detailed findings, thermal images, and prioritized recommendations for maintenance or repairs.</div>
+                    </div>
+                </div>
+                <div class="faq-item" data-category="commercial">
+                    <div class="faq-question">
+                        <span>What is the cost of your inspection services?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">Pricing varies based on system size, location, and scope. We provide custom quotes. Contact us for a free consultation and detailed estimate.</div>
+                    </div>
+                </div>
+                <div class="faq-item" data-category="technical">
+                    <div class="faq-question">
+                        <span>How do you measure energy yield losses?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">We use advanced modeling software combined with thermal imaging data to identify and quantify energy losses from soiling, faults, and degradation.</div>
+                    </div>
+                </div>
+                <div class="faq-item" data-category="general">
+                    <div class="faq-question">
+                        <span>Are your inspectors certified?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">Yes, all our inspectors are certified thermographers, IEC specialists, and hold relevant industry qualifications including NABCEP and ISO certifications.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 12: VIDEO SHOWCASE -->
+    <section class="video-section fade-in">
+        <div class="section-header">
+            <h2>Video Library</h2>
+            <p>Learn about our inspection techniques and findings</p>
+        </div>
+        <div class="video-container">
+            <div class="video-player">
+                <div class="video-placeholder">
+                    <button class="play-button">▶</button>
+                </div>
+            </div>
+            <div class="video-tabs">
+                <button class="video-tab active" data-video="0">Overview</button>
+                <button class="video-tab" data-video="1">Details</button>
+            </div>
+            <div class="video-content active">
+                <div class="video-details">
+                    <p>Our comprehensive thermal imaging overview demonstrates how we detect defects and performance issues in solar arrays. This video showcases real inspection footage from a 50 MW utility-scale installation.</p>
+                </div>
+            </div>
+            <div class="video-content">
+                <div class="video-details">
+                    <p>Dive deep into our analysis methodology. Learn how we interpret thermal patterns, identify fault types, and quantify energy losses. Includes detailed case studies and troubleshooting techniques.</p>
+                </div>
+            </div>
+            <div class="playlist">
+                <div class="playlist-item active" data-video="0">🎥</div>
+                <div class="playlist-item" data-video="1">📊</div>
+                <div class="playlist-item" data-video="2">🔧</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 13: MAP/LOCATIONS -->
+    <section class="map-section fade-in">
+        <div class="section-header">
+            <h2>Service Locations</h2>
+            <p>We operate across the UK and internationally</p>
+        </div>
+        <div class="map-container">
+            <div class="map-area">
+                <svg class="map-svg" viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Simplified UK map outline -->
+                    <path d="M 150 100 Q 200 80 220 120 L 230 200 Q 240 300 220 400 Q 200 480 150 500 Q 100 480 90 400 Q 70 300 80 200 Q 100 120 150 100"
+                          fill="none" stroke="#E0E0E0" stroke-width="2"/>
+                    <!-- Location pins -->
+                    <circle class="location-pin" cx="160" cy="200" r="6" fill="#F2B705">
+                        <circle class="pin-pulse" cx="160" cy="200" r="4" fill="none" stroke="#F2B705" stroke-width="2"/>
+                    </circle>
+                    <circle class="location-pin" cx="180" cy="280" r="6" fill="#F2B705">
+                        <circle class="pin-pulse" cx="180" cy="280" r="4" fill="none" stroke="#F2B705" stroke-width="2"/>
+                    </circle>
+                    <circle class="location-pin" cx="140" cy="350" r="6" fill="#F2B705">
+                        <circle class="pin-pulse" cx="140" cy="350" r="4" fill="none" stroke="#F2B705" stroke-width="2"/>
+                    </circle>
+                    <circle class="location-pin" cx="200" cy="400" r="6" fill="#F2B705">
+                        <circle class="pin-pulse" cx="200" cy="400" r="4" fill="none" stroke="#F2B705" stroke-width="2"/>
+                    </circle>
+                    <circle class="location-pin" cx="130" cy="480" r="6" fill="#F2B705">
+                        <circle class="pin-pulse" cx="130" cy="480" r="4" fill="none" stroke="#F2B705" stroke-width="2"/>
+                    </circle>
+                </svg>
+            </div>
+            <div class="location-list">
+                <div class="location-item" data-location="0">
+                    <div class="location-name">Head Office</div>
+                    <div class="location-details">Bridge House, Old Grantham Road, Whatton, Nottingham NG13 9FG, UK</div>
+                </div>
+                <div class="location-item" data-location="1">
+                    <div class="location-name">London Office</div>
+                    <div class="location-details">Central London, England</div>
+                </div>
+                <div class="location-item" data-location="2">
+                    <div class="location-name">Manchester Office</div>
+                    <div class="location-details">Greater Manchester, England</div>
+                </div>
+                <div class="location-item" data-location="3">
+                    <div class="location-name">Bristol Office</div>
+                    <div class="location-details">South West England</div>
+                </div>
+                <div class="location-item" data-location="4">
+                    <div class="location-name">Service Coverage</div>
+                    <div class="location-details">UK-wide + International</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 14: NEWS & INSIGHTS -->
+    <section class="news-section fade-in">
+        <div class="section-header">
+            <h2>News & Insights</h2>
+            <p>Latest updates from the solar industry</p>
+        </div>
+        <div class="news-container">
+            <div class="featured-article">
+                <div class="featured-image">📰</div>
+                <div class="featured-content">
+                    <div class="article-category">Industry News</div>
+                    <h3 class="article-title">Solar Industry Growth Accelerates in 2026</h3>
+                    <div class="article-meta">
+                        <span>March 20, 2026</span>
+                        <span>8 min read</span>
+                    </div>
+                </div>
+            </div>
+            <div class="article-cards">
+                <div class="article-card">
+                    <div class="card-image">🔍</div>
+                    <div class="card-content">
+                        <div class="card-category">Technical</div>
+                        <h4 class="card-title">Identifying Common PV Defects</h4>
+                        <div class="read-time">5 min read</div>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <div class="card-image">💡</div>
+                    <div class="card-content">
+                        <div class="card-category">Case Study</div>
+                        <h4 class="card-title">Maximizing Energy Yield</h4>
+                        <div class="read-time">7 min read</div>
+                    </div>
+                </div>
+                <div class="article-card">
+                    <div class="card-image">🌍</div>
+                    <div class="card-content">
+                        <div class="card-category">Sustainability</div>
+                        <h4 class="card-title">Global Solar Trends</h4>
+                        <div class="read-time">6 min read</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 15: CTA BANNER -->
+    <section class="cta-banner fade-in">
+        <div class="cta-content">
+            <h2>Ready to Ensure Your Solar Investment?</h2>
+            <p style="margin-bottom: 2rem; opacity: 0.95;">Get expert assessment and optimize your system performance</p>
+            <div class="cta-banner-buttons">
+                <button class="primary-btn">Schedule Assessment</button>
+                <button class="secondary-btn">Get Quote</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 16: CONTACT -->
+    <section class="contact-section fade-in" id="contact">
+        <div class="section-header">
+            <h2>Get In Touch</h2>
+            <p>We're here to help with your solar quality needs</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="info-block">
+                    <div class="info-icon">📍</div>
+                    <div class="info-text">
+                        <h3>Address</h3>
+                        <p>Bridge House, Old Grantham Road, Whatton, Nottingham NG13 9FG, UK</p>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <div class="info-icon">📞</div>
+                    <div class="info-text">
+                        <h3>Phone</h3>
+                        <p>+44 (0)1949 860 839</p>
+                    </div>
+                </div>
+                <div class="info-block">
+                    <div class="info-icon">✉️</div>
+                    <div class="info-text">
+                        <h3>Email</h3>
+                        <p>info@sqe-solar.com</p>
+                    </div>
+                </div>
+                <div class="contact-map">Map Integration</div>
+            </div>
+            <form class="contact-form">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder=" " required>
+                    <label class="form-label">Full Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-input" placeholder=" " required>
+                    <label class="form-label">Email Address</label>
+                </div>
+                <div class="form-group">
+                    <input type="tel" class="form-input" placeholder=" " required>
+                    <label class="form-label">Phone Number</label>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-textarea" placeholder=" " required></textarea>
+                    <label class="form-label">Message</label>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- SECTION 17: FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>SQE</h3>
+                <p>Independent Solar Quality Experts Ltd</p>
+            </div>
+            <div class="footer-column">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#services">Solar Inspections</a></li>
+                    <li><a href="#services">Energy Yield Analysis</a></li>
+                    <li><a href="#services">Fault Finding</a></li>
+                    <li><a href="#services">QA Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#">Certifications</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-copyright">© 2026 SQE Solar Quality Experts Ltd. All rights reserved.</div>
+            <button class="back-to-top" id="backToTop">↑</button>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // INTERSECTION OBSERVER - SCROLL ANIMATIONS
+        // ============================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    // Trigger stat counting
+                    if (entry.target.classList.contains('floating-stats')) {
+                        countUpStats();
+                    }
+
+                    // Auto-rotate testimonials
+                    if (entry.target.classList.contains('testimonials-section')) {
+                        loadTestimonial(0);
+                        startTestimonialRotation();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ============================================
+        // PARTICLES ANIMATION
+        // ============================================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // ============================================
+        // STATS COUNTER
+        // ============================================
+        function countUpStats() {
+            const stats = document.querySelectorAll('.stat-number');
+            const duration = 2000;
+            const frameRate = 60;
+            const frames = (duration / 1000) * frameRate;
+
+            stats.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                const increment = target / frames;
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target + (stat.nextSibling ? '+' : '%');
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current) + (stat.nextSibling ? '' : '');
+                    }
+                }, 1000 / frameRate);
+            });
+        }
+
+        // ============================================
+        // TIMELINE INTERACTION
+        // ============================================
+        const timelineSteps = document.querySelectorAll('.timeline-step');
+        const timelineDetails = {
+            0: { title: 'Consultation', text: 'We begin with an in-depth consultation to understand your solar infrastructure, specific concerns, and objectives. Our experts assess the scope and complexity of your systems.' },
+            1: { title: 'Assessment', text: 'Our certified inspectors conduct comprehensive visual and thermal evaluations. We use advanced equipment to identify potential issues and assess system performance.' },
+            2: { title: 'Analysis', text: 'Our team analyzes all collected data using specialized software. We identify defects, quantify losses, and model optimal performance scenarios.' },
+            3: { title: 'Report', text: 'We provide detailed reports with thermal images, findings, and prioritized recommendations. Each report includes executive summaries and technical appendices.' },
+            4: { title: 'Support', text: 'We offer ongoing support including consultation on remediation, follow-up inspections, and monitoring to ensure sustained performance improvements.' }
+        };
+
+        timelineSteps.forEach(step => {
+            step.addEventListener('click', () => {
+                timelineSteps.forEach(s => s.classList.remove('active'));
+                step.classList.add('active');
+
+                const index = step.getAttribute('data-step');
+                const detail = timelineDetails[index];
+                const detailDiv = document.querySelector('.timeline-detail');
+                detailDiv.innerHTML = `<div><h3>${detail.title}</h3><p>${detail.text}</p></div>`;
+            });
+        });
+
+        // ============================================
+        // SERVICE EXPLORER
+        // ============================================
+        const serviceItems = document.querySelectorAll('.service-item');
+        const serviceDetails = {
+            0: { title: 'Solar Inspections', text: 'Our expert team conducts detailed visual and thermal inspections of your solar PV systems. Using state-of-the-art equipment, we identify potential issues early and provide recommendations for optimization.', tags: ['Visual Assessment', 'Thermal Imaging', 'Performance Review'] },
+            1: { title: 'Energy Yield Analysis', text: 'We model expected energy production and compare it with actual output. This identifies losses from soiling, shading, equipment faults, and degradation with precise quantification.', tags: ['Production Modeling', 'Loss Analysis', 'Optimization'] },
+            2: { title: 'Fault Finding', text: 'Advanced diagnostics to identify defective modules, inverter issues, wiring problems, and other system faults. We provide detailed fault reports with repair recommendations.', tags: ['Module Testing', 'Circuit Analysis', 'Troubleshooting'] },
+            3: { title: 'Quality Assurance', text: 'Comprehensive quality checks during installation and after completion. Ensures compliance with standards, optimal performance, and longevity of your system.', tags: ['Compliance Checks', 'Safety Testing', 'Performance Verification'] },
+            4: { title: 'Corrosion Analysis', text: 'Specialized assessment of corrosion risks in harsh environments. We identify susceptible components and recommend protective measures to extend system life.', tags: ['Material Assessment', 'Risk Analysis', 'Prevention Planning'] },
+            5: { title: 'Drone Imaging', text: 'High-resolution aerial surveys using thermal and RGB imaging. Ideal for large installations where ground-based inspection is impractical or time-consuming.', tags: ['Aerial Surveys', 'Thermal Mapping', 'Data Analysis'] }
+        };
+
+        serviceItems.forEach(item => {
+            item.addEventListener('click', () => {
+                serviceItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                const index = item.getAttribute('data-service');
+                const detail = serviceDetails[index];
+                const detailDiv = document.getElementById('serviceDetail');
+                detailDiv.innerHTML = `
+                    <h3>${detail.title}</h3>
+                    <p>${detail.text}</p>
+                    <div class="service-tags">
+                        ${detail.tags.map(tag => `<span class="service-tag">${tag}</span>`).join('')}
+                    </div>
+                `;
+            });
+        });
+
+        // ============================================
+        // BEFORE/AFTER SLIDER
+        // ============================================
+        const sliderHandle = document.getElementById('sliderHandle');
+        const sliderAfter = document.getElementById('sliderAfter');
+        const sliderContainer = document.querySelector('.slider-container');
+        let isDragging = false;
+
+        sliderHandle.addEventListener('mousedown', () => { isDragging = true; });
+        document.addEventListener('mouseup', () => { isDragging = false; });
+
+        sliderContainer.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const rect = sliderContainer.getBoundingClientRect();
+            const newX = e.clientX - rect.left;
+            const percentage = (newX / rect.width) * 100;
+
+            if (percentage >= 0 && percentage <= 100) {
+                sliderAfter.style.width = percentage + '%';
+                sliderHandle.style.left = percentage + '%';
+            }
+        });
+
+        sliderContainer.addEventListener('touchstart', () => { isDragging = true; });
+        document.addEventListener('touchend', () => { isDragging = false; });
+
+        sliderContainer.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+
+            const rect = sliderContainer.getBoundingClientRect();
+            const newX = e.touches[0].clientX - rect.left;
+            const percentage = (newX / rect.width) * 100;
+
+            if (percentage >= 0 && percentage <= 100) {
+                sliderAfter.style.width = percentage + '%';
+                sliderHandle.style.left = percentage + '%';
+            }
+        });
+
+        // ============================================
+        // PROJECT SHOWCASE
+        // ============================================
+        const projectThumbs = document.querySelectorAll('.project-thumb');
+        const projectImages = document.querySelectorAll('.project-image');
+        const projectData = [
+            { title: 'Industrial Solar Farm Assessment', stats: ['50 MW Capacity', '15,000+ Modules', '98.5% Efficiency'] },
+            { title: 'Commercial Rooftop Installation', stats: ['5 MW System', '8,500 Modules', '97.8% Performance'] },
+            { title: 'Utility-Scale Plant Evaluation', stats: ['100 MW Facility', '300,000+ Modules', '99.1% Uptime'] },
+            { title: 'Hybrid System Analysis', stats: ['25 MW Solar', 'Battery Storage', '96.5% Efficiency'] }
+        ];
+
+        projectThumbs.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => {
+                projectThumbs.forEach(t => t.classList.remove('active'));
+                projectImages.forEach(img => img.classList.remove('active'));
+
+                thumb.classList.add('active');
+                projectImages[index].classList.add('active');
+
+                document.getElementById('projectTitle').textContent = projectData[index].title;
+                const statsHtml = projectData[index].stats.map(stat => `<div class="project-stat">${stat}</div>`).join('');
+                document.querySelector('.project-stats').innerHTML = statsHtml;
+            });
+        });
+
+        // ============================================
+        // TEAM MODAL
+        // ============================================
+        const teamCards = document.querySelectorAll('.team-card');
+        const teamModal = document.getElementById('teamModal');
+        const modalClose = document.getElementById('modalClose');
+        const teamData = [
+            { name: 'Dr. James Mitchell', role: 'Chief Inspector', bio: '20+ years in solar quality assurance and thermal imaging. PhD in Solar Energy, certified thermographer with FLIR credentials.', expertise: ['Thermal Imaging', 'PV Systems', 'Quality Assurance'] },
+            { name: 'Sarah Johnson', role: 'Lead Analyst', bio: 'Energy yield specialist with IEC certifications. Expert in performance modeling and loss quantification across diverse installations.', expertise: ['Energy Modeling', 'Data Analysis', 'Performance'] },
+            { name: 'Alex Chen', role: 'Drone Specialist', bio: 'Expert in aerial surveys and thermal drone operations. Certified drone pilot with CAA permissions for all UK regions.', expertise: ['Aerial Surveys', 'Thermal Drones', 'Mapping'] },
+            { name: 'Emma Williams', role: 'QA Coordinator', bio: 'ISO certified quality systems and documentation expert. Ensures compliance and consistency across all inspection protocols.', expertise: ['Quality Systems', 'Compliance', 'Documentation'] }
+        ];
+
+        teamCards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                const data = teamData[index];
+                document.getElementById('modalName').textContent = data.name;
+                document.getElementById('modalRole').textContent = data.role;
+                document.getElementById('modalBio').textContent = data.bio;
+
+                const tagsHtml = data.expertise.map(tag => `<span class="expertise-tag">${tag}</span>`).join('');
+                document.getElementById('expertiseTags').innerHTML = tagsHtml;
+
+                teamModal.classList.add('active');
+            });
+        });
+
+        modalClose.addEventListener('click', () => {
+            teamModal.classList.remove('active');
+        });
+
+        teamModal.addEventListener('click', (e) => {
+            if (e.target === teamModal) teamModal.classList.remove('active');
+        });
+
+        // ============================================
+        // TESTIMONIALS WITH TYPEWRITER
+        // ============================================
+        const testimonials = [
+            { quote: 'SQE provided exceptional service and identified critical issues we had missed. Their thoroughness and expertise are unmatched.', name: 'Michael Roberts', company: 'GreenEnergy Solutions', emoji: '👨‍💼' },
+            { quote: 'The thermal imaging revealed $50,000 worth of repairs needed. Without SQE\'s inspection, we would have lost significant revenue.', name: 'Jennifer Lee', company: 'Solar Power Inc', emoji: '👩‍💼' },
+            { quote: 'Professional, reliable, and incredibly knowledgeable. We use SQE for all our quality assurance needs across our portfolio.', name: 'David Thompson', company: 'Renewable Energy Corp', emoji: '👨‍💻' }
+        ];
+
+        let currentTestimonial = 0;
+        let testimonialRotation;
+
+        function typewriterEffect(element, text) {
+            element.innerHTML = '';
+            let index = 0;
+
+            const type = () => {
+                if (index < text.length) {
+                    const span = document.createElement('span');
+                    span.className = 'typewriter-char';
+                    span.textContent = text[index];
+                    span.style.animationDelay = (index * 30) + 'ms';
+                    element.appendChild(span);
+                    index++;
+                    setTimeout(type, 30);
+                }
+            };
+            type();
+        }
+
+        function loadTestimonial(index) {
+            const t = testimonials[index];
+            document.getElementById('clientPhoto').textContent = t.emoji;
+            document.getElementById('clientName').textContent = t.name;
+            document.getElementById('clientCompany').textContent = t.company;
+
+            const quoteElement = document.getElementById('featuredQuote');
+            typewriterEffect(quoteElement, t.quote);
+
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        function startTestimonialRotation() {
+            // Create dots
+            const dotsContainer = document.getElementById('testimonialDots');
+            dotsContainer.innerHTML = testimonials.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}"></div>`).join('');
+
+            // Add click handlers
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.addEventListener('click', () => {
+                    currentTestimonial = i;
+                    loadTestimonial(i);
+                    clearInterval(testimonialRotation);
+                    startTestimonialRotation();
+                });
+            });
+
+            // Auto-rotate
+            testimonialRotation = setInterval(() => {
+                currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+                loadTestimonial(currentTestimonial);
+            }, 8000);
+        }
+
+        // ============================================
+        // FAQ ACCORDION
+        // ============================================
+        const faqItems = document.querySelectorAll('.faq-item');
+        const faqTabs = document.querySelectorAll('.faq-tab');
+        const faqSearch = document.getElementById('faqSearch');
+        let currentCategory = 'all';
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
+        faqTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                faqTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                currentCategory = tab.getAttribute('data-category');
+                filterFAQ();
+            });
+        });
+
+        faqSearch.addEventListener('input', filterFAQ);
+
+        function filterFAQ() {
+            const searchTerm = faqSearch.value.toLowerCase();
+
+            faqItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                const text = item.textContent.toLowerCase();
+
+                const categoryMatch = currentCategory === 'all' || category === currentCategory;
+                const searchMatch = searchTerm === '' || text.includes(searchTerm);
+
+                item.style.display = categoryMatch && searchMatch ? 'block' : 'none';
+            });
+        }
+
+        // ============================================
+        // VIDEO TABS
+        // ============================================
+        const videoTabs = document.querySelectorAll('.video-tab');
+        const videoContents = document.querySelectorAll('.video-content');
+        const playlistItems = document.querySelectorAll('.playlist-item');
+
+        videoTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                videoTabs.forEach(t => t.classList.remove('active'));
+                videoContents.forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                const index = tab.getAttribute('data-video');
+                videoContents[index].classList.add('active');
+            });
+        });
+
+        playlistItems.forEach(item => {
+            item.addEventListener('click', () => {
+                playlistItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // ============================================
+        // LOCATION INTERACTIONS
+        // ============================================
+        const locationItems = document.querySelectorAll('.location-item');
+        const locationPins = document.querySelectorAll('.location-pin');
+
+        locationItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                locationItems.forEach(i => i.classList.remove('active'));
+                locationPins.forEach(p => p.classList.remove('active'));
+
+                item.classList.add('active');
+                if (locationPins[index]) locationPins[index].classList.add('active');
+            });
+        });
+
+        // ============================================
+        // BACK TO TOP
+        // ============================================
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.style.opacity = window.scrollY > 300 ? '1' : '0';
+            backToTop.style.pointerEvents = window.scrollY > 300 ? 'auto' : 'none';
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ============================================
+        // HAMBURGER MENU
+        // ============================================
+        const hamburger = document.querySelector('.hamburger');
+        let menuOpen = false;
+
+        hamburger.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            const nav = document.querySelector('nav');
+            if (menuOpen) {
+                nav.style.display = 'flex';
+            } else {
+                nav.style.display = 'none';
+            }
+        });
+
+        // Close menu when link clicked
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuOpen = false;
+                document.querySelector('nav').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
