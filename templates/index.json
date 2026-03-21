@@ -42,10 +42,10 @@
       "name": "SQE Hero",
       "settings": {
         "heading": "Engineering Excellence in Solar PV Quality Assurance",
-        "heading_size": "56px",
+        "heading_size": 56,
         "heading_color": "#ffffff",
         "subheading": "Trusted by leading solar installers and integrators across the UK for independent quality inspection and technical consulting services.",
-        "subheading_size": "20px",
+        "subheading_size": 20,
         "subheading_color": "rgba(255, 255, 255, 0.9)",
         "overlay_color": "#1F3A5F",
         "overlay_opacity": 60,
