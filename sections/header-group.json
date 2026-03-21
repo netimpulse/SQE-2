@@ -41,7 +41,7 @@
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
         "nav_alignment": "center",
-        "sticky_header_type": "always",
+        "sticky_header_type": "on-scroll-up",
         "background_color": "#1f3a5f",
         "text_color": "#1f3a5f",
         "header_height": 80,
