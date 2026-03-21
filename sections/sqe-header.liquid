@@ -64,14 +64,16 @@
 <style>
   /*
    * ============================================================
-   *  SQE HEADER – v9
+   *  SQE HEADER – v10
    *
-   *  Uses Dawn's native sticky system. Sticky classes go on the
-   *  header GROUP wrapper (.section-header), matching Dawn's own
-   *  StickyHeader behavior. base.css handles:
-   *    .shopify-section-header-sticky { position: sticky; top: 0 }
-   *    .shopify-section-header-hidden { top: calc(-1 * var(--header-height)) }
-   *    .section-header.animate { transition: top 0.15s ease-out }
+   *  Fully compatible with Dawn's infrastructure:
+   *  - Schema "class": "section-header" matches Dawn's header
+   *  - .header-wrapper div for HeaderDrawer compatibility
+   *  - Sticky uses Dawn's class system on the .section-header wrapper
+   *  - base.css handles positioning via:
+   *      .shopify-section-header-sticky { position: sticky; top: 0 }
+   *      .shopify-section-header-hidden { top: calc(-1 * --header-height) }
+   *      .section-header.animate { transition: top 0.15s ease-out }
    * ============================================================
    */
 
@@ -81,6 +83,11 @@
     color: {{ text_color }};
     width: 100%;
     box-sizing: border-box;
+  }
+
+  /* Override Dawn's .header-wrapper to use SQE background */
+  .sqe-hdr-{{ section.id }} .header-wrapper {
+    background-color: {{ bg_color }};
   }
 
   /* --- BORDER via data-border --- */
@@ -528,6 +535,7 @@
   data-border="{{ show_border }}"
   data-sqe-header
 >
+  <div class="header-wrapper">
   <div class="sqe-h-inner">
 
     {%- comment -%} Mobile hamburger / drawer {%- endcomment -%}
@@ -682,6 +690,7 @@
     </div>
 
   </div>
+  </div>{%- comment -%} /.header-wrapper {%- endcomment -%}
 </section>
 
 
@@ -695,91 +704,104 @@
 <script>
   (function() {
     /*
-     * SQE Header JS – v9
+     * SQE Header JS – v10
      *
-     * Uses Dawn's native sticky system. KEY: the sticky classes
-     * (.shopify-section-header-sticky, -hidden, .animate) must go
-     * on the HEADER GROUP wrapper (.section-header), NOT on the
-     * individual section wrapper. This is how Dawn's own
-     * StickyHeader element works in header.liquid.
+     * Replicates Dawn's StickyHeader behavior exactly:
+     * - Schema "class": "section-header" → wrapper gets .section-header
+     * - JS targets the wrapper via document.querySelector('.section-header')
+     * - Sticky classes go on the wrapper (same as Dawn's StickyHeader element)
+     * - .header-wrapper div added for HeaderDrawer compatibility
      *
-     * Old scroll handlers are cleaned up via a reference stored
-     * on the group element, so theme-editor re-renders work.
+     * Dawn base.css handles:
+     *   .shopify-section-header-sticky { position: sticky; top: 0 }
+     *   .shopify-section-header-hidden { top: calc(-1 * var(--header-height)) }
+     *   .section-header.animate { transition: top 0.15s ease-out }
      */
 
     var section = document.querySelector('[data-sqe-header]');
     if (!section) return;
 
     var stickyType = section.getAttribute('data-sticky');
-    var sectionId = '{{ section.id }}';
 
     /*
-     * Target the HEADER GROUP wrapper – this is the element Dawn's
-     * base.css targets with .shopify-section-header-sticky.
-     * Dawn's own StickyHeader does: document.querySelector('.section-header')
+     * Target the section wrapper with .section-header class.
+     * This is the SAME element Dawn's StickyHeader targets:
+     *   this.header = document.querySelector('.section-header');
+     * The "class": "section-header" in our schema puts this class
+     * on the Shopify section wrapper (#shopify-section-sqe-header).
      */
-    var headerGroup = document.querySelector('.section-header');
-    if (!headerGroup) {
-      /* Fallback: try the individual section wrapper */
-      headerGroup = document.getElementById('shopify-section-' + sectionId);
-    }
-    if (!headerGroup) return;
+    var header = document.querySelector('.section-header');
+    if (!header) return;
 
-    /* === SET CSS VARIABLE === */
+    var isAlwaysSticky = (stickyType === 'always' || stickyType === 'reduce-logo-size');
+
+    /* === SET CSS VARIABLE (same as Dawn) === */
     function setHeaderHeight() {
       document.documentElement.style.setProperty(
         '--header-height',
-        headerGroup.offsetHeight + 'px'
+        header.offsetHeight + 'px'
       );
     }
     setHeaderHeight();
     window.matchMedia('(max-width: 990px)').addEventListener('change', setHeaderHeight);
 
     /* === CLEAN UP previous scroll handler (survives section re-render) === */
-    if (headerGroup._sqeScrollHandler) {
-      window.removeEventListener('scroll', headerGroup._sqeScrollHandler);
-      headerGroup._sqeScrollHandler = null;
+    if (header._sqeScrollHandler) {
+      window.removeEventListener('scroll', header._sqeScrollHandler);
+      header._sqeScrollHandler = null;
     }
 
-    /* === CLEAN SLATE: remove stale classes === */
-    headerGroup.classList.remove(
+    /* === CLEAN SLATE: remove stale classes from previous render === */
+    header.classList.remove(
       'shopify-section-header-sticky',
       'shopify-section-header-hidden',
       'animate',
       'scrolled-past-header'
     );
 
-    /* === STICKY BEHAVIOR === */
-    if (stickyType === 'always') {
-      headerGroup.classList.add('shopify-section-header-sticky');
+    /* === STICKY: "always" mode === */
+    if (isAlwaysSticky) {
+      header.classList.add('shopify-section-header-sticky');
     }
 
+    /* === STICKY: "on-scroll-up" mode (matches Dawn's StickyHeader logic) === */
     if (stickyType === 'on-scroll-up') {
       var currentScrollTop = 0;
-      var headerBoundsBottom = headerGroup.offsetHeight;
+      var preventReveal = false;
+      var headerBounds = {};
 
-      /* Get accurate bounds via IntersectionObserver */
+      /* Get accurate header bounds */
       var io = new IntersectionObserver(function(entries) {
-        headerBoundsBottom = entries[0].intersectionRect.bottom || headerGroup.offsetHeight;
+        headerBounds = entries[0].intersectionRect;
         io.disconnect();
       });
-      io.observe(headerGroup);
+      io.observe(header);
 
       var scrollHandler = function() {
         var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-        if (scrollTop > currentScrollTop && scrollTop > headerBoundsBottom) {
+        if (scrollTop > currentScrollTop && scrollTop > (headerBounds.bottom || header.offsetHeight)) {
           /* Scrolling DOWN past header → hide */
-          headerGroup.classList.add('scrolled-past-header');
-          headerGroup.classList.add('shopify-section-header-sticky', 'shopify-section-header-hidden');
-        } else if (scrollTop < currentScrollTop && scrollTop > headerBoundsBottom) {
+          header.classList.add('scrolled-past-header');
+          if (!header._sqePreventHide) {
+            header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
+          }
+        } else if (scrollTop < currentScrollTop && scrollTop > (headerBounds.bottom || header.offsetHeight)) {
           /* Scrolling UP → reveal */
-          headerGroup.classList.add('scrolled-past-header');
-          headerGroup.classList.add('shopify-section-header-sticky', 'animate');
-          headerGroup.classList.remove('shopify-section-header-hidden');
-        } else if (scrollTop <= 0) {
+          header.classList.add('scrolled-past-header');
+          if (!preventReveal) {
+            header.classList.add('shopify-section-header-sticky', 'animate');
+            header.classList.remove('shopify-section-header-hidden');
+          } else {
+            clearTimeout(header._sqeScrollTimeout);
+            header._sqeScrollTimeout = setTimeout(function() {
+              preventReveal = false;
+            }, 66);
+            header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
+          }
+        } else if (scrollTop <= (headerBounds.top || 0)) {
           /* Back at top → reset */
-          headerGroup.classList.remove(
+          header.classList.remove(
             'shopify-section-header-sticky',
             'shopify-section-header-hidden',
             'animate',
@@ -791,7 +813,7 @@
       };
 
       /* Store reference for cleanup on next re-render */
-      headerGroup._sqeScrollHandler = scrollHandler;
+      header._sqeScrollHandler = scrollHandler;
       window.addEventListener('scroll', scrollHandler, { passive: true });
     }
 
@@ -860,7 +882,7 @@
 {% schema %}
 {
   "name": "SQE Header",
-  "class": "sqe-section-header",
+  "class": "section-header",
   "settings": [
     {
       "type": "header",
