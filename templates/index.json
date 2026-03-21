@@ -41,13 +41,11 @@
       ],
       "name": "SQE Hero",
       "settings": {
+        "show_section_label": false,
+        "section_label_text": "Hero",
         "heading": "Engineering Excellence in Solar PV Quality Assurance",
-        "heading_size": 56,
-        "heading_color": "#ffffff",
         "subheading": "Trusted by leading solar installers and integrators across the UK for independent quality inspection and technical consulting services.",
-        "subheading_size": 20,
-        "subheading_color": "rgba(255, 255, 255, 0.9)",
-        "overlay_color": "#1F3A5F",
+        "overlay_color": "#1f3a5f",
         "overlay_opacity": 60,
         "text_alignment": "center",
         "section_height": "large",
@@ -55,44 +53,19 @@
         "primary_button_link": "",
         "secondary_button_text": "Learn More",
         "secondary_button_link": "",
-        "show_stats": true
-      }
-    },
-    "sqe_service_explorer_W6i39i": {
-      "type": "sqe-service-explorer",
-      "blocks": {
-        "service_h9t7AC": {
-          "type": "service",
-          "settings": {
-            "title": "service 2",
-            "description": "Besipeil Text",
-            "features": "Beispiel Text",
-            "image": "shopify://shop_images/dach-ohne-solarzelle.png",
-            "link_url": "",
-            "link_text": "Learn More"
-          }
-        },
-        "service_VTfpyg": {
-          "type": "service",
-          "settings": {
-            "title": "Service 1",
-            "description": "Beispiel Text",
-            "features": "Beispiel Text",
-            "image": "shopify://shop_images/solar.png",
-            "link_url": "",
-            "link_text": "Learn More"
-          }
-        }
-      },
-      "block_order": [
-        "service_h9t7AC",
-        "service_VTfpyg"
-      ],
-      "name": "Service Explorer",
-      "settings": {
-        "heading": "Our Services",
-        "subheading": "Explore what we offer",
-        "accent_color": "#F2B705"
+        "show_stats": true,
+        "heading_font": "'Source Sans 3', sans-serif",
+        "heading_size": 56,
+        "heading_color": "#ffffff",
+        "heading_bold": true,
+        "subheading_font": "'Inter', sans-serif",
+        "subheading_size": 20,
+        "subheading_color": "#ffffffe6",
+        "stat_blocks_font": "'Source Sans 3', sans-serif",
+        "stat_number_size": 32,
+        "stat_text_size": 14,
+        "stat_number_color": "#f2b705",
+        "stat_text_color": "#ffffffd9"
       }
     },
     "sqe_news_insights_enPaAW": {
@@ -150,21 +123,237 @@
         "article_ndWzLV",
         "article_e3i677"
       ],
+      "disabled": true,
       "name": "SQE News & Insights",
       "settings": {
+        "show_section_label": false,
+        "section_label_text": "News",
         "title": "News & Insights",
         "subtitle": "Stay updated with the latest in solar inspection technology and industry trends",
+        "title_font": "'Source Sans 3', sans-serif",
         "title_size": 36,
+        "title_color": "#1f3a5f",
+        "title_bold": true,
+        "subtitle_font": "'Inter', sans-serif",
+        "subtitle_size": 16,
+        "subtitle_color": "#666666",
         "max_width": 1300,
         "padding": 20,
         "margin_top": 40,
         "margin_bottom": 40
       }
+    },
+    "sqe_services_yKFaU6": {
+      "type": "sqe-services",
+      "blocks": {
+        "service_card_KCMUU7": {
+          "type": "service_card",
+          "settings": {
+            "title": "Service Title",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        },
+        "service_card_8bqbVx": {
+          "type": "service_card",
+          "settings": {
+            "title": "Service Title",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        },
+        "service_card_UtgLG3": {
+          "type": "service_card",
+          "settings": {
+            "title": "Service Title",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        },
+        "service_card_VabedL": {
+          "type": "service_card",
+          "settings": {
+            "title": "Service Title",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        },
+        "service_card_6tYEWT": {
+          "type": "service_card",
+          "settings": {
+            "title": "Service Title",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        },
+        "service_card_kj8q7k": {
+          "type": "service_card",
+          "settings": {
+            "title": "Service Title",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        }
+      },
+      "block_order": [
+        "service_card_KCMUU7",
+        "service_card_8bqbVx",
+        "service_card_UtgLG3",
+        "service_card_VabedL",
+        "service_card_6tYEWT",
+        "service_card_kj8q7k"
+      ],
+      "name": "SQE Services",
+      "settings": {
+        "show_section_label": false,
+        "section_label_text": "Services",
+        "heading": "Our Services",
+        "subheading": "Professional solutions for your needs",
+        "columns": "3",
+        "background_color": "#FFFFFF",
+        "card_style": "shadow",
+        "heading_font": "'Source Sans 3', sans-serif",
+        "heading_size": 36,
+        "heading_color": "#1F3A5F",
+        "heading_bold": true,
+        "subheading_font": "'Source Sans 3', sans-serif",
+        "subheading_size": 16,
+        "subheading_color": "#666666"
+      }
+    },
+    "sqe_about_yBKwwJ": {
+      "type": "sqe-about",
+      "blocks": {
+        "credential_VM4bep": {
+          "type": "credential",
+          "settings": {
+            "icon": "⚡",
+            "credential_title": "ISO Certified",
+            "credential_text": "ISO 9001:2015 Quality Management certified",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 15,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "desc_size": 13,
+            "desc_color": "#666666"
+          }
+        },
+        "credential_cKE6P4": {
+          "type": "credential",
+          "settings": {
+            "icon": "✓",
+            "credential_title": "NICEIC Approved",
+            "credential_text": "NICEIC approved electrical contractor",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 15,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "desc_size": 13,
+            "desc_color": "#666666"
+          }
+        },
+        "credential_fL3qBe": {
+          "type": "credential",
+          "settings": {
+            "icon": "🏆",
+            "credential_title": "MCS Registered",
+            "credential_text": "Microgeneration Certification Scheme registered",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 15,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "desc_size": 13,
+            "desc_color": "#666666"
+          }
+        }
+      },
+      "block_order": [
+        "credential_VM4bep",
+        "credential_cKE6P4",
+        "credential_fL3qBe"
+      ],
+      "name": "SQE About Section",
+      "settings": {
+        "show_section_label": false,
+        "section_label_text": "Über uns",
+        "show_header": true,
+        "header_subheading": "About Us",
+        "header_heading": "Trusted Solar PV Engineering Excellence",
+        "section_heading": "Our Expertise",
+        "description": "<p>SQE Solar Quality Experts Ltd is a UK-based solar PV engineering consultancy dedicated to delivering excellence in renewable energy solutions.</p>",
+        "image_position": "left",
+        "image_style": "both",
+        "show_credential_bar": true,
+        "show_experience": true,
+        "years_of_experience": "15",
+        "experience_label": "Jahre",
+        "show_stats": true,
+        "stat_1_number": "500+",
+        "stat_1_label": "Projects Completed",
+        "stat_2_number": "98%",
+        "stat_2_label": "Client Satisfaction",
+        "stat_3_number": "12",
+        "stat_3_label": "Industry Certifications",
+        "heading_font": "'Source Sans 3', sans-serif",
+        "heading_size": 42,
+        "heading_color": "#1F3A5F",
+        "heading_bold": true,
+        "subheading_font": "'Inter', sans-serif",
+        "subheading_size": 14,
+        "subheading_color": "#C75B12",
+        "desc_font": "'Inter', sans-serif",
+        "desc_size": 16,
+        "desc_color": "#333333",
+        "background_color": "#e6eaea"
+      }
     }
   },
   "order": [
     "sqe_hero_Qqba3L",
-    "sqe_service_explorer_W6i39i",
-    "sqe_news_insights_enPaAW"
+    "sqe_news_insights_enPaAW",
+    "sqe_services_yKFaU6",
+    "sqe_about_yBKwwJ"
   ]
 }
