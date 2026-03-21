@@ -17,16 +17,19 @@
   assign sh_color = section.settings.subheading_color
 -%}
 
-<section id="sqe-project-showcase-{{ section.id }}" class="sqe-project-showcase" style="background-color: {{ background_color }};">
+<section
+  id="sqe-project-showcase-{{ section.id }}"
+  class="sqe-project-showcase"
+  style="--bg-color: {{ background_color }}; --heading-font: {{ h_font }}; --heading-size: {{ h_size }}px; --heading-color: {{ h_color }}; --heading-weight: {{ h_weight }}; --subheading-font: {{ sh_font }}; --subheading-size: {{ sh_size }}px; --subheading-color: {{ sh_color }};">
   <div class="showcase-container">
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
     {% if heading %}
-      <h2 class="showcase-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
+      <h2 class="showcase-heading">{{ heading }}</h2>
     {% endif %}
     {% if subheading %}
-      <p class="showcase-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
+      <p class="showcase-subheading">{{ subheading }}</p>
     {% endif %}
 
     <div class="showcase-main">
@@ -34,26 +37,34 @@
         {% assign first_block = section.blocks.first %}
         <div class="featured-project" data-project-id="{{ first_block.id }}">
           {% if first_block.settings.image %}
-            <img src="{{ first_block.settings.image | img_url: '800x600' }}" alt="{{ first_block.settings.title }}" class="featured-image">
+            <img src="{{ first_block.settings.image | image_url: width: 800 }}" alt="{{ first_block.settings.title | escape }}" class="featured-image">
+          {% else %}
+            <div class="featured-image placeholder">
+              <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"><rect fill="#e8e8e8" width="800" height="600"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="system-ui" font-size="24" fill="#999">No image</text></svg>
+            </div>
           {% endif %}
           <div class="featured-info">
             <h3 class="project-title">{{ first_block.settings.title }}</h3>
             {% if first_block.settings.location %}
-              <p class="project-meta"><strong>Location:</strong> {{ first_block.settings.location }}</p>
+              <p class="project-meta"><strong>Location:</strong> <span>{{ first_block.settings.location }}</span></p>
             {% endif %}
             {% if first_block.settings.capacity %}
-              <p class="project-meta"><strong>Capacity:</strong> {{ first_block.settings.capacity }}</p>
+              <p class="project-meta"><strong>Capacity:</strong> <span>{{ first_block.settings.capacity }}</span></p>
             {% endif %}
             {% if first_block.settings.project_type %}
-              <p class="project-meta"><strong>Type:</strong> {{ first_block.settings.project_type }}</p>
+              <p class="project-meta"><strong>Type:</strong> <span>{{ first_block.settings.project_type }}</span></p>
             {% endif %}
             {% if first_block.settings.year %}
-              <p class="project-meta"><strong>Year:</strong> {{ first_block.settings.year }}</p>
+              <p class="project-meta"><strong>Year:</strong> <span>{{ first_block.settings.year }}</span></p>
             {% endif %}
             {% if first_block.settings.description %}
               <p class="project-description">{{ first_block.settings.description }}</p>
             {% endif %}
           </div>
+        </div>
+      {% else %}
+        <div class="featured-project empty-state">
+          <p>No projects to display. Add a project block to get started.</p>
         </div>
       {% endif %}
     </div>
@@ -61,9 +72,13 @@
     {% if section.blocks.size > 1 %}
       <div class="thumbnail-strip">
         {% for block in section.blocks %}
-          <div class="thumbnail-item" data-project-id="{{ block.id }}" data-project-title="{{ block.settings.title | escape }}" data-project-location="{{ block.settings.location | escape }}" data-project-capacity="{{ block.settings.capacity | escape }}" data-project-type="{{ block.settings.project_type | escape }}" data-project-year="{{ block.settings.year | escape }}" data-project-description="{{ block.settings.description | escape }}" {% if block.settings.image %}data-project-image="{{ block.settings.image | img_url: '800x600' }}"{% endif %}>
+          <div class="thumbnail-item" data-project-id="{{ block.id }}" data-project-title="{{ block.settings.title | escape }}" data-project-location="{{ block.settings.location | escape }}" data-project-capacity="{{ block.settings.capacity | escape }}" data-project-type="{{ block.settings.project_type | escape }}" data-project-year="{{ block.settings.year | escape }}" data-project-description="{{ block.settings.description | escape }}" {% if block.settings.image %}data-project-image="{{ block.settings.image | image_url: width: 800 }}"{% endif %}>
             {% if block.settings.image %}
-              <img src="{{ block.settings.image | img_url: '150x150' }}" alt="{{ block.settings.title }}" class="thumbnail-image">
+              <img src="{{ block.settings.image | image_url: width: 150 }}" alt="{{ block.settings.title | escape }}" class="thumbnail-image">
+            {% else %}
+              <div class="thumbnail-image placeholder">
+                <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg"><rect fill="#e8e8e8" width="150" height="150"/></svg>
+              </div>
             {% endif %}
             <p class="thumbnail-title">{{ block.settings.title }}</p>
           </div>
@@ -74,20 +89,23 @@
 </section>
 
 <style>
-  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-project-showcase-{{ section.id }} {
+    background-color: var(--bg-color, #ffffff);
+    padding: 60px 20px;
+    transition: background-color 0.3s ease;
+  }
+
   #sqe-project-showcase-{{ section.id }} .sqe-section-label {
     display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
-  }
-
-  #sqe-project-showcase-{{ section.id }} {
-    padding: 60px 20px;
-  }
-
-  .sqe-project-showcase {
-    transition: background-color 0.3s ease;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
   }
 
   #sqe-project-showcase-{{ section.id }} .showcase-container {
@@ -97,25 +115,29 @@
   }
 
   #sqe-project-showcase-{{ section.id }} .showcase-heading {
-    font-size: 48px;
-    font-weight: 700;
-    color: #1F3A5F;
+    font-family: var(--heading-font, 'Source Sans 3', sans-serif);
+    font-size: var(--heading-size, 48px);
+    color: var(--heading-color, #1f3a5f);
+    font-weight: var(--heading-weight, 700);
     margin-bottom: 10px;
     text-align: center;
+    overflow-wrap: break-word;
   }
 
-  .showcase-subheading {
-    font-size: 18px;
-    color: #333333;
+  #sqe-project-showcase-{{ section.id }} .showcase-subheading {
+    font-family: var(--subheading-font, 'Inter', sans-serif);
+    font-size: var(--subheading-size, 18px);
+    color: var(--subheading-color, #333333);
     text-align: center;
     margin-bottom: 50px;
+    overflow-wrap: break-word;
   }
 
-  .showcase-main {
+  #sqe-project-showcase-{{ section.id }} .showcase-main {
     margin-bottom: 40px;
   }
 
-  .featured-project {
+  #sqe-project-showcase-{{ section.id }} .featured-project {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
@@ -125,45 +147,67 @@
     border-radius: 8px;
   }
 
-  .featured-image {
+  #sqe-project-showcase-{{ section.id }} .featured-project.empty-state {
+    grid-column: 1 / -1;
+    color: #999;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  #sqe-project-showcase-{{ section.id }} .featured-image {
     width: 100%;
     height: auto;
     border-radius: 8px;
     object-fit: cover;
   }
 
-  .featured-info {
+  #sqe-project-showcase-{{ section.id }} .featured-image.placeholder {
+    width: 100%;
+    height: 600px;
+    border-radius: 8px;
+    background: #f0f0f0;
+  }
+
+  #sqe-project-showcase-{{ section.id }} .featured-image.placeholder svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  #sqe-project-showcase-{{ section.id }} .featured-info {
     padding: 20px 0;
   }
 
-  .project-title {
+  #sqe-project-showcase-{{ section.id }} .project-title {
     font-size: 36px;
     font-weight: 700;
-    color: #1F3A5F;
+    color: #1f3a5f;
     margin-bottom: 20px;
+    overflow-wrap: break-word;
   }
 
-  .project-meta {
+  #sqe-project-showcase-{{ section.id }} .project-meta {
     font-size: 14px;
     color: #666;
     margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
 
-  .project-description {
+  #sqe-project-showcase-{{ section.id }} .project-description {
     font-size: 16px;
     color: #333333;
     line-height: 1.6;
     margin-top: 20px;
+    overflow-wrap: break-word;
   }
 
-  .thumbnail-strip {
+  #sqe-project-showcase-{{ section.id }} .thumbnail-strip {
     display: flex;
     gap: 15px;
     overflow-x: auto;
     padding-bottom: 10px;
   }
 
-  .thumbnail-item {
+  #sqe-project-showcase-{{ section.id }} .thumbnail-item {
     flex: 0 0 150px;
     text-align: center;
     cursor: pointer;
@@ -173,13 +217,13 @@
     transition: all 0.3s ease;
   }
 
-  .thumbnail-item:hover,
-  .thumbnail-item.active {
-    border-color: #F2B705;
-    background-color: #F2F4F7;
+  #sqe-project-showcase-{{ section.id }} .thumbnail-item:hover,
+  #sqe-project-showcase-{{ section.id }} .thumbnail-item.active {
+    border-color: #f2b705;
+    background-color: #f2f4f7;
   }
 
-  .thumbnail-image {
+  #sqe-project-showcase-{{ section.id }} .thumbnail-image {
     width: 100%;
     height: 120px;
     object-fit: cover;
@@ -187,14 +231,28 @@
     margin-bottom: 10px;
   }
 
-  .thumbnail-title {
+  #sqe-project-showcase-{{ section.id }} .thumbnail-image.placeholder {
+    width: 100%;
+    height: 120px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background: #e8e8e8;
+  }
+
+  #sqe-project-showcase-{{ section.id }} .thumbnail-image.placeholder svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  #sqe-project-showcase-{{ section.id }} .thumbnail-title {
     font-size: 13px;
     font-weight: 600;
     color: #333333;
+    overflow-wrap: break-word;
   }
 
   @media (max-width: 768px) {
-    .featured-project {
+    #sqe-project-showcase-{{ section.id }} .featured-project {
       grid-template-columns: 1fr;
       gap: 20px;
       padding: 20px;
@@ -204,11 +262,11 @@
       font-size: 32px;
     }
 
-    .project-title {
+    #sqe-project-showcase-{{ section.id }} .project-title {
       font-size: 24px;
     }
 
-    .showcase-subheading {
+    #sqe-project-showcase-{{ section.id }} .showcase-subheading {
       font-size: 16px;
     }
   }
@@ -222,15 +280,15 @@
       font-size: 24px;
     }
 
-    .project-title {
+    #sqe-project-showcase-{{ section.id }} .project-title {
       font-size: 20px;
     }
 
-    .project-description {
+    #sqe-project-showcase-{{ section.id }} .project-description {
       font-size: 14px;
     }
 
-    .thumbnail-item {
+    #sqe-project-showcase-{{ section.id }} .thumbnail-item {
       flex: 0 0 120px;
     }
   }
@@ -238,45 +296,119 @@
 
 <script>
   (function() {
-    var el = document.getElementById('sqe-project-showcase-' + '{{ section.id }}');
+    var sectionId = '{{ section.id }}';
+    var el = document.getElementById('sqe-project-showcase-' + sectionId);
     if (!el) return;
 
     var thumbnails = el.querySelectorAll('.thumbnail-item');
     var featured = el.querySelector('.featured-project');
 
+    if (!featured) return;
+
+    // Template for featured content to avoid XSS vulnerabilities
+    var createFeaturedContent = function(data) {
+      var fragment = document.createDocumentFragment();
+
+      // Create and append image
+      if (data.img) {
+        var imgEl = document.createElement('img');
+        imgEl.src = data.img;
+        imgEl.alt = data.title || 'Project image';
+        imgEl.className = 'featured-image';
+        fragment.appendChild(imgEl);
+      }
+
+      // Create featured-info container
+      var infoDiv = document.createElement('div');
+      infoDiv.className = 'featured-info';
+
+      // Title
+      var titleEl = document.createElement('h3');
+      titleEl.className = 'project-title';
+      titleEl.textContent = data.title || '';
+      infoDiv.appendChild(titleEl);
+
+      // Location
+      if (data.location) {
+        var locP = document.createElement('p');
+        locP.className = 'project-meta';
+        locP.innerHTML = '<strong>Location:</strong> ';
+        var locSpan = document.createElement('span');
+        locSpan.textContent = data.location;
+        locP.appendChild(locSpan);
+        infoDiv.appendChild(locP);
+      }
+
+      // Capacity
+      if (data.capacity) {
+        var capP = document.createElement('p');
+        capP.className = 'project-meta';
+        capP.innerHTML = '<strong>Capacity:</strong> ';
+        var capSpan = document.createElement('span');
+        capSpan.textContent = data.capacity;
+        capP.appendChild(capSpan);
+        infoDiv.appendChild(capP);
+      }
+
+      // Type
+      if (data.type) {
+        var typeP = document.createElement('p');
+        typeP.className = 'project-meta';
+        typeP.innerHTML = '<strong>Type:</strong> ';
+        var typeSpan = document.createElement('span');
+        typeSpan.textContent = data.type;
+        typeP.appendChild(typeSpan);
+        infoDiv.appendChild(typeP);
+      }
+
+      // Year
+      if (data.year) {
+        var yearP = document.createElement('p');
+        yearP.className = 'project-meta';
+        yearP.innerHTML = '<strong>Year:</strong> ';
+        var yearSpan = document.createElement('span');
+        yearSpan.textContent = data.year;
+        yearP.appendChild(yearSpan);
+        infoDiv.appendChild(yearP);
+      }
+
+      // Description
+      if (data.desc) {
+        var descP = document.createElement('p');
+        descP.className = 'project-description';
+        descP.textContent = data.desc;
+        infoDiv.appendChild(descP);
+      }
+
+      fragment.appendChild(infoDiv);
+      return fragment;
+    };
+
+    // Handle thumbnail clicks
     thumbnails.forEach(function(thumb) {
       thumb.addEventListener('click', function() {
+        // Update active state
         thumbnails.forEach(function(t) { t.classList.remove('active'); });
         this.classList.add('active');
 
-        var title = this.getAttribute('data-project-title');
-        var location = this.getAttribute('data-project-location');
-        var capacity = this.getAttribute('data-project-capacity');
-        var type = this.getAttribute('data-project-type');
-        var year = this.getAttribute('data-project-year');
-        var desc = this.getAttribute('data-project-description');
-        var img = this.getAttribute('data-project-image');
+        // Extract data from attributes
+        var data = {
+          title: this.getAttribute('data-project-title') || '',
+          location: this.getAttribute('data-project-location'),
+          capacity: this.getAttribute('data-project-capacity'),
+          type: this.getAttribute('data-project-type'),
+          year: this.getAttribute('data-project-year'),
+          desc: this.getAttribute('data-project-description'),
+          img: this.getAttribute('data-project-image')
+        };
 
-        var html = '<div class="featured-info"><h3 class="project-title">' + title + '</h3>';
-        if (location) html += '<p class="project-meta"><strong>Location:</strong> ' + location + '</p>';
-        if (capacity) html += '<p class="project-meta"><strong>Capacity:</strong> ' + capacity + '</p>';
-        if (type) html += '<p class="project-meta"><strong>Type:</strong> ' + type + '</p>';
-        if (year) html += '<p class="project-meta"><strong>Year:</strong> ' + year + '</p>';
-        if (desc) html += '<p class="project-description">' + desc + '</p>';
-        html += '</div>';
-
+        // Clear and populate featured section
         featured.innerHTML = '';
-        if (img) {
-          var imgEl = document.createElement('img');
-          imgEl.src = img;
-          imgEl.alt = title;
-          imgEl.className = 'featured-image';
-          featured.appendChild(imgEl);
-        }
-        featured.innerHTML += html;
+        featured.appendChild(createFeaturedContent(data));
       });
     });
 
+    // Set first thumbnail as active on load
     if (thumbnails.length > 0) {
       thumbnails[0].classList.add('active');
     }

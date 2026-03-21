@@ -1,21 +1,21 @@
-{% stylesheet %}
-  .sqe-before-after-section {
+<style>
+  #sqe-before-after-{{ section.id }} {
     padding: 60px 20px;
     background: linear-gradient(135deg, #f8fafb 0%, #ffffff 100%);
     font-family: 'Inter', sans-serif;
   }
 
-  .sqe-before-after-container {
+  #sqe-before-after-{{ section.id }} .sqe-before-after-container {
     max-width: 1000px;
     margin: 0 auto;
   }
 
-  .sqe-before-after-header {
+  #sqe-before-after-{{ section.id }} .sqe-before-after-header {
     text-align: center;
     margin-bottom: 50px;
   }
 
-  .sqe-before-after-header h2 {
+  #sqe-before-after-{{ section.id }} .sqe-before-after-header h2 {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 42px;
     font-weight: 700;
@@ -24,7 +24,7 @@
     letter-spacing: -0.5px;
   }
 
-  .sqe-before-after-header p {
+  #sqe-before-after-{{ section.id }} .sqe-before-after-header p {
     font-size: 16px;
     color: #666;
     margin: 0;
@@ -32,16 +32,16 @@
   }
 
   /* Main Slider Container */
-  .sqe-comparison-blocks {
+  #sqe-before-after-{{ section.id }} .sqe-comparison-blocks {
     display: grid;
     gap: 50px;
   }
 
-  .sqe-comparison-block {
+  #sqe-before-after-{{ section.id }} .sqe-comparison-block {
     margin-bottom: 20px;
   }
 
-  .sqe-comparison-wrapper {
+  #sqe-before-after-{{ section.id }} .sqe-comparison-wrapper {
     position: relative;
     width: 100%;
     padding-bottom: 75%;
@@ -52,7 +52,7 @@
     margin-bottom: 30px;
   }
 
-  .sqe-comparison-inner {
+  #sqe-before-after-{{ section.id }} .sqe-comparison-inner {
     position: absolute;
     top: 0;
     left: 0;
@@ -61,7 +61,7 @@
     overflow: hidden;
   }
 
-  .sqe-before-image {
+  #sqe-before-after-{{ section.id }} .sqe-before-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -72,13 +72,24 @@
     overflow: hidden;
   }
 
-  .sqe-before-image img {
+  #sqe-before-after-{{ section.id }} .sqe-before-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .sqe-after-image {
+  #sqe-before-after-{{ section.id }} .sqe-placeholder-before {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #E8ECEF 0%, #D4DFE8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-weight: 600;
+  }
+
+  #sqe-before-after-{{ section.id }} .sqe-after-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -89,14 +100,25 @@
     clip-path: inset(0 0 0 0);
   }
 
-  .sqe-after-image img {
+  #sqe-before-after-{{ section.id }} .sqe-after-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
+  #sqe-before-after-{{ section.id }} .sqe-placeholder-after {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #F2B705 0%, #C75B12 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+  }
+
   /* Divider */
-  .sqe-divider {
+  #sqe-before-after-{{ section.id }} .sqe-divider {
     position: absolute;
     top: 0;
     left: 50%;
@@ -110,12 +132,12 @@
     box-shadow: 0 0 20px rgba(242, 183, 5, 0.4);
   }
 
-  .sqe-divider.dragging {
+  #sqe-before-after-{{ section.id }} .sqe-divider.dragging {
     box-shadow: 0 0 30px rgba(242, 183, 5, 0.8);
   }
 
   /* Divider Handle */
-  .sqe-divider-handle {
+  #sqe-before-after-{{ section.id }} .sqe-divider-handle {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -133,8 +155,8 @@
     transition: all 0.3s ease;
   }
 
-  .sqe-divider-handle::before,
-  .sqe-divider-handle::after {
+  #sqe-before-after-{{ section.id }} .sqe-divider-handle::before,
+  #sqe-before-after-{{ section.id }} .sqe-divider-handle::after {
     content: '';
     position: absolute;
     width: 3px;
@@ -142,24 +164,24 @@
     background: #F2B705;
   }
 
-  .sqe-divider-handle::before {
+  #sqe-before-after-{{ section.id }} .sqe-divider-handle::before {
     left: 12px;
     transform: skewY(-15deg);
   }
 
-  .sqe-divider-handle::after {
+  #sqe-before-after-{{ section.id }} .sqe-divider-handle::after {
     right: 12px;
     transform: skewY(15deg);
   }
 
-  .sqe-divider:hover .sqe-divider-handle {
+  #sqe-before-after-{{ section.id }} .sqe-divider:hover .sqe-divider-handle {
     width: 70px;
     height: 70px;
     box-shadow: 0 12px 35px rgba(242, 183, 5, 0.5);
   }
 
   /* Labels */
-  .sqe-comparison-labels {
+  #sqe-before-after-{{ section.id }} .sqe-comparison-labels {
     position: absolute;
     top: 20px;
     width: 100%;
@@ -170,7 +192,7 @@
     pointer-events: none;
   }
 
-  .sqe-label {
+  #sqe-before-after-{{ section.id }} .sqe-label {
     background: rgba(31, 58, 95, 0.9);
     color: white;
     padding: 8px 16px;
@@ -183,17 +205,17 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .sqe-label.after {
+  #sqe-before-after-{{ section.id }} .sqe-label.after {
     background: rgba(242, 183, 5, 0.95);
     color: white;
   }
 
   /* Caption */
-  .sqe-comparison-caption {
+  #sqe-before-after-{{ section.id }} .sqe-comparison-caption {
     padding: 0 10px;
   }
 
-  .sqe-comparison-caption h3 {
+  #sqe-before-after-{{ section.id }} .sqe-comparison-caption h3 {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 24px;
     font-weight: 700;
@@ -201,45 +223,19 @@
     margin: 0 0 8px 0;
   }
 
-  .sqe-comparison-caption p {
+  #sqe-before-after-{{ section.id }} .sqe-comparison-caption p {
     font-size: 15px;
     color: #666;
     line-height: 1.6;
     margin: 0;
   }
 
-  /* Loading State */
-  .sqe-comparison-loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    background: rgba(242, 183, 5, 0.2);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    z-index: 3;
-  }
-
-  @keyframes spin {
-    from {
-      transform: translate(-50%, -50%) rotate(0deg);
-    }
-    to {
-      transform: translate(-50%, -50%) rotate(360deg);
-    }
-  }
-
   /* Auto Animate */
-  .sqe-comparison-wrapper.auto-animate .sqe-after-image {
-    animation: reveal 8s ease-in-out infinite;
+  #sqe-before-after-{{ section.id }} .sqe-comparison-wrapper.auto-animate .sqe-after-image {
+    animation: sqe-reveal-{{ section.id }} 8s ease-in-out infinite;
   }
 
-  @keyframes reveal {
+  @keyframes sqe-reveal-{{ section.id }} {
     0%, 10% {
       clip-path: inset(0 100% 0 0);
     }
@@ -253,107 +249,132 @@
 
   /* Mobile */
   @media (max-width: 768px) {
-    .sqe-before-after-section {
+    #sqe-before-after-{{ section.id }} {
       padding: 40px 16px;
     }
 
-    .sqe-before-after-header h2 {
+    #sqe-before-after-{{ section.id }} .sqe-before-after-header h2 {
       font-size: 28px;
     }
 
-    .sqe-divider-handle {
+    #sqe-before-after-{{ section.id }} .sqe-divider-handle {
       width: 50px;
       height: 50px;
     }
 
-    .sqe-divider:hover .sqe-divider-handle {
+    #sqe-before-after-{{ section.id }} .sqe-divider:hover .sqe-divider-handle {
       width: 50px;
       height: 50px;
     }
 
-    .sqe-label {
+    #sqe-before-after-{{ section.id }} .sqe-label {
       font-size: 11px;
       padding: 6px 12px;
     }
 
-    .sqe-comparison-caption h3 {
+    #sqe-before-after-{{ section.id }} .sqe-comparison-caption h3 {
       font-size: 20px;
     }
 
-    .sqe-comparison-caption p {
+    #sqe-before-after-{{ section.id }} .sqe-comparison-caption p {
       font-size: 14px;
     }
   }
-{% endstylesheet %}
+</style>
 
-{% javascript %}
-  class SQEBeforeAfterSlider {
-    constructor(element) {
-      this.wrapper = element.querySelector('.sqe-comparison-wrapper');
-      this.divider = element.querySelector('.sqe-divider');
-      this.afterImage = element.querySelector('.sqe-after-image');
-      this.comparisonInner = element.querySelector('.sqe-comparison-inner');
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const sectionElement = document.getElementById('sqe-before-after-' + sectionId);
 
-      this.isDragging = false;
-      this.startX = 0;
-      this.currentX = 50;
+    if (!sectionElement) return;
 
-      this.init();
+    class SQEBeforeAfterSlider {
+      constructor(element) {
+        this.block = element;
+        this.wrapper = element.querySelector('.sqe-comparison-wrapper');
+        this.divider = element.querySelector('.sqe-divider');
+        this.afterImage = element.querySelector('.sqe-after-image');
+        this.comparisonInner = element.querySelector('.sqe-comparison-inner');
+        this.handle = this.divider.querySelector('.sqe-divider-handle');
+
+        this.isDragging = false;
+        this.startX = 0;
+        this.currentX = 50;
+        this.isAutoAnimating = this.wrapper.classList.contains('auto-animate');
+
+        this.init();
+      }
+
+      init() {
+        this.divider.addEventListener('mousedown', (e) => this.startDrag(e));
+        this.divider.addEventListener('touchstart', (e) => this.startDrag(e), { passive: false });
+
+        document.addEventListener('mousemove', (e) => this.moveDivider(e));
+        document.addEventListener('touchmove', (e) => this.moveDivider(e), { passive: false });
+
+        document.addEventListener('mouseup', () => this.stopDrag());
+        document.addEventListener('touchend', () => this.stopDrag());
+
+        this.handle.setAttribute('role', 'slider');
+        this.handle.setAttribute('aria-label', 'Before and after image slider');
+        this.handle.setAttribute('aria-valuemin', '0');
+        this.handle.setAttribute('aria-valuemax', '100');
+        this.updatePosition();
+
+        window.addEventListener('resize', () => this.updatePosition());
+      }
+
+      startDrag(e) {
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+
+        this.isDragging = true;
+        this.wrapper.classList.remove('auto-animate');
+        this.divider.classList.add('dragging');
+        this.startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        this.startPosition = this.currentX;
+      }
+
+      stopDrag() {
+        this.isDragging = false;
+        this.divider.classList.remove('dragging');
+        if (this.isAutoAnimating) {
+          this.wrapper.classList.add('auto-animate');
+        }
+      }
+
+      moveDivider(e) {
+        if (!this.isDragging) return;
+
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+
+        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const rect = this.comparisonInner.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const percent = (x / rect.width) * 100;
+
+        this.currentX = Math.max(0, Math.min(100, percent));
+        this.updatePosition();
+      }
+
+      updatePosition() {
+        this.divider.style.left = this.currentX + '%';
+        this.afterImage.style.clipPath = `inset(0 ${100 - this.currentX}% 0 0)`;
+        this.handle.setAttribute('aria-valuenow', Math.round(this.currentX));
+      }
     }
 
-    init() {
-      this.divider.addEventListener('mousedown', (e) => this.startDrag(e));
-      this.divider.addEventListener('touchstart', (e) => this.startDrag(e));
+    sectionElement.querySelectorAll('.sqe-comparison-block').forEach(block => {
+      new SQEBeforeAfterSlider(block);
+    });
+  })();
+</script>
 
-      document.addEventListener('mousemove', (e) => this.moveDivider(e));
-      document.addEventListener('touchmove', (e) => this.moveDivider(e));
-
-      document.addEventListener('mouseup', () => this.stopDrag());
-      document.addEventListener('touchend', () => this.stopDrag());
-
-      this.updatePosition();
-
-      window.addEventListener('resize', () => this.updatePosition());
-    }
-
-    startDrag(e) {
-      this.isDragging = true;
-      this.divider.classList.add('dragging');
-      this.startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      this.startPosition = this.currentX;
-    }
-
-    stopDrag() {
-      this.isDragging = false;
-      this.divider.classList.remove('dragging');
-    }
-
-    moveDivider(e) {
-      if (!this.isDragging) return;
-
-      e.preventDefault();
-
-      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      const rect = this.comparisonInner.getBoundingClientRect();
-      const x = clientX - rect.left;
-      const percent = (x / rect.width) * 100;
-
-      this.currentX = Math.max(0, Math.min(100, percent));
-      this.updatePosition();
-    }
-
-    updatePosition() {
-      this.divider.style.left = this.currentX + '%';
-      this.afterImage.style.clipPath = `inset(0 ${100 - this.currentX}% 0 0)`;
-    }
-  }
-
-  document.querySelectorAll('.sqe-comparison-block').forEach(block => {
-    new SQEBeforeAfterSlider(block);
-  });
-{% endjavascript %}
-
-<div class="sqe-before-after-section">
+<div id="sqe-before-after-{{ section.id }}">
   <div class="sqe-before-after-container">
     {% if section.settings.show_header %}
       <div class="sqe-before-after-header">
@@ -372,9 +393,7 @@
                 {% if block.settings.before_image %}
                   {{ block.settings.before_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
                 {% else %}
-                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #E8ECEF 0%, #D4DFE8 100%); display: flex; align-items: center; justify-content: center; color: #999; font-weight: 600;">
-                    Before Image
-                  </div>
+                  <div class="sqe-placeholder-before">Before Image</div>
                 {% endif %}
               </div>
 
@@ -383,9 +402,7 @@
                 {% if block.settings.after_image %}
                   {{ block.settings.after_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
                 {% else %}
-                  <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #F2B705 0%, #C75B12 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                    After Image
-                  </div>
+                  <div class="sqe-placeholder-after">After Image</div>
                 {% endif %}
               </div>
 

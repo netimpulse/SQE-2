@@ -16,35 +16,37 @@
   endif
 -%}
 
-<div id="sqe-faq-{{ section.id }}" class="sqe-faq-container">
+<div
+  id="sqe-faq-{{ section.id }}"
+  class="sqe-faq-container"
+  style="--h-font: {{ h_font }}; --h-size: {{ h_size }}px; --h-color: {{ h_color }}; --h-weight: {{ h_weight }}; --max-width: {{ section.settings.max_width }}px; --margin-top: {{ section.settings.margin_top }}px; --margin-bottom: {{ section.settings.margin_bottom }}px; --padding-horizontal: {{ section.settings.padding_horizontal }}px; --text-alignment: {{ section.settings.text_alignment }}; --title-size: {{ section.settings.title_size }}px; --description-font: {{ section.settings.description_font | default: "'Inter', sans-serif" }}; --description-size: {{ section.settings.description_size | default: 16 }}px; --description-color: {{ section.settings.description_color | default: '#666' }};"
+>
   <div class="sqe-faq-header">
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
-    <h2 class="sqe-faq-title" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ section.settings.title }}</h2>
+    <h2 class="sqe-faq-title">{{ section.settings.title }}</h2>
     {% if section.settings.subtitle %}
       <p class="sqe-faq-subtitle">{{ section.settings.subtitle }}</p>
     {% endif %}
   </div>
 
   {% if section.blocks.size > 0 %}
-    <!-- Filter Tabs -->
     <div class="sqe-faq-controls">
       <div class="sqe-faq-filters">
-        <button class="sqe-filter-btn active" data-filter="all">All Questions</button>
+        <button class="sqe-filter-btn active" data-filter="all" aria-label="Show all questions">All Questions</button>
         {% assign categories = '' %}
         {% for block in section.blocks %}
           {% assign category = block.settings.category %}
           {% unless categories contains category %}
             {% assign categories = categories | append: ',' | append: category %}
-            <button class="sqe-filter-btn" data-filter="{{ category | downcase | replace: ' ', '-' }}">
+            <button class="sqe-filter-btn" data-filter="{{ category | downcase | replace: ' ', '-' }}" aria-label="Filter by {{ category }}">
               {{ category }}
             </button>
           {% endunless %}
         {% endfor %}
       </div>
 
-      <!-- Search Input -->
       <div class="sqe-faq-search-wrapper">
         <input
           type="text"
@@ -52,19 +54,17 @@
           placeholder="Search questions..."
           aria-label="Search FAQ questions"
         >
-        <svg class="sqe-search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <svg class="sqe-search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2"/>
           <path d="M14 14l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
 
-    <!-- Question Counter -->
     <div class="sqe-faq-counter">
       <span class="sqe-counter-text">Showing <strong class="sqe-counter-visible">{{ section.blocks.size }}</strong> of <strong class="sqe-counter-total">{{ section.blocks.size }}</strong> questions</span>
     </div>
 
-    <!-- Accordion Items -->
     <div class="sqe-accordion" role="region" aria-label="FAQ Accordion">
       {% for block in section.blocks %}
         <div
@@ -77,9 +77,10 @@
             class="sqe-accordion-header"
             aria-expanded="false"
             aria-controls="panel-{{ forloop.index0 }}"
+            id="button-{{ forloop.index0 }}"
           >
             <span class="sqe-accordion-title">{{ block.settings.question }}</span>
-            <div class="sqe-accordion-icon">
+            <div class="sqe-accordion-icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -95,7 +96,7 @@
             hidden
           >
             <div class="sqe-accordion-content">
-              <div class="sqe-accordion-left-border"></div>
+              <div class="sqe-accordion-left-border" aria-hidden="true"></div>
               <div class="sqe-accordion-text">
                 {{ block.settings.answer }}
               </div>
@@ -107,161 +108,184 @@
 
   {% else %}
     <div class="sqe-faq-placeholder">
-      <p>Add FAQ items to display accordion</p>
+      <p>Add FAQ items to your accordion to get started.</p>
     </div>
   {% endif %}
 </div>
 
 <style>
-  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-faq-{{ section.id }} {
+    --color-primary: #1F3A5F;
+    --color-accent: #F2B705;
+    --color-accent-dark: #C75B12;
+    --color-border: #e0e0e0;
+    --color-bg-light: #F2F4F7;
+    --color-text: #333;
+    --color-text-muted: #666;
+    --color-text-light: #999;
+    --duration-fast: 0.3s;
+    --duration-normal: 0.4s;
+    --easing-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --border-radius: 8px;
+    --border-radius-pill: 20px;
+  }
+
   #sqe-faq-{{ section.id }} .sqe-section-label {
     display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-accent-dark);
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: var(--border-radius-pill);
+    margin-bottom: 12px;
   }
 
-  .sqe-faq-container {
-    max-width: {{ section.settings.max_width }}px;
-    margin: {{ section.settings.margin_top }}px auto {{ section.settings.margin_bottom }}px;
-    padding: {{ section.settings.padding_horizontal }}px {{ section.settings.padding_horizontal }}px;
+  #sqe-faq-{{ section.id }} .sqe-faq-container {
+    max-width: var(--max-width);
+    margin: var(--margin-top) auto var(--margin-bottom);
+    padding: var(--padding-horizontal);
   }
 
-  .sqe-faq-header {
-    text-align: {{ section.settings.text_alignment }};
+  #sqe-faq-{{ section.id }} .sqe-faq-header {
+    text-align: var(--text-alignment);
     margin-bottom: 40px;
   }
 
-  .sqe-faq-title {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: {{ section.settings.title_size }}px;
-    font-weight: 700;
-    color: #1F3A5F;
+  #sqe-faq-{{ section.id }} .sqe-faq-title {
+    font-family: var(--h-font);
+    font-size: var(--h-size);
+    font-weight: var(--h-weight);
+    color: var(--h-color);
     margin: 0 0 12px 0;
     letter-spacing: -0.5px;
   }
 
-  .sqe-faq-subtitle {
-    font-family: {{ section.settings.description_font | default: "'Inter', sans-serif" }};
-    font-size: {{ section.settings.description_size | default: 16 }}px;
-    color: {{ section.settings.description_color | default: '#666' }};
+  #sqe-faq-{{ section.id }} .sqe-faq-subtitle {
+    font-family: var(--description-font);
+    font-size: var(--description-size);
+    color: var(--description-color);
     margin: 0;
     line-height: 1.6;
   }
 
-  .sqe-faq-controls {
+  #sqe-faq-{{ section.id }} .sqe-faq-controls {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin-bottom: 30px;
     padding: 24px;
-    background: #F2F4F7;
-    border-radius: 12px;
+    background: var(--color-bg-light);
+    border-radius: var(--border-radius);
   }
 
-  .sqe-faq-filters {
+  #sqe-faq-{{ section.id }} .sqe-faq-filters {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
   }
 
-  .sqe-filter-btn {
+  #sqe-faq-{{ section.id }} .sqe-filter-btn {
     padding: 10px 20px;
     border: 2px solid transparent;
     background: white;
-    color: #333333;
+    color: var(--color-text);
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 500;
-    border-radius: 20px;
+    border-radius: var(--border-radius-pill);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all var(--duration-fast) var(--easing-spring);
     position: relative;
     overflow: hidden;
   }
 
-  .sqe-filter-btn:hover {
-    border-color: #F2B705;
+  #sqe-faq-{{ section.id }} .sqe-filter-btn:hover {
+    border-color: var(--color-accent);
     transform: translateY(-2px);
   }
 
-  .sqe-filter-btn.active {
-    background: #1F3A5F;
+  #sqe-faq-{{ section.id }} .sqe-filter-btn.active {
+    background: var(--color-primary);
     color: white;
-    border-color: #1F3A5F;
+    border-color: var(--color-primary);
   }
 
-  .sqe-faq-search-wrapper {
+  #sqe-faq-{{ section.id }} .sqe-faq-search-wrapper {
     position: relative;
     display: flex;
     align-items: center;
   }
 
-  .sqe-faq-search-input {
+  #sqe-faq-{{ section.id }} .sqe-faq-search-input {
     width: 100%;
     padding: 12px 16px 12px 40px;
     border: 2px solid #ddd;
     background: white;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     font-family: 'Inter', sans-serif;
     font-size: 14px;
-    transition: all 0.3s ease;
+    transition: all var(--duration-fast) ease;
+    overflow-wrap: break-word;
   }
 
-  .sqe-faq-search-input:focus {
+  #sqe-faq-{{ section.id }} .sqe-faq-search-input:focus {
     outline: none;
-    border-color: #1F3A5F;
+    border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.1);
   }
 
-  .sqe-search-icon {
+  #sqe-faq-{{ section.id }} .sqe-search-icon {
     position: absolute;
     left: 12px;
-    color: #999;
+    color: var(--color-text-light);
     pointer-events: none;
+    flex-shrink: 0;
   }
 
-  .sqe-faq-counter {
+  #sqe-faq-{{ section.id }} .sqe-faq-counter {
     text-align: center;
     margin-bottom: 20px;
   }
 
-  .sqe-counter-text {
+  #sqe-faq-{{ section.id }} .sqe-counter-text {
     font-family: 'Inter', sans-serif;
     font-size: 13px;
-    color: #666;
+    color: var(--color-text-muted);
   }
 
-  .sqe-counter-visible,
-  .sqe-counter-total {
-    color: #1F3A5F;
+  #sqe-faq-{{ section.id }} .sqe-counter-visible,
+  #sqe-faq-{{ section.id }} .sqe-counter-total {
+    color: var(--color-primary);
     font-weight: 600;
   }
 
-  .sqe-accordion {
+  #sqe-faq-{{ section.id }} .sqe-accordion {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
 
-  .sqe-accordion-item {
-    border-radius: 8px;
+  #sqe-faq-{{ section.id }} .sqe-accordion-item {
+    border-radius: var(--border-radius);
     background: white;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--color-border);
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--duration-fast) ease;
   }
 
-  .sqe-accordion-item:hover {
-    border-color: #F2B705;
+  #sqe-faq-{{ section.id }} .sqe-accordion-item:hover {
+    border-color: var(--color-accent);
     box-shadow: 0 4px 12px rgba(31, 58, 95, 0.08);
   }
 
-  .sqe-accordion-item.active {
-    border-color: #1F3A5F;
+  #sqe-faq-{{ section.id }} .sqe-accordion-item.active {
+    border-color: var(--color-primary);
   }
 
-  .sqe-accordion-header {
+  #sqe-faq-{{ section.id }} .sqe-accordion-header {
     width: 100%;
     padding: 20px 24px;
     border: none;
@@ -274,176 +298,195 @@
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 600;
-    color: #1F3A5F;
-    transition: all 0.3s ease;
+    color: var(--color-primary);
+    transition: all var(--duration-fast) ease;
     text-align: left;
   }
 
-  .sqe-accordion-item.active .sqe-accordion-header {
+  #sqe-faq-{{ section.id }} .sqe-accordion-header:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  #sqe-faq-{{ section.id }} .sqe-accordion-item.active .sqe-accordion-header {
     background: linear-gradient(135deg, rgba(31, 58, 95, 0.02) 0%, rgba(242, 183, 5, 0.02) 100%);
   }
 
-  .sqe-accordion-title {
+  #sqe-faq-{{ section.id }} .sqe-accordion-title {
     flex: 1;
     line-height: 1.4;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
-  .sqe-accordion-icon {
+  #sqe-faq-{{ section.id }} .sqe-accordion-icon {
     flex-shrink: 0;
     width: 24px;
     height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform var(--duration-normal) var(--easing-spring);
   }
 
-  .sqe-accordion-item.active .sqe-accordion-icon {
+  #sqe-faq-{{ section.id }} .sqe-accordion-item.active .sqe-accordion-icon {
     transform: rotate(180deg);
   }
 
-  .sqe-accordion-icon svg {
-    color: #F2B705;
+  #sqe-faq-{{ section.id }} .sqe-accordion-icon svg {
+    color: var(--color-accent);
   }
 
-  .sqe-accordion-panel {
+  #sqe-faq-{{ section.id }} .sqe-accordion-panel {
     overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                opacity 0.3s ease;
+    transition: max-height var(--duration-normal) var(--easing-spring),
+                opacity var(--duration-fast) ease;
     max-height: 0;
     opacity: 0;
   }
 
-  .sqe-accordion-panel:not([hidden]) {
-    max-height: 800px;
+  #sqe-faq-{{ section.id }} .sqe-accordion-panel:not([hidden]) {
+    max-height: 1000px;
     opacity: 1;
   }
 
-  .sqe-accordion-content {
+  #sqe-faq-{{ section.id }} .sqe-accordion-content {
     padding: 0 24px 24px 24px;
     display: flex;
     gap: 16px;
     align-items: flex-start;
   }
 
-  .sqe-accordion-left-border {
+  #sqe-faq-{{ section.id }} .sqe-accordion-left-border {
     width: 4px;
-    background: linear-gradient(180deg, #F2B705 0%, #C75B12 100%);
+    background: linear-gradient(180deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
     border-radius: 2px;
     flex-shrink: 0;
     min-height: 20px;
   }
 
-  .sqe-accordion-text {
+  #sqe-faq-{{ section.id }} .sqe-accordion-text {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
-    color: #666;
+    color: var(--color-text-muted);
     line-height: 1.8;
     flex: 1;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
-  .sqe-accordion-text p {
+  #sqe-faq-{{ section.id }} .sqe-accordion-text p {
     margin: 0 0 12px 0;
   }
 
-  .sqe-accordion-text p:last-child {
+  #sqe-faq-{{ section.id }} .sqe-accordion-text p:last-child {
     margin-bottom: 0;
   }
 
-  .sqe-faq-placeholder {
+  #sqe-faq-{{ section.id }} .sqe-faq-placeholder {
     text-align: center;
     padding: 60px 20px;
-    color: #999;
+    color: var(--color-text-light);
     font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
   }
 
-  .sqe-accordion-item.hidden {
+  #sqe-faq-{{ section.id }} .sqe-accordion-item.hidden {
     display: none;
   }
 
-  /* Responsive */
   @media (max-width: 768px) {
-    .sqe-faq-container {
+    #sqe-faq-{{ section.id }} .sqe-faq-container {
       padding: 20px;
     }
 
-    .sqe-faq-header {
+    #sqe-faq-{{ section.id }} .sqe-faq-header {
       margin-bottom: 30px;
     }
 
-    .sqe-faq-title {
+    #sqe-faq-{{ section.id }} .sqe-faq-title {
       font-size: 28px;
     }
 
-    .sqe-faq-subtitle {
+    #sqe-faq-{{ section.id }} .sqe-faq-subtitle {
       font-size: 15px;
     }
 
-    .sqe-faq-controls {
+    #sqe-faq-{{ section.id }} .sqe-faq-controls {
       padding: 20px;
     }
 
-    .sqe-faq-filters {
+    #sqe-faq-{{ section.id }} .sqe-faq-filters {
       gap: 8px;
     }
 
-    .sqe-filter-btn {
+    #sqe-faq-{{ section.id }} .sqe-filter-btn {
       padding: 8px 12px;
       font-size: 13px;
     }
 
-    .sqe-accordion-header {
+    #sqe-faq-{{ section.id }} .sqe-accordion-header {
       padding: 18px 20px;
       font-size: 14px;
     }
 
-    .sqe-accordion-content {
+    #sqe-faq-{{ section.id }} .sqe-accordion-content {
       padding: 0 20px 20px 20px;
     }
 
-    .sqe-accordion-text {
+    #sqe-faq-{{ section.id }} .sqe-accordion-text {
       font-size: 13px;
     }
   }
 
   @media (max-width: 480px) {
-    .sqe-faq-container {
+    #sqe-faq-{{ section.id }} .sqe-faq-container {
       padding: 16px;
     }
 
-    .sqe-faq-title {
+    #sqe-faq-{{ section.id }} .sqe-faq-title {
       font-size: 24px;
     }
 
-    .sqe-faq-controls {
+    #sqe-faq-{{ section.id }} .sqe-faq-controls {
       flex-direction: column;
       padding: 16px;
+      gap: 16px;
     }
 
-    .sqe-faq-filters {
+    #sqe-faq-{{ section.id }} .sqe-faq-filters {
       gap: 8px;
     }
 
-    .sqe-filter-btn {
+    #sqe-faq-{{ section.id }} .sqe-filter-btn {
       padding: 8px 14px;
       font-size: 12px;
+      flex: 0 1 auto;
     }
 
-    .sqe-accordion-header {
+    #sqe-faq-{{ section.id }} .sqe-accordion-header {
       padding: 16px;
       font-size: 14px;
+      gap: 12px;
     }
 
-    .sqe-accordion-content {
+    #sqe-faq-{{ section.id }} .sqe-accordion-content {
       padding: 0 16px 16px 16px;
       gap: 12px;
     }
 
-    .sqe-accordion-left-border {
+    #sqe-faq-{{ section.id }} .sqe-accordion-left-border {
       width: 3px;
+      min-height: 16px;
     }
 
-    .sqe-accordion-text {
+    #sqe-faq-{{ section.id }} .sqe-accordion-text {
+      font-size: 13px;
+    }
+
+    #sqe-faq-{{ section.id }} .sqe-faq-search-input {
+      padding: 10px 14px 10px 36px;
       font-size: 13px;
     }
   }
@@ -451,7 +494,8 @@
 
 <script>
 (function() {
-  const container = document.querySelector('.sqe-faq-container');
+  const sectionId = 'sqe-faq-{{ section.id }}';
+  const container = document.getElementById(sectionId);
   if (!container) return;
 
   const accordion = container.querySelector('.sqe-accordion');
@@ -461,44 +505,53 @@
   const counterVisible = container.querySelector('.sqe-counter-visible');
   const counterTotal = container.querySelector('.sqe-counter-total');
 
+  if (!items.length) return;
+
   let currentFilter = 'all';
   let currentSearch = '';
+  let visibleIndices = [];
 
   // Accordion Toggle
-  items.forEach((item, index) => {
+  items.forEach((item) => {
     const header = item.querySelector('.sqe-accordion-header');
     const panel = item.querySelector('.sqe-accordion-panel');
 
     header.addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
-
-      if (isActive) {
-        item.classList.remove('active');
-        header.setAttribute('aria-expanded', 'false');
-        panel.setAttribute('hidden', '');
-      } else {
-        item.classList.add('active');
-        header.setAttribute('aria-expanded', 'true');
-        panel.removeAttribute('hidden');
-      }
+      toggleAccordionItem(item, header, panel);
     });
   });
+
+  function toggleAccordionItem(item, header, panel) {
+    const isActive = item.classList.contains('active');
+
+    if (isActive) {
+      item.classList.remove('active');
+      header.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('hidden', '');
+    } else {
+      item.classList.add('active');
+      header.setAttribute('aria-expanded', 'true');
+      panel.removeAttribute('hidden');
+    }
+  }
 
   // Filter Function
   function applyFilters() {
     let visibleCount = 0;
+    visibleIndices = [];
 
-    items.forEach(item => {
+    items.forEach((item, index) => {
       const category = item.getAttribute('data-category');
       const question = item.querySelector('.sqe-accordion-title').textContent.toLowerCase();
 
       const matchesCategory = currentFilter === 'all' || category === currentFilter;
-      const matchesSearch = question.includes(currentSearch.toLowerCase());
+      const matchesSearch = currentSearch === '' || question.includes(currentSearch.toLowerCase());
       const shouldShow = matchesCategory && matchesSearch;
 
       if (shouldShow) {
         item.classList.remove('hidden');
         visibleCount++;
+        visibleIndices.push(index);
       } else {
         item.classList.add('hidden');
         item.classList.remove('active');
@@ -507,7 +560,10 @@
       }
     });
 
-    counterVisible.textContent = visibleCount;
+    if (counterVisible && counterTotal) {
+      counterVisible.textContent = visibleCount;
+      counterTotal.textContent = items.length;
+    }
   }
 
   // Filter Button Clicks
@@ -516,38 +572,60 @@
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentFilter = btn.getAttribute('data-filter');
+      currentSearch = '';
+      if (searchInput) searchInput.value = '';
       applyFilters();
     });
   });
 
   // Search Input
-  searchInput?.addEventListener('input', (e) => {
-    currentSearch = e.target.value;
-    applyFilters();
-  });
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentSearch = e.target.value;
+      applyFilters();
+    });
+  }
 
   // Keyboard Navigation
   items.forEach((item, index) => {
     const header = item.querySelector('.sqe-accordion-header');
 
     header.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        const nextHeader = items[index + 1]?.querySelector('.sqe-accordion-header');
-        nextHeader?.focus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prevHeader = items[index - 1]?.querySelector('.sqe-accordion-header');
-        prevHeader?.focus();
-      } else if (e.key === 'Home') {
-        e.preventDefault();
-        items[0].querySelector('.sqe-accordion-header').focus();
-      } else if (e.key === 'End') {
-        e.preventDefault();
-        items[items.length - 1].querySelector('.sqe-accordion-header').focus();
+      let targetIndex = -1;
+
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          targetIndex = visibleIndices.indexOf(index) + 1;
+          if (targetIndex < visibleIndices.length) {
+            items[visibleIndices[targetIndex]].querySelector('.sqe-accordion-header').focus();
+          }
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          targetIndex = visibleIndices.indexOf(index) - 1;
+          if (targetIndex >= 0) {
+            items[visibleIndices[targetIndex]].querySelector('.sqe-accordion-header').focus();
+          }
+          break;
+        case 'Home':
+          e.preventDefault();
+          if (visibleIndices.length > 0) {
+            items[visibleIndices[0]].querySelector('.sqe-accordion-header').focus();
+          }
+          break;
+        case 'End':
+          e.preventDefault();
+          if (visibleIndices.length > 0) {
+            items[visibleIndices[visibleIndices.length - 1]].querySelector('.sqe-accordion-header').focus();
+          }
+          break;
       }
     });
   });
+
+  // Initialize
+  applyFilters();
 })();
 </script>
 

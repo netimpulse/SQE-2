@@ -19,17 +19,21 @@
   assign sh_color = section.settings.subheading_color
 -%}
 
-<section id="sqe-services-{{ section.id }}" class="sqe-services" style="background-color: {{ bg_color }};">
+<section
+  id="sqe-services-{{ section.id }}"
+  class="sqe-services"
+  style="--bg-color: {{ bg_color }}; --heading-font: {{ h_font }}; --heading-size: {{ h_size }}px; --heading-color: {{ h_color }}; --heading-weight: {{ h_weight }}; --subheading-font: {{ sh_font }}; --subheading-size: {{ sh_size }}px; --subheading-color: {{ sh_color }};"
+>
   <div class="sqe-services-container">
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
     {% if heading != blank %}
-      <h2 class="sqe-services-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
+      <h2 class="sqe-services-heading">{{ heading }}</h2>
     {% endif %}
 
     {% if subheading != blank %}
-      <p class="sqe-services-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
+      <p class="sqe-services-subheading">{{ subheading }}</p>
     {% endif %}
 
     <div class="sqe-services-grid" data-columns="{{ columns }}" data-style="{{ card_style }}">
@@ -45,7 +49,7 @@
           {% endif %}
           {% assign bd_size = block.settings.description_size %}
           {% assign bd_color = block.settings.description_color %}
-          <div class="sqe-service-card" {{ block.shopify_attributes }}>
+          <div class="sqe-service-card" {{ block.shopify_attributes }} style="--card-title-font: {{ bt_font }}; --card-title-size: {{ bt_size }}px; --card-title-color: {{ bt_color }}; --card-title-weight: {{ bt_weight }}; --card-desc-size: {{ bd_size }}px; --card-desc-color: {{ bd_color }};">
             {% if block.settings.icon != blank %}
               <div class="sqe-service-icon">
                 <img
@@ -54,15 +58,22 @@
                   loading="lazy"
                 >
               </div>
+            {% else %}
+              <div class="sqe-service-icon sqe-service-icon--empty">
+                <svg class="sqe-service-icon-placeholder" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="80" height="80" fill="none"/>
+                  <text x="40" y="40" text-anchor="middle" dy=".3em" fill="#999" font-size="12">No Image</text>
+                </svg>
+              </div>
             {% endif %}
 
             <div class="sqe-service-content">
               {% if block.settings.title != blank %}
-                <h3 class="sqe-service-title" style="font-family:{{ bt_font }};font-size:{{ bt_size }}px;color:{{ bt_color }};font-weight:{{ bt_weight }};">{{ block.settings.title }}</h3>
+                <h3 class="sqe-service-title">{{ block.settings.title }}</h3>
               {% endif %}
 
               {% if block.settings.description != blank %}
-                <p class="sqe-service-description" style="font-size:{{ bd_size }}px;color:{{ bd_color }};">{{ block.settings.description }}</p>
+                <p class="sqe-service-description">{{ block.settings.description }}</p>
               {% endif %}
 
               {% if block.settings.link_text != blank and block.settings.link_url != blank %}
@@ -79,6 +90,7 @@
 <style>
   #sqe-services-{{ section.id }} {
     padding: 60px 20px;
+    background-color: var(--bg-color, #ffffff);
   }
 
   /* ===== SECTION LABEL (orange pill) ===== */
@@ -102,14 +114,23 @@
   }
 
   #sqe-services-{{ section.id }} .sqe-services-heading {
+    font-family: var(--heading-font, 'Source Sans 3', sans-serif);
+    font-size: var(--heading-size, 36px);
+    color: var(--heading-color, #1F3A5F);
+    font-weight: var(--heading-weight, 700);
     text-align: center;
     margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
 
   #sqe-services-{{ section.id }} .sqe-services-subheading {
+    font-family: var(--subheading-font, 'Source Sans 3', sans-serif);
+    font-size: var(--subheading-size, 16px);
+    color: var(--subheading-color, #666666);
     text-align: center;
     margin-bottom: 40px;
     line-height: 1.6;
+    overflow-wrap: break-word;
   }
 
   #sqe-services-{{ section.id }} .sqe-services-grid {
@@ -169,12 +190,19 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+    flex-shrink: 0;
   }
 
-  #sqe-services-{{ section.id }} .sqe-service-icon img {
+  #sqe-services-{{ section.id }} .sqe-service-icon img,
+  #sqe-services-{{ section.id }} .sqe-service-icon-placeholder {
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  #sqe-services-{{ section.id }} .sqe-service-icon--empty {
+    background-color: #F5F5F5;
+    border: 1px solid #E8E8E8;
   }
 
   #sqe-services-{{ section.id }} .sqe-service-content {
@@ -182,12 +210,20 @@
   }
 
   #sqe-services-{{ section.id }} .sqe-service-title {
+    font-family: var(--card-title-font, 'Source Sans 3', sans-serif);
+    font-size: var(--card-title-size, 20px);
+    color: var(--card-title-color, #1F3A5F);
+    font-weight: var(--card-title-weight, 700);
     margin-bottom: 12px;
+    overflow-wrap: break-word;
   }
 
   #sqe-services-{{ section.id }} .sqe-service-description {
+    font-size: var(--card-desc-size, 14px);
+    color: var(--card-desc-color, #666666);
     line-height: 1.6;
     margin-bottom: 15px;
+    overflow-wrap: break-word;
   }
 
   #sqe-services-{{ section.id }} .sqe-service-link {
@@ -216,14 +252,6 @@
     #sqe-services-{{ section.id }} .sqe-services-grid[data-columns="2"] {
       grid-template-columns: 1fr;
     }
-
-    #sqe-services-{{ section.id }} .sqe-services-heading {
-      font-size: 28px !important;
-    }
-
-    #sqe-services-{{ section.id }} .sqe-services-subheading {
-      font-size: 14px !important;
-    }
   }
 
   @media (max-width: 480px) {
@@ -234,15 +262,6 @@
     #sqe-services-{{ section.id }} .sqe-services-grid {
       grid-template-columns: 1fr !important;
       gap: 20px;
-    }
-
-    #sqe-services-{{ section.id }} .sqe-services-heading {
-      font-size: 22px !important;
-    }
-
-    #sqe-services-{{ section.id }} .sqe-services-subheading {
-      font-size: 13px !important;
-      margin-bottom: 30px;
     }
 
     #sqe-services-{{ section.id }} .sqe-service-card {
@@ -256,22 +275,6 @@
   }
 </style>
 
-<script>
-  (function() {
-    var servicesSection = document.getElementById('sqe-services-{{ section.id }}');
-    if (servicesSection) {
-      var cards = servicesSection.querySelectorAll('.sqe-service-card');
-      cards.forEach(function(card) {
-        card.addEventListener('mouseenter', function() {
-          this.style.transform = 'translateY(-4px)';
-        });
-        card.addEventListener('mouseleave', function() {
-          this.style.transform = 'translateY(0)';
-        });
-      });
-    }
-  })();
-</script>
 
 {% schema %}
 {

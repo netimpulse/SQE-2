@@ -5,23 +5,55 @@
   assign h_size = section.settings.heading_font_size
   assign h_color = section.settings.heading_color
   assign h_bold = section.settings.heading_bold
-  assign h_weight = '700'
+  assign h_weight = 700
   if h_bold == false
-    assign h_weight = '400'
+    assign h_weight = 400
   endif
   assign d_font = section.settings.description_font
   assign d_size = section.settings.description_font_size
   assign d_color = section.settings.description_color
+  assign text_align = section.settings.text_alignment
+  assign btn_py = section.settings.button_padding_y
+  assign btn_px = section.settings.button_padding_x
+  assign btn_radius = section.settings.button_border_radius
+  assign mobile_full_buttons = section.settings.mobile_full_width_buttons
 -%}
 
 <style>
+  /* ========== ROOT SECTION CONTAINER ========== */
   #sqe-cta-banner-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    background-image: {% if section.settings.background_image %}url('{{ section.settings.background_image | image_url: width: 1920 }}'){% endif %};
+    --bg-color: {{ section.settings.background_color }};
+    --bg-image: {% if section.settings.background_image %}url('{{ section.settings.background_image | image_url: width: 1920 }}'){% else %}none{% endif %};
+    --heading-font: {{ h_font }};
+    --heading-size: {{ h_size }}px;
+    --heading-color: {{ h_color }};
+    --heading-weight: {{ h_weight }};
+    --description-font: {{ d_font }};
+    --description-size: {{ d_size }}px;
+    --description-color: {{ d_color }};
+    --text-align: {{ text_align }};
+    --padding-top: {{ section.settings.padding_top }}px;
+    --padding-bottom: {{ section.settings.padding_bottom }}px;
+    --padding-x: {{ section.settings.padding_x }}px;
+    --btn-padding-y: {{ btn_py }}px;
+    --btn-padding-x: {{ btn_px }}px;
+    --btn-radius: {{ btn_radius }}px;
+    --btn-primary-bg: {{ section.settings.button_primary_bg }};
+    --btn-primary-bg-hover: {{ section.settings.button_primary_bg_hover }};
+    --btn-primary-text: {{ section.settings.button_primary_text }};
+    --btn-secondary-bg: {{ section.settings.button_secondary_bg }};
+    --btn-secondary-bg-hover: {{ section.settings.button_secondary_bg_hover }};
+    --btn-secondary-text: {{ section.settings.button_secondary_text }};
+    --btn-secondary-border: {{ section.settings.button_secondary_border }};
+    --overlay-opacity: {{ section.settings.overlay_opacity }};
+    --overlay-color: rgba({{ section.settings.overlay_color | color_to_rgb }}, var(--overlay-opacity));
+
+    background-color: var(--bg-color);
+    background-image: var(--bg-image);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_x }}px {{ section.settings.padding_bottom }}px {{ section.settings.padding_x }}px;
+    padding: var(--padding-top) var(--padding-x) var(--padding-bottom) var(--padding-x);
     position: relative;
     min-height: {{ section.settings.min_height }}px;
     display: flex;
@@ -29,77 +61,90 @@
     justify-content: center;
   }
 
-  /* ===== SECTION LABEL (orange pill) ===== */
-  #sqe-cta-banner-{{ section.id }} .sqe-section-label {
-    display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
-  }
-
   {% if section.settings.show_overlay %}
-    .sqe-cta-banner::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba({{ section.settings.overlay_color | color_to_rgb }}, {{ section.settings.overlay_opacity }});
-      z-index: 1;
-    }
+  #sqe-cta-banner-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--overlay-color);
+    z-index: 1;
+  }
   {% endif %}
 
+  /* ========== SECTION LABEL ========== */
+  #sqe-cta-banner-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    overflow-wrap: break-word;
+  }
+
+  /* ========== CONTENT WRAPPER ========== */
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__content {
     position: relative;
     z-index: 2;
     width: 100%;
     max-width: 1200px;
     padding: 0 20px;
-    text-align: {{ section.settings.text_alignment }};
+    text-align: var(--text-align);
   }
 
+  /* ========== HEADING ========== */
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__heading {
-    font-family: {{ h_font }};
-    font-size: {{ h_size }}px;
-    font-weight: {{ h_weight }};
-    color: {{ h_color }};
+    font-family: var(--heading-font);
+    font-size: var(--heading-size);
+    font-weight: var(--heading-weight);
+    color: var(--heading-color);
     margin: 0 0 20px 0;
     line-height: 1.2;
     letter-spacing: -0.5px;
+    overflow-wrap: break-word;
   }
 
+  /* ========== DESCRIPTION ========== */
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__description {
-    font-family: {{ d_font }};
-    font-size: {{ d_size }}px;
-    color: {{ d_color }};
+    font-family: var(--description-font);
+    font-size: var(--description-size);
+    color: var(--description-color);
     margin: 0 0 40px 0;
     line-height: 1.6;
     max-width: 800px;
-    {% if section.settings.text_alignment == 'center' %}
-      margin-left: auto;
-      margin-right: auto;
+    overflow-wrap: break-word;
+    {% if text_align == 'center' %}
+    margin-left: auto;
+    margin-right: auto;
     {% endif %}
   }
 
+  /* ========== BUTTONS CONTAINER ========== */
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__buttons {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-    justify-content: {{ section.settings.text_alignment }};
-    {% if section.settings.text_alignment == 'center' %}
-      justify-content: center;
-    {% elsif section.settings.text_alignment == 'right' %}
-      justify-content: flex-end;
+    {% if text_align == 'center' %}
+    justify-content: center;
+    {% elsif text_align == 'right' %}
+    justify-content: flex-end;
     {% else %}
-      justify-content: flex-start;
+    justify-content: flex-start;
     {% endif %}
   }
 
+  /* ========== BUTTONS ========== */
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__button {
     display: inline-block;
-    padding: {{ section.settings.button_padding_y }}px {{ section.settings.button_padding_x }}px;
-    border-radius: {{ section.settings.button_border_radius }}px;
+    padding: var(--btn-padding-y) var(--btn-padding-x);
+    border-radius: var(--btn-radius);
     text-decoration: none;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
@@ -107,87 +152,92 @@
     transition: all 0.3s ease;
     border: 2px solid transparent;
     cursor: pointer;
+    overflow-wrap: break-word;
   }
 
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__button--primary {
-    background-color: {{ section.settings.button_primary_bg }};
-    color: {{ section.settings.button_primary_text }};
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
   }
 
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__button--primary:hover {
-    background-color: {{ section.settings.button_primary_bg_hover }};
+    background-color: var(--btn-primary-bg-hover);
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
 
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__button--secondary {
-    background-color: {{ section.settings.button_secondary_bg }};
-    color: {{ section.settings.button_secondary_text }};
-    border: 2px solid {{ section.settings.button_secondary_border }};
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    border: 2px solid var(--btn-secondary-border);
   }
 
   #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__button--secondary:hover {
-    background-color: {{ section.settings.button_secondary_bg_hover }};
-    border-color: {{ section.settings.button_secondary_border }};
+    background-color: var(--btn-secondary-bg-hover);
+    border-color: var(--btn-secondary-border);
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
 
+  /* ========== TABLET RESPONSIVENESS ========== */
   @media (max-width: 768px) {
     #sqe-cta-banner-{{ section.id }} {
-      padding: {{ section.settings.mobile_padding_top }}px {{ section.settings.mobile_padding_x }}px {{ section.settings.mobile_padding_bottom }}px {{ section.settings.mobile_padding_x }}px;
+      --padding-top: {{ section.settings.mobile_padding_top }}px;
+      --padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+      --padding-x: {{ section.settings.mobile_padding_x }}px;
+      --heading-size: {{ section.settings.mobile_heading_font_size }}px;
+      --description-size: {{ section.settings.mobile_description_font_size }}px;
+
+      padding: var(--padding-top) var(--padding-x) var(--padding-bottom) var(--padding-x);
       min-height: auto;
     }
 
     #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__heading {
-      font-size: {{ section.settings.mobile_heading_font_size }}px;
       margin-bottom: 15px;
     }
 
     #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__description {
-      font-size: {{ section.settings.mobile_description_font_size }}px;
       margin-bottom: 30px;
     }
 
     #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__buttons {
       flex-direction: column;
-      {% if section.settings.text_alignment != 'center' %}
-        align-items: stretch;
+      {% if text_align != 'center' %}
+      align-items: stretch;
       {% endif %}
     }
 
     #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__button {
       text-align: center;
+      {% if mobile_full_buttons %}
+      width: 100%;
+      {% endif %}
     }
-
-    {% if section.settings.mobile_full_width_buttons %}
-      #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__buttons {
-        flex-direction: column;
-      }
-
-      #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__button {
-        width: 100%;
-      }
-    {% endif %}
   }
 
+  /* ========== MOBILE RESPONSIVENESS ========== */
   @media (max-width: 480px) {
     #sqe-cta-banner-{{ section.id }} {
-      padding: {{ section.settings.mobile_padding_top | minus: 10 }}px {{ section.settings.mobile_padding_x | minus: 5 }}px {{ section.settings.mobile_padding_bottom | minus: 10 }}px {{ section.settings.mobile_padding_x | minus: 5 }}px;
+      --padding-top: calc({{ section.settings.mobile_padding_top }}px - 10px);
+      --padding-bottom: calc({{ section.settings.mobile_padding_bottom }}px - 10px);
+      --padding-x: calc({{ section.settings.mobile_padding_x }}px - 5px);
+      --heading-size: calc({{ section.settings.mobile_heading_font_size }}px - 3px);
+      --description-size: calc({{ section.settings.mobile_description_font_size }}px - 2px);
+      --btn-padding-y: calc({{ btn_py }}px - 3px);
+      --btn-padding-x: calc({{ btn_px }}px - 8px);
+
+      padding: var(--padding-top) var(--padding-x) var(--padding-bottom) var(--padding-x);
     }
 
     #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__heading {
-      font-size: {{ section.settings.mobile_heading_font_size | minus: 3 }}px;
       margin-bottom: 12px;
     }
 
     #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__description {
-      font-size: {{ section.settings.mobile_description_font_size | minus: 2 }}px;
       margin-bottom: 24px;
     }
 
     #sqe-cta-banner-{{ section.id }} .sqe-cta-banner__button {
-      padding: {{ section.settings.button_padding_y | minus: 3 }}px {{ section.settings.button_padding_x | minus: 8 }}px;
       font-size: 14px;
     }
   }
@@ -198,29 +248,30 @@
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
-    {% if section.settings.heading %}
+
+    {%- if section.settings.heading != blank -%}
       <h2 class="sqe-cta-banner__heading">{{ section.settings.heading }}</h2>
-    {% endif %}
+    {%- endif -%}
 
-    {% if section.settings.description %}
+    {%- if section.settings.description != blank -%}
       <p class="sqe-cta-banner__description">{{ section.settings.description }}</p>
-    {% endif %}
+    {%- endif -%}
 
-    {% if section.settings.button_1_text or section.settings.button_2_text %}
+    {%- if section.settings.button_1_text or section.settings.button_2_text -%}
       <div class="sqe-cta-banner__buttons">
-        {% if section.settings.button_1_text %}
-          <a href="{{ section.settings.button_1_url }}" class="sqe-cta-banner__button sqe-cta-banner__button--primary">
-            {{ section.settings.button_1_text }}
+        {%- if section.settings.button_1_text -%}
+          <a href="{{ section.settings.button_1_url | default: '#' }}" class="sqe-cta-banner__button sqe-cta-banner__button--primary">
+            {{- section.settings.button_1_text -}}
           </a>
-        {% endif %}
+        {%- endif -%}
 
-        {% if section.settings.button_2_text %}
-          <a href="{{ section.settings.button_2_url }}" class="sqe-cta-banner__button sqe-cta-banner__button--secondary">
-            {{ section.settings.button_2_text }}
+        {%- if section.settings.button_2_text -%}
+          <a href="{{ section.settings.button_2_url | default: '#' }}" class="sqe-cta-banner__button sqe-cta-banner__button--secondary">
+            {{- section.settings.button_2_text -}}
           </a>
-        {% endif %}
+        {%- endif -%}
       </div>
-    {% endif %}
+    {%- endif -%}
   </div>
 </div>
 

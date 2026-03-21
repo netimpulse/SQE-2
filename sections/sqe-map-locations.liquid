@@ -18,16 +18,16 @@
   assign columns = section.settings.columns | default: 3
 -%}
 
-<section id="sqe-map-locations-{{ section.id }}" class="sqe-map-locations" style="background-color: {{ background_color }};">
+<section id="sqe-map-locations-{{ section.id }}" class="sqe-map-locations" style="--bg-color: {{ background_color }}; --heading-font: {{ h_font }}; --heading-size: {{ h_size }}px; --heading-color: {{ h_color }}; --heading-weight: {{ h_weight }}; --subheading-font: {{ sh_font }}; --subheading-size: {{ sh_size }}px; --subheading-color: {{ sh_color }};">
   <div class="locations-container">
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
     {% if heading %}
-      <h2 class="locations-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
+      <h2 class="locations-heading">{{ heading }}</h2>
     {% endif %}
     {% if subheading %}
-      <p class="locations-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
+      <p class="locations-subheading">{{ subheading }}</p>
     {% endif %}
 
     <div class="locations-grid" data-columns="{{ columns }}">
@@ -48,60 +48,68 @@
 </section>
 
 <style>
-  /* ===== SECTION LABEL (orange pill) ===== */
-  #sqe-map-locations-{{ section.id }} .sqe-section-label {
-    display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
-  }
-
   #sqe-map-locations-{{ section.id }} {
+    background-color: var(--bg-color);
     padding: 60px 20px;
-  }
-
-  .sqe-map-locations {
     transition: background-color 0.3s ease;
   }
 
-  .locations-container {
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-map-locations-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  #sqe-map-locations-{{ section.id }} .locations-container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  .locations-heading {
-    font-size: 48px;
-    font-weight: 700;
-    color: #1F3A5F;
+  #sqe-map-locations-{{ section.id }} .locations-heading {
+    font-family: var(--heading-font);
+    font-size: var(--heading-size);
+    color: var(--heading-color);
+    font-weight: var(--heading-weight);
     margin-bottom: 10px;
     text-align: center;
+    overflow-wrap: break-word;
   }
 
-  .locations-subheading {
-    font-size: 18px;
-    color: #333333;
+  #sqe-map-locations-{{ section.id }} .locations-subheading {
+    font-family: var(--subheading-font);
+    font-size: var(--subheading-size);
+    color: var(--subheading-color);
     text-align: center;
     margin-bottom: 50px;
+    overflow-wrap: break-word;
   }
 
-  .locations-grid {
+  #sqe-map-locations-{{ section.id }} .locations-grid {
     display: grid;
     gap: 25px;
   }
 
-  .locations-grid[data-columns="2"] {
+  #sqe-map-locations-{{ section.id }} .locations-grid[data-columns="2"] {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .locations-grid[data-columns="3"] {
+  #sqe-map-locations-{{ section.id }} .locations-grid[data-columns="3"] {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .locations-grid[data-columns="4"] {
+  #sqe-map-locations-{{ section.id }} .locations-grid[data-columns="4"] {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .location-card {
+  #sqe-map-locations-{{ section.id }} .location-card {
     background: white;
     padding: 30px;
     border-radius: 8px;
@@ -110,13 +118,13 @@
     border-left: 5px solid #1F3A5F;
   }
 
-  .location-card:hover {
+  #sqe-map-locations-{{ section.id }} .location-card:hover {
     box-shadow: 0 8px 24px rgba(31, 58, 95, 0.15);
     transform: translateY(-8px);
     border-left-color: #F2B705;
   }
 
-  .location-header {
+  #sqe-map-locations-{{ section.id }} .location-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -124,14 +132,15 @@
     gap: 15px;
   }
 
-  .location-name {
+  #sqe-map-locations-{{ section.id }} .location-name {
     font-size: 24px;
     font-weight: 700;
     color: #1F3A5F;
     margin: 0;
+    overflow-wrap: break-word;
   }
 
-  .location-badge {
+  #sqe-map-locations-{{ section.id }} .location-badge {
     display: inline-block;
     background-color: #F2F4F7;
     color: #333333;
@@ -141,16 +150,18 @@
     font-weight: 600;
     text-transform: uppercase;
     white-space: nowrap;
+    overflow-wrap: break-word;
   }
 
-  .location-description {
+  #sqe-map-locations-{{ section.id }} .location-description {
     font-size: 15px;
     color: #666;
     line-height: 1.6;
     margin-bottom: 20px;
+    overflow-wrap: break-word;
   }
 
-  .location-meta {
+  #sqe-map-locations-{{ section.id }} .location-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -158,7 +169,7 @@
     border-top: 1px solid #F2F4F7;
   }
 
-  .project-count {
+  #sqe-map-locations-{{ section.id }} .project-count {
     display: inline-block;
     background-color: #1F3A5F;
     color: white;
@@ -166,6 +177,7 @@
     border-radius: 6px;
     font-size: 13px;
     font-weight: 600;
+    overflow-wrap: break-word;
   }
 
   @media (max-width: 768px) {
@@ -173,28 +185,28 @@
       padding: 40px 16px;
     }
 
-    .locations-grid[data-columns="3"],
-    .locations-grid[data-columns="4"] {
+    #sqe-map-locations-{{ section.id }} .locations-grid[data-columns="3"],
+    #sqe-map-locations-{{ section.id }} .locations-grid[data-columns="4"] {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .locations-grid[data-columns="2"] {
+    #sqe-map-locations-{{ section.id }} .locations-grid[data-columns="2"] {
       grid-template-columns: 1fr;
     }
 
-    .locations-heading {
+    #sqe-map-locations-{{ section.id }} .locations-heading {
       font-size: 32px;
     }
 
-    .locations-subheading {
+    #sqe-map-locations-{{ section.id }} .locations-subheading {
       font-size: 16px;
     }
 
-    .location-header {
+    #sqe-map-locations-{{ section.id }} .location-header {
       flex-direction: column;
     }
 
-    .location-card {
+    #sqe-map-locations-{{ section.id }} .location-card {
       padding: 20px;
     }
   }
@@ -204,45 +216,27 @@
       padding: 30px 12px;
     }
 
-    .locations-grid {
+    #sqe-map-locations-{{ section.id }} .locations-grid {
       grid-template-columns: 1fr !important;
     }
 
-    .locations-heading {
+    #sqe-map-locations-{{ section.id }} .locations-heading {
       font-size: 24px;
     }
 
-    .locations-subheading {
+    #sqe-map-locations-{{ section.id }} .locations-subheading {
       font-size: 14px;
     }
 
-    .location-name {
+    #sqe-map-locations-{{ section.id }} .location-name {
       font-size: 20px;
     }
 
-    .location-description {
+    #sqe-map-locations-{{ section.id }} .location-description {
       font-size: 14px;
     }
   }
 </style>
-
-<script>
-  (function() {
-    var el = document.getElementById('sqe-map-locations-' + '{{ section.id }}');
-    if (!el) return;
-
-    var cards = el.querySelectorAll('.location-card');
-
-    cards.forEach(function(card) {
-      card.addEventListener('mouseenter', function() {
-        this.style.borderLeftColor = '#F2B705';
-      });
-      card.addEventListener('mouseleave', function() {
-        this.style.borderLeftColor = '#1F3A5F';
-      });
-    });
-  })();
-</script>
 
 {% schema %}
 {

@@ -6,101 +6,139 @@
   assign text_color = section.settings.text_color
 -%}
 
-<section id="sqe-testimonials-{{ section.id }}" class="sqe-testimonials" style="background-color: {{ bg_color }};">
+<section id="sqe-testimonials-{{ section.id }}" class="sqe-testimonials" style="--sqe-bg-color: {{ bg_color }}; --sqe-text-color: {{ text_color }};">
   <div class="sqe-testimonials-container">
     {% if heading != blank %}
-      <h2 class="sqe-testimonials-heading" style="color: {{ text_color }};">{{ heading }}</h2>
+      <h2 class="sqe-testimonials-heading">{{ heading }}</h2>
     {% endif %}
 
     {% if subheading != blank %}
       <p class="sqe-testimonials-subheading">{{ subheading }}</p>
     {% endif %}
 
-    {% if layout == 'slider' %}
-      <div class="sqe-testimonials-slider" data-layout="slider">
-        {% for block in section.blocks %}
-          {% if block.type == 'testimonial' %}
-            <div class="sqe-testimonial-card" {{ block.shopify_attributes }}>
-              {% if block.settings.quote != blank %}
-                <p class="sqe-testimonial-quote">{{ block.settings.quote }}</p>
-              {% endif %}
-
-              {% if block.settings.rating != blank %}
-                <div class="sqe-testimonial-rating" data-rating="{{ block.settings.rating }}">
-                  <span class="star">★</span>
-                  <span class="star">★</span>
-                  <span class="star">★</span>
-                  <span class="star">★</span>
-                  <span class="star">★</span>
-                </div>
-              {% endif %}
-
-              <div class="sqe-testimonial-author">
-                {% if block.settings.photo != blank %}
-                  <img
-                    src="{{ block.settings.photo | image_url: width: 56 }}"
-                    alt="{{ block.settings.client_name }}"
-                    class="sqe-author-photo"
-                    loading="lazy"
-                  >
+    {% if section.blocks.size > 0 %}
+      {% if layout == 'slider' %}
+        <div class="sqe-testimonials-slider" data-layout="slider">
+          {% for block in section.blocks %}
+            {% if block.type == 'testimonial' %}
+              <div class="sqe-testimonial-card" {{ block.shopify_attributes }}>
+                {% if block.settings.quote != blank %}
+                  <p class="sqe-testimonial-quote">{{ block.settings.quote }}</p>
+                {% else %}
+                  <p class="sqe-testimonial-quote sqe-placeholder">No testimonial provided</p>
                 {% endif %}
 
-                <div class="sqe-author-info">
-                  {% if block.settings.client_name != blank %}
-                    <p class="sqe-author-name">{{ block.settings.client_name }}</p>
-                  {% endif %}
+                {% if block.settings.rating != blank %}
+                  <div class="sqe-testimonial-rating" data-rating="{{ block.settings.rating }}">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                  </div>
+                {% endif %}
 
-                  {% if block.settings.company != blank %}
-                    <p class="sqe-author-company">{{ block.settings.company }}</p>
-                  {% endif %}
+                <div class="sqe-testimonial-author">
+                  <div class="sqe-author-photo-container">
+                    {% if block.settings.photo != blank %}
+                      <img
+                        src="{{ block.settings.photo | image_url: width: 56 }}"
+                        alt="{{ block.settings.client_name }}"
+                        class="sqe-author-photo"
+                        loading="lazy"
+                      >
+                    {% else %}
+                      <div class="sqe-author-photo-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="sqe-author-info">
+                    {% if block.settings.client_name != blank %}
+                      <p class="sqe-author-name">{{ block.settings.client_name }}</p>
+                    {% endif %}
+
+                    {% if block.settings.company != blank %}
+                      <p class="sqe-author-company">{{ block.settings.company }}</p>
+                    {% endif %}
+                  </div>
                 </div>
               </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="sqe-testimonials-grid" data-layout="grid">
+          {% for block in section.blocks %}
+            {% if block.type == 'testimonial' %}
+              <div class="sqe-testimonial-card" {{ block.shopify_attributes }}>
+                {% if block.settings.quote != blank %}
+                  <p class="sqe-testimonial-quote">{{ block.settings.quote }}</p>
+                {% else %}
+                  <p class="sqe-testimonial-quote sqe-placeholder">No testimonial provided</p>
+                {% endif %}
+
+                {% if block.settings.rating != blank %}
+                  <div class="sqe-testimonial-rating" data-rating="{{ block.settings.rating }}">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                  </div>
+                {% endif %}
+
+                <div class="sqe-testimonial-author">
+                  <div class="sqe-author-photo-container">
+                    {% if block.settings.photo != blank %}
+                      <img
+                        src="{{ block.settings.photo | image_url: width: 56 }}"
+                        alt="{{ block.settings.client_name }}"
+                        class="sqe-author-photo"
+                        loading="lazy"
+                      >
+                    {% else %}
+                      <div class="sqe-author-photo-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="sqe-author-info">
+                    {% if block.settings.client_name != blank %}
+                      <p class="sqe-author-name">{{ block.settings.client_name }}</p>
+                    {% endif %}
+
+                    {% if block.settings.company != blank %}
+                      <p class="sqe-author-company">{{ block.settings.company }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
     {% else %}
       <div class="sqe-testimonials-grid" data-layout="grid">
-        {% for block in section.blocks %}
-          {% if block.type == 'testimonial' %}
-            <div class="sqe-testimonial-card" {{ block.shopify_attributes }}>
-              {% if block.settings.quote != blank %}
-                <p class="sqe-testimonial-quote">{{ block.settings.quote }}</p>
-              {% endif %}
-
-              {% if block.settings.rating != blank %}
-                <div class="sqe-testimonial-rating" data-rating="{{ block.settings.rating }}">
-                  <span class="star">★</span>
-                  <span class="star">★</span>
-                  <span class="star">★</span>
-                  <span class="star">★</span>
-                  <span class="star">★</span>
-                </div>
-              {% endif %}
-
-              <div class="sqe-testimonial-author">
-                {% if block.settings.photo != blank %}
-                  <img
-                    src="{{ block.settings.photo | image_url: width: 56 }}"
-                    alt="{{ block.settings.client_name }}"
-                    class="sqe-author-photo"
-                    loading="lazy"
-                  >
-                {% endif %}
-
-                <div class="sqe-author-info">
-                  {% if block.settings.client_name != blank %}
-                    <p class="sqe-author-name">{{ block.settings.client_name }}</p>
-                  {% endif %}
-
-                  {% if block.settings.company != blank %}
-                    <p class="sqe-author-company">{{ block.settings.company }}</p>
-                  {% endif %}
-                </div>
-              </div>
+        <div class="sqe-testimonial-card sqe-placeholder-card">
+          <p class="sqe-testimonial-quote sqe-placeholder">Add testimonials to get started</p>
+          <div class="sqe-testimonial-author">
+            <div class="sqe-author-photo-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
             </div>
-          {% endif %}
-        {% endfor %}
+          </div>
+        </div>
       </div>
     {% endif %}
   </div>
@@ -108,152 +146,216 @@
 
 <style>
   #sqe-testimonials-{{ section.id }} {
+    --sqe-bg-color: #F2F4F7;
+    --sqe-text-color: #1F3A5F;
+    --sqe-card-bg: white;
+    --sqe-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --sqe-card-shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.15);
+    --sqe-card-radius: 8px;
+    --sqe-card-padding: 30px;
+    --sqe-gap: 30px;
+    --sqe-star-color: #F2B705;
+    --sqe-star-color-inactive: #E8E8E8;
+    --sqe-text-primary: #333;
+    --sqe-text-secondary: #999;
+
     padding: 60px 20px;
+    background-color: var(--sqe-bg-color);
   }
 
-  .sqe-testimonials-container {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonials-container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  .sqe-testimonials-heading {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonials-heading {
     font-size: 36px;
     font-weight: 700;
     text-align: center;
     margin-bottom: 10px;
+    color: var(--sqe-text-color);
   }
 
-  .sqe-testimonials-subheading {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonials-subheading {
     font-size: 16px;
     color: #666;
     text-align: center;
     margin-bottom: 40px;
   }
 
-  .sqe-testimonials-grid {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonials-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    gap: var(--sqe-gap);
     margin-top: 40px;
   }
 
-  .sqe-testimonials-slider {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonials-slider {
     display: flex;
-    gap: 30px;
+    gap: var(--sqe-gap);
     overflow-x: auto;
     padding: 20px 0;
     scroll-behavior: smooth;
   }
 
-  .sqe-testimonials-slider .sqe-testimonial-card {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonials-slider .sqe-testimonial-card {
     flex: 0 0 calc(100% / 2);
     min-width: 0;
   }
 
-  .sqe-testimonial-card {
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-card {
+    background: var(--sqe-card-bg);
+    padding: var(--sqe-card-padding);
+    border-radius: var(--sqe-card-radius);
+    box-shadow: var(--sqe-card-shadow);
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .sqe-testimonial-card:hover {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--sqe-card-shadow-hover);
   }
 
-  .sqe-testimonial-quote {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-quote {
     font-size: 16px;
-    color: #333;
+    color: var(--sqe-text-primary);
     line-height: 1.6;
     margin-bottom: 20px;
     flex-grow: 1;
+    overflow-wrap: break-word;
   }
 
-  .sqe-testimonial-rating {
+  #sqe-testimonials-{{ section.id }} .sqe-placeholder {
+    color: #ccc;
+    font-style: italic;
+  }
+
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-rating {
     margin-bottom: 20px;
   }
 
-  .sqe-testimonial-rating .star {
-    color: #F2B705;
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-rating .star {
+    color: var(--sqe-star-color);
     font-size: 16px;
   }
 
-  .sqe-testimonial-rating[data-rating="1"] .star:nth-child(n+2),
-  .sqe-testimonial-rating[data-rating="2"] .star:nth-child(n+3),
-  .sqe-testimonial-rating[data-rating="3"] .star:nth-child(n+4),
-  .sqe-testimonial-rating[data-rating="4"] .star:nth-child(n+5),
-  .sqe-testimonial-rating[data-rating="5"] .star:nth-child(n+6) {
-    color: #E8E8E8;
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-rating[data-rating="1"] .star:nth-child(n+2),
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-rating[data-rating="2"] .star:nth-child(n+3),
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-rating[data-rating="3"] .star:nth-child(n+4),
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-rating[data-rating="4"] .star:nth-child(n+5),
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-rating[data-rating="5"] .star:nth-child(n+6) {
+    color: var(--sqe-star-color-inactive);
   }
 
-  .sqe-testimonial-author {
+  #sqe-testimonials-{{ section.id }} .sqe-testimonial-author {
     display: flex;
     align-items: center;
     gap: 12px;
   }
 
-  .sqe-author-photo {
+  #sqe-testimonials-{{ section.id }} .sqe-author-photo-container {
+    flex-shrink: 0;
+  }
+
+  #sqe-testimonials-{{ section.id }} .sqe-author-photo {
     width: 56px;
     height: 56px;
     border-radius: 50%;
     object-fit: cover;
+    display: block;
   }
 
-  .sqe-author-info {
+  #sqe-testimonials-{{ section.id }} .sqe-author-photo-placeholder {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    flex-shrink: 0;
+  }
+
+  #sqe-testimonials-{{ section.id }} .sqe-author-photo-placeholder svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  #sqe-testimonials-{{ section.id }} .sqe-author-info {
     flex-grow: 1;
+    min-width: 0;
   }
 
-  .sqe-author-name {
+  #sqe-testimonials-{{ section.id }} .sqe-author-name {
     font-size: 14px;
     font-weight: 700;
     color: #1F3A5F;
     margin: 0;
+    overflow-wrap: break-word;
   }
 
-  .sqe-author-company {
+  #sqe-testimonials-{{ section.id }} .sqe-author-company {
     font-size: 12px;
-    color: #999;
+    color: var(--sqe-text-secondary);
     margin: 4px 0 0 0;
+    overflow-wrap: break-word;
+  }
+
+  #sqe-testimonials-{{ section.id }} .sqe-placeholder-card {
+    opacity: 0.5;
   }
 
   @media (max-width: 768px) {
-    .sqe-testimonials-grid {
+    #sqe-testimonials-{{ section.id }} .sqe-testimonials-grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .sqe-testimonials-slider .sqe-testimonial-card {
+    #sqe-testimonials-{{ section.id }} .sqe-testimonials-slider .sqe-testimonial-card {
       flex: 0 0 100%;
     }
   }
 
   @media (max-width: 480px) {
-    .sqe-testimonials-grid {
+    #sqe-testimonials-{{ section.id }} {
+      padding: 40px 12px;
+    }
+
+    #sqe-testimonials-{{ section.id }} .sqe-testimonials-grid {
       grid-template-columns: 1fr;
     }
 
-    .sqe-testimonials-heading {
+    #sqe-testimonials-{{ section.id }} .sqe-testimonials-heading {
       font-size: 24px;
+    }
+
+    #sqe-testimonials-{{ section.id }} .sqe-author-photo,
+    #sqe-testimonials-{{ section.id }} .sqe-author-photo-placeholder {
+      width: 48px;
+      height: 48px;
     }
   }
 </style>
 
 <script>
-  var testimonialsSection = document.getElementById('sqe-testimonials-' + '{{ section.id }}');
-  if (testimonialsSection) {
-    var cards = testimonialsSection.querySelectorAll('.sqe-testimonial-card');
-    cards.forEach(function(card) {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-4px)';
+  (function() {
+    var sectionId = '{{ section.id }}';
+    var section = document.getElementById('sqe-testimonials-' + sectionId);
+
+    if (section) {
+      var cards = section.querySelectorAll('.sqe-testimonial-card:not(.sqe-placeholder-card)');
+      cards.forEach(function(card) {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
       });
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-      });
-    });
-  }
+    }
+  })();
 </script>
 
 {% schema %}

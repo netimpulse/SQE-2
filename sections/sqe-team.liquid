@@ -4,28 +4,28 @@ Displays team member cards with customizable grid layout
 {% endcomment %}
 
 <section class="sqe-team" id="sqe-team-{{ section.id }}">
-  <div class="team-container">
+  <div class="sqe-team__container">
     {% if section.settings.show_heading %}
-      <div class="team-header">
+      <div class="sqe-team__header">
         {% if section.settings.heading %}
-          <h2 class="team-title">{{ section.settings.heading }}</h2>
+          <h2 class="sqe-team__label">{{ section.settings.heading }}</h2>
         {% endif %}
         {% if section.settings.subheading %}
-          <p class="team-subheading">{{ section.settings.subheading }}</p>
+          <p class="sqe-team__subheading">{{ section.settings.subheading }}</p>
         {% endif %}
       </div>
     {% endif %}
 
-    <div class="team-grid" style="grid-template-columns: repeat(auto-fit, minmax({% if section.settings.columns == 2 %}300px{% elsif section.settings.columns == 3 %}280px{% else %}240px{% endif %}, 1fr));">
+    <div class="sqe-team__grid">
       {% for block in section.blocks %}
-        <div class="team-card card-style-{{ section.settings.card_style }}">
+        <div class="sqe-team__card sqe-team__card--{{ section.settings.card_style }}">
           {% if block.settings.photo %}
-            <div class="team-photo">
+            <div class="sqe-team__photo">
               {{ block.settings.photo | image_url: width: 400 | image_tag: alt: block.settings.name }}
               {% if section.settings.show_social_links %}
-                <div class="team-social">
+                <div class="sqe-team__social">
                   {% if block.settings.linkedin_url %}
-                    <a href="{{ block.settings.linkedin_url }}" class="social-link linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <a href="{{ block.settings.linkedin_url }}" class="sqe-team__social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
                       </svg>
@@ -34,23 +34,27 @@ Displays team member cards with customizable grid layout
                 </div>
               {% endif %}
             </div>
+          {% else %}
+            <div class="sqe-team__photo sqe-team__photo--empty">
+              <span class="sqe-team__placeholder">No image</span>
+            </div>
           {% endif %}
 
-          <div class="team-content">
+          <div class="sqe-team__content">
             {% if block.settings.name %}
-              <h3 class="team-member-name">{{ block.settings.name }}</h3>
+              <h3 class="sqe-team__name">{{ block.settings.name }}</h3>
             {% endif %}
             {% if block.settings.title %}
-              <p class="team-member-title">{{ block.settings.title }}</p>
+              <p class="sqe-team__title">{{ block.settings.title }}</p>
             {% endif %}
             {% if block.settings.bio %}
-              <p class="team-member-bio">{{ block.settings.bio }}</p>
+              <p class="sqe-team__bio">{{ block.settings.bio }}</p>
             {% endif %}
           </div>
 
           {% if section.settings.card_style == 'overlay' and section.settings.show_social_links and block.settings.linkedin_url %}
-            <div class="card-overlay">
-              <a href="{{ block.settings.linkedin_url }}" class="overlay-link" target="_blank" rel="noopener noreferrer">View Profile</a>
+            <div class="sqe-team__overlay">
+              <a href="{{ block.settings.linkedin_url }}" class="sqe-team__overlay-link" target="_blank" rel="noopener noreferrer">View Profile</a>
             </div>
           {% endif %}
         </div>
@@ -60,30 +64,42 @@ Displays team member cards with customizable grid layout
 </section>
 
 <style>
-  .sqe-team {
-    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_side }}px {{ section.settings.padding_bottom }}px {{ section.settings.padding_side }}px;
-    background-color: {{ section.settings.background_color }};
+  :root {
+    --sqe-team-padding-top: {{ section.settings.padding_top }}px;
+    --sqe-team-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --sqe-team-padding-side: {{ section.settings.padding_side }}px;
+    --sqe-team-background: {{ section.settings.background_color }};
+    --sqe-team-title-color: {{ section.settings.title_color }};
+    --sqe-team-primary: {{ section.settings.primary_color }};
+    --sqe-team-accent: {{ section.settings.accent_color }};
+    --sqe-team-border-color: {{ section.settings.card_border_color }};
+    --sqe-team-border-radius: {{ section.settings.card_border_radius }}px;
   }
 
-  .team-container {
+  #sqe-team-{{ section.id }} {
+    padding: var(--sqe-team-padding-top) var(--sqe-team-padding-side) var(--sqe-team-padding-bottom) var(--sqe-team-padding-side);
+    background-color: var(--sqe-team-background);
+  }
+
+  #sqe-team-{{ section.id }} .sqe-team__container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  .team-header {
+  #sqe-team-{{ section.id }} .sqe-team__header {
     text-align: center;
     margin-bottom: 48px;
   }
 
-  .team-title {
+  #sqe-team-{{ section.id }} .sqe-team__label {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 42px;
     font-weight: 700;
-    color: {{ section.settings.title_color }};
+    color: var(--sqe-team-title-color);
     margin: 0 0 16px 0;
   }
 
-  .team-subheading {
+  #sqe-team-{{ section.id }} .sqe-team__subheading {
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     color: #666;
@@ -93,30 +109,47 @@ Displays team member cards with customizable grid layout
     margin-right: auto;
   }
 
-  .team-grid {
+  #sqe-team-{{ section.id }} .sqe-team__grid {
     display: grid;
     gap: 32px;
     margin-bottom: 32px;
+    {% if section.settings.columns == 2 %}
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    {% elsif section.settings.columns == 3 %}
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    {% else %}
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    {% endif %}
   }
 
-  /* Default card style */
-  .team-card {
+  #sqe-team-{{ section.id }} .sqe-team__card {
     background: white;
-    border-radius: {{ section.settings.card_border_radius }}px;
+    border-radius: var(--sqe-team-border-radius);
     overflow: hidden;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     height: 100%;
-    border: 1px solid {{ section.settings.card_border_color }};
+    border: 1px solid var(--sqe-team-border-color);
+    animation: sqe-fadeInUp 0.6s ease-out forwards;
   }
 
-  .team-card:hover {
+  #sqe-team-{{ section.id }} .sqe-team__card {
+    opacity: 0;
+  }
+
+  {% for block in section.blocks %}
+  #sqe-team-{{ section.id }} .sqe-team__card:nth-child({{ forloop.index }}) {
+    animation-delay: {{ forloop.index0 | times: 0.1 }}s;
+  }
+  {% endfor %}
+
+  #sqe-team-{{ section.id }} .sqe-team__card:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
     transform: translateY(-4px);
   }
 
-  .team-photo {
+  #sqe-team-{{ section.id }} .sqe-team__photo {
     width: 100%;
     height: 320px;
     overflow: hidden;
@@ -124,53 +157,66 @@ Displays team member cards with customizable grid layout
     position: relative;
   }
 
-  .team-photo img {
+  #sqe-team-{{ section.id }} .sqe-team__photo--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #sqe-team-{{ section.id }} .sqe-team__placeholder {
+    color: #999;
+    font-size: 14px;
+  }
+
+  #sqe-team-{{ section.id }} .sqe-team__photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
   }
 
-  .team-card:hover .team-photo img {
+  #sqe-team-{{ section.id }} .sqe-team__card:hover .sqe-team__photo img {
     transform: scale(1.05);
   }
 
-  .team-content {
+  #sqe-team-{{ section.id }} .sqe-team__content {
     padding: 24px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
   }
 
-  .team-member-name {
+  #sqe-team-{{ section.id }} .sqe-team__name {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 20px;
     font-weight: 600;
-    color: {{ section.settings.primary_color }};
+    color: var(--sqe-team-primary);
     margin: 0 0 4px 0;
+    overflow-wrap: break-word;
   }
 
-  .team-member-title {
+  #sqe-team-{{ section.id }} .sqe-team__title {
     font-family: 'Inter', sans-serif;
     font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
-    color: {{ section.settings.accent_color }};
+    color: var(--sqe-team-accent);
     margin: 0 0 12px 0;
     letter-spacing: 0.5px;
+    overflow-wrap: break-word;
   }
 
-  .team-member-bio {
+  #sqe-team-{{ section.id }} .sqe-team__bio {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     color: #666;
     margin: 0;
     flex-grow: 1;
     line-height: 1.5;
+    overflow-wrap: break-word;
   }
 
-  /* Social links in photo */
-  .team-social {
+  #sqe-team-{{ section.id }} .sqe-team__social {
     position: absolute;
     bottom: 12px;
     left: 12px;
@@ -182,15 +228,15 @@ Displays team member cards with customizable grid layout
     transition: all 0.3s ease;
   }
 
-  .team-card:hover .team-social {
+  #sqe-team-{{ section.id }} .sqe-team__card:hover .sqe-team__social {
     opacity: 1;
   }
 
-  .social-link {
+  #sqe-team-{{ section.id }} .sqe-team__social-link {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: {{ section.settings.primary_color }};
+    background: var(--sqe-team-primary);
     color: white;
     display: flex;
     align-items: center;
@@ -198,17 +244,16 @@ Displays team member cards with customizable grid layout
     transition: all 0.3s ease;
   }
 
-  .social-link:hover {
-    background: {{ section.settings.accent_color }};
+  #sqe-team-{{ section.id }} .sqe-team__social-link:hover {
+    background: var(--sqe-team-accent);
     transform: scale(1.1);
   }
 
-  /* Overlay style */
-  .card-style-overlay {
+  #sqe-team-{{ section.id }} .sqe-team__card--overlay {
     position: relative;
   }
 
-  .card-overlay {
+  #sqe-team-{{ section.id }} .sqe-team__overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -223,11 +268,11 @@ Displays team member cards with customizable grid layout
     z-index: 10;
   }
 
-  .card-style-overlay:hover .card-overlay {
+  #sqe-team-{{ section.id }} .sqe-team__card--overlay:hover .sqe-team__overlay {
     opacity: 1;
   }
 
-  .overlay-link {
+  #sqe-team-{{ section.id }} .sqe-team__overlay-link {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -239,96 +284,43 @@ Displays team member cards with customizable grid layout
     transition: all 0.3s ease;
   }
 
-  .overlay-link:hover {
-    background: {{ section.settings.accent_color }};
-    border-color: {{ section.settings.accent_color }};
+  #sqe-team-{{ section.id }} .sqe-team__overlay-link:hover {
+    background: var(--sqe-team-accent);
+    border-color: var(--sqe-team-accent);
   }
 
-  /* Minimal style */
-  .card-style-minimal {
+  #sqe-team-{{ section.id }} .sqe-team__card--minimal {
     border: none;
     box-shadow: none;
     background: transparent;
   }
 
-  .card-style-minimal:hover {
+  #sqe-team-{{ section.id }} .sqe-team__card--minimal:hover {
     box-shadow: none;
   }
 
-  .card-style-minimal .team-photo {
+  #sqe-team-{{ section.id }} .sqe-team__card--minimal .sqe-team__photo {
     height: 280px;
-    border-radius: {{ section.settings.card_border_radius }}px;
+    border-radius: var(--sqe-team-border-radius);
   }
 
-  .card-style-minimal .team-content {
+  #sqe-team-{{ section.id }} .sqe-team__card--minimal .sqe-team__content {
     padding: 20px 0;
   }
 
-  /* Elevated style */
-  .card-style-elevated {
+  #sqe-team-{{ section.id }} .sqe-team__card--elevated {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
-  .card-style-elevated:hover {
+  #sqe-team-{{ section.id }} .sqe-team__card--elevated:hover {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   }
 
-  /* Colored borders style */
-  .card-style-colored-border {
-    border-top: 4px solid {{ section.settings.accent_color }};
+  #sqe-team-{{ section.id }} .sqe-team__card--colored-border {
+    border-top: 4px solid var(--sqe-team-accent);
   }
 
-  @media (max-width: 768px) {
-    .team-title {
-      font-size: 32px;
-    }
-
-    .team-photo {
-      height: 280px;
-    }
-
-    .team-content {
-      padding: 20px;
-    }
-
-    .team-grid {
-      gap: 24px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .team-photo {
-      height: 240px;
-    }
-
-    .team-member-name {
-      font-size: 18px;
-    }
-
-    .team-member-bio {
-      font-size: 13px;
-    }
-  }
-</style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const section = document.getElementById('sqe-team-{{ section.id }}');
-    if (!section) return;
-
-    const cards = section.querySelectorAll('.team-card');
-
-    // Add staggered animation on load
-    cards.forEach((card, index) => {
-      card.style.opacity = '0';
-      card.style.animation = `fadeInUp 0.6s ease forwards`;
-      card.style.animationDelay = (index * 0.1) + 's';
-    });
-  });
-</style>
-
-<style>
-  @keyframes fadeInUp {
+  @keyframes sqe-fadeInUp {
     from {
       opacity: 0;
       transform: translateY(30px);
@@ -336,6 +328,38 @@ Displays team member cards with customizable grid layout
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    #sqe-team-{{ section.id }} .sqe-team__label {
+      font-size: 32px;
+    }
+
+    #sqe-team-{{ section.id }} .sqe-team__photo {
+      height: 280px;
+    }
+
+    #sqe-team-{{ section.id }} .sqe-team__content {
+      padding: 20px;
+    }
+
+    #sqe-team-{{ section.id }} .sqe-team__grid {
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #sqe-team-{{ section.id }} .sqe-team__photo {
+      height: 240px;
+    }
+
+    #sqe-team-{{ section.id }} .sqe-team__name {
+      font-size: 18px;
+    }
+
+    #sqe-team-{{ section.id }} .sqe-team__bio {
+      font-size: 13px;
     }
   }
 </style>

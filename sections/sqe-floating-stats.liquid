@@ -19,83 +19,140 @@
 -%}
 
 <style>
+  :root {
+    --sqe-primary-gold: #F2B705;
+    --sqe-primary-orange: #C75B12;
+    --sqe-dark-bg: #0a1929;
+    --sqe-dark-accent: #1F3A5F;
+    --sqe-dark-light: #0f2a47;
+    --sqe-white-primary: rgba(255, 255, 255, 0.95);
+    --sqe-white-border: rgba(255, 255, 255, 0.2);
+    --sqe-white-hover: rgba(255, 255, 255, 0.4);
+    --sqe-card-shadow: 0 20px 40px rgba(31, 58, 95, 0.1);
+    --sqe-card-shadow-hover: 0 30px 60px rgba(31, 58, 95, 0.2);
+    --sqe-label-bg: rgba(199, 91, 18, 0.15);
+    --sqe-gray-text: #999;
+    --sqe-transition: 0.4s ease;
+  }
+
   /* ===== CONTAINER ===== */
   #sqe-stats-{{ section.id }} {
+    --sqe-heading-font: {{ heading_font }};
+    --sqe-heading-size: {{ heading_size }}px;
+    --sqe-heading-color: {{ heading_color }};
+    --sqe-heading-weight: {{ heading_weight }};
+    --sqe-sub-font: {{ sub_font }};
+    --sqe-sub-size: {{ sub_size }}px;
+    --sqe-sub-color: {{ sub_color }};
+
     padding: 100px 20px;
-    background: linear-gradient(135deg, #0a1929 0%, #1F3A5F 50%, #0f2a47 100%);
+    background: linear-gradient(135deg, var(--sqe-dark-bg) 0%, var(--sqe-dark-accent) 50%, var(--sqe-dark-light) 100%);
     position: relative;
     overflow: hidden;
     font-family: 'Inter', sans-serif;
   }
 
   #sqe-stats-{{ section.id }} .sqe-stats-bg {
-    position: absolute; inset: 0; overflow: hidden; z-index: 0;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
   }
 
   #sqe-stats-{{ section.id }} .sqe-bg-shape {
-    position: absolute; border-radius: 50%; opacity: 0.08; mix-blend-mode: screen;
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.08;
+    mix-blend-mode: screen;
   }
+
   #sqe-stats-{{ section.id }} .sqe-bg-s1 {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, #F2B705 0%, transparent 70%);
-    top: -300px; left: -300px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--sqe-primary-gold) 0%, transparent 70%);
+    top: -300px;
+    left: -300px;
     animation: sqe-float1-{{ section.id }} 20s ease-in-out infinite;
   }
+
   #sqe-stats-{{ section.id }} .sqe-bg-s2 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, #C75B12 0%, transparent 70%);
-    bottom: -250px; right: -250px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--sqe-primary-orange) 0%, transparent 70%);
+    bottom: -250px;
+    right: -250px;
     animation: sqe-float2-{{ section.id }} 25s ease-in-out infinite;
   }
 
   @keyframes sqe-float1-{{ section.id }} {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(-30px,100px) scale(.95); }
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-30px, 100px) scale(0.95); }
   }
+
   @keyframes sqe-float2-{{ section.id }} {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(-50px,50px) scale(1.08); }
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, 50px) scale(1.08); }
   }
 
   /* Grid pattern */
   #sqe-stats-{{ section.id }} .sqe-grid-pat {
-    position: absolute; width: 100%; height: 100%; opacity: 0.04; pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.04;
+    pointer-events: none;
     background-image:
-      linear-gradient(0deg, transparent 24%, rgba(242,183,5,.5) 25%, rgba(242,183,5,.5) 26%, transparent 27%, transparent 74%, rgba(242,183,5,.5) 75%, rgba(242,183,5,.5) 76%, transparent 77%),
-      linear-gradient(90deg, transparent 24%, rgba(242,183,5,.5) 25%, rgba(242,183,5,.5) 26%, transparent 27%, transparent 74%, rgba(242,183,5,.5) 75%, rgba(242,183,5,.5) 76%, transparent 77%);
+      linear-gradient(0deg, transparent 24%, rgba(242, 183, 5, 0.5) 25%, rgba(242, 183, 5, 0.5) 26%, transparent 27%, transparent 74%, rgba(242, 183, 5, 0.5) 75%, rgba(242, 183, 5, 0.5) 76%, transparent 77%),
+      linear-gradient(90deg, transparent 24%, rgba(242, 183, 5, 0.5) 25%, rgba(242, 183, 5, 0.5) 26%, transparent 27%, transparent 74%, rgba(242, 183, 5, 0.5) 75%, rgba(242, 183, 5, 0.5) 76%, transparent 77%);
     background-size: 100px 100px;
   }
 
   /* ===== SECTION LABEL ===== */
   #sqe-stats-{{ section.id }} .sqe-section-label {
     display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.15);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sqe-primary-orange);
+    background: var(--sqe-label-bg);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    overflow-wrap: break-word;
   }
 
   /* ===== HEADER ===== */
   #sqe-stats-{{ section.id }} .sqe-stats-inner {
-    max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
 
   #sqe-stats-{{ section.id }} .sqe-stats-hdr {
-    text-align: center; margin-bottom: 80px;
+    text-align: center;
+    margin-bottom: 80px;
   }
 
   #sqe-stats-{{ section.id }} .sqe-stats-hdr h2 {
-    font-family: {{ heading_font }};
-    font-size: {{ heading_size }}px;
-    font-weight: {{ heading_weight }};
-    color: {{ heading_color }};
-    margin: 0 0 16px; letter-spacing: -0.8px; line-height: 1.2;
+    font-family: var(--sqe-heading-font);
+    font-size: var(--sqe-heading-size);
+    font-weight: var(--sqe-heading-weight);
+    color: var(--sqe-heading-color);
+    margin: 0 0 16px;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+    overflow-wrap: break-word;
   }
 
   #sqe-stats-{{ section.id }} .sqe-stats-hdr p {
-    font-family: {{ sub_font }};
-    font-size: {{ sub_size }}px;
-    color: {{ sub_color }};
-    margin: 0 auto; max-width: 600px;
+    font-family: var(--sqe-sub-font);
+    font-size: var(--sqe-sub-size);
+    color: var(--sqe-sub-color);
+    margin: 0 auto;
+    max-width: 600px;
+    overflow-wrap: break-word;
   }
 
   /* ===== STATS GRID ===== */
@@ -107,69 +164,103 @@
 
   /* Cards: VISIBLE by default (no opacity:0 that hides them if JS fails) */
   #sqe-stats-{{ section.id }} .sqe-stat-card {
-    background: rgba(255,255,255,.95);
+    background: var(--sqe-white-primary);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,.2);
+    border: 1px solid var(--sqe-white-border);
     border-radius: 16px;
     padding: 40px 30px;
     text-align: center;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(31,58,95,.1);
+    box-shadow: var(--sqe-card-shadow);
     position: relative;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transition: transform var(--sqe-transition), box-shadow var(--sqe-transition);
   }
 
   #sqe-stats-{{ section.id }} .sqe-stat-card::before {
     content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 4px;
-    background: linear-gradient(90deg, #F2B705 0%, #C75B12 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--sqe-primary-gold) 0%, var(--sqe-primary-orange) 100%);
   }
 
   #sqe-stats-{{ section.id }} .sqe-stat-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 30px 60px rgba(31,58,95,.2);
-    border-color: rgba(242,183,5,.4);
+    box-shadow: var(--sqe-card-shadow-hover);
+    border-color: var(--sqe-white-hover);
   }
 
   /* When JS is ready, hide cards for entrance animation */
   #sqe-stats-{{ section.id }}.sqe-js-ready .sqe-stat-card {
     opacity: 0;
     transform: translateY(40px);
-    transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
+
   #sqe-stats-{{ section.id }}.sqe-js-ready .sqe-stat-card.visible {
     opacity: 1;
     transform: translateY(0);
   }
+
   #sqe-stats-{{ section.id }}.sqe-js-ready .sqe-stat-card.visible:hover {
     transform: translateY(-8px);
   }
 
   /* Icon */
   #sqe-stats-{{ section.id }} .sqe-stat-icon {
-    width: 70px; height: 70px; margin: 0 auto 25px;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #F2B705, #C75B12);
-    border-radius: 14px; font-size: 32px; color: #fff; font-weight: 700;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--sqe-primary-gold), var(--sqe-primary-orange));
+    border-radius: 14px;
+    font-size: 32px;
+    color: #fff;
+    font-weight: 700;
+    flex-shrink: 0;
   }
 
   /* Number */
   #sqe-stats-{{ section.id }} .sqe-stat-number {
     font-family: 'Source Sans 3', sans-serif;
-    font-size: 48px; font-weight: 700; color: #1F3A5F;
-    margin: 0 0 8px; display: flex; align-items: baseline; justify-content: center; gap: 8px;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--sqe-dark-accent);
+    margin: 0 0 8px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
   }
+
   #sqe-stats-{{ section.id }} .sqe-stat-counter {
-    display: inline-block; min-width: 60px;
+    display: inline-block;
+    min-width: 60px;
+    overflow-wrap: break-word;
   }
+
   #sqe-stats-{{ section.id }} .sqe-stat-suffix {
-    font-size: 32px; color: #F2B705; font-weight: 600;
+    font-size: 32px;
+    color: var(--sqe-primary-gold);
+    font-weight: 600;
+    overflow-wrap: break-word;
   }
 
   /* Label */
   #sqe-stats-{{ section.id }} .sqe-stat-label {
-    font-size: 14px; color: #999; text-transform: uppercase;
-    letter-spacing: 1px; font-weight: 600; margin: 0;
+    font-size: 14px;
+    color: var(--sqe-gray-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin: 0;
+    overflow-wrap: break-word;
+    min-height: 20px;
   }
 
   /* ===== MOBILE ===== */
@@ -177,21 +268,47 @@
     #sqe-stats-{{ section.id }} {
       padding: 60px 16px;
     }
-    #sqe-stats-{{ section.id }} .sqe-stats-hdr h2 { font-size: 28px; }
-    #sqe-stats-{{ section.id }} .sqe-stats-hdr p { font-size: 15px; }
-    #sqe-stats-{{ section.id }} .sqe-stats-grid {
-      grid-template-columns: 1fr 1fr; gap: 16px;
+
+    #sqe-stats-{{ section.id }} .sqe-stats-hdr h2 {
+      font-size: 28px;
     }
-    #sqe-stats-{{ section.id }} .sqe-stat-card { padding: 24px 16px; }
-    #sqe-stats-{{ section.id }} .sqe-stat-icon { width: 56px; height: 56px; font-size: 24px; }
-    #sqe-stats-{{ section.id }} .sqe-stat-number { font-size: 36px; }
-    #sqe-stats-{{ section.id }} .sqe-stat-suffix { font-size: 22px; }
-    #sqe-stats-{{ section.id }} .sqe-bg-shape { display: none; }
+
+    #sqe-stats-{{ section.id }} .sqe-stats-hdr p {
+      font-size: 15px;
+    }
+
+    #sqe-stats-{{ section.id }} .sqe-stats-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    #sqe-stats-{{ section.id }} .sqe-stat-card {
+      padding: 24px 16px;
+    }
+
+    #sqe-stats-{{ section.id }} .sqe-stat-icon {
+      width: 56px;
+      height: 56px;
+      font-size: 24px;
+    }
+
+    #sqe-stats-{{ section.id }} .sqe-stat-number {
+      font-size: 36px;
+    }
+
+    #sqe-stats-{{ section.id }} .sqe-stat-suffix {
+      font-size: 22px;
+    }
+
+    #sqe-stats-{{ section.id }} .sqe-bg-shape {
+      display: none;
+    }
   }
 
   @media (max-width: 480px) {
     #sqe-stats-{{ section.id }} .sqe-stats-grid {
-      grid-template-columns: 1fr; gap: 14px;
+      grid-template-columns: 1fr;
+      gap: 14px;
     }
   }
 </style>
@@ -217,31 +334,41 @@
     {%- endif -%}
 
     <div class="sqe-stats-grid">
-      {%- for block in section.blocks -%}
-        <div class="sqe-stat-card" {{ block.shopify_attributes }}>
-          {%- if block.settings.icon_type != 'none' -%}
-            <div class="sqe-stat-icon">
-              {%- case block.settings.icon_type -%}
-                {%- when 'sun' -%}☀️
-                {%- when 'zap' -%}⚡
-                {%- when 'check' -%}✓
-                {%- when 'trending' -%}📈
-                {%- when 'target' -%}🎯
-                {%- when 'shield' -%}🛡️
-              {%- endcase -%}
-            </div>
-          {%- endif -%}
-
-          <div class="sqe-stat-number">
-            <span class="sqe-stat-counter" data-target="{{ block.settings.number }}" data-duration="{{ block.settings.animation_duration }}">{{ block.settings.number }}</span>
-            {%- if block.settings.suffix != blank -%}
-              <span class="sqe-stat-suffix">{{ block.settings.suffix }}</span>
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          <div class="sqe-stat-card" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon_type != 'none' -%}
+              <div class="sqe-stat-icon">
+                {%- case block.settings.icon_type -%}
+                  {%- when 'sun' -%}☀️
+                  {%- when 'zap' -%}⚡
+                  {%- when 'check' -%}✓
+                  {%- when 'trending' -%}📈
+                  {%- when 'target' -%}🎯
+                  {%- when 'shield' -%}🛡️
+                {%- endcase -%}
+              </div>
             {%- endif -%}
-          </div>
 
-          <p class="sqe-stat-label">{{ block.settings.label }}</p>
+            <div class="sqe-stat-number">
+              <span class="sqe-stat-counter" data-target="{{ block.settings.number }}" data-duration="{{ block.settings.animation_duration }}">{{ block.settings.number }}</span>
+              {%- if block.settings.suffix != blank -%}
+                <span class="sqe-stat-suffix">{{ block.settings.suffix }}</span>
+              {%- endif -%}
+            </div>
+
+            <p class="sqe-stat-label">{{ block.settings.label | default: 'Stat Label' }}</p>
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="sqe-stat-card" style="grid-column: 1 / -1; opacity: 0.6;">
+          <div class="sqe-stat-icon">🔍</div>
+          <div class="sqe-stat-number">
+            <span class="sqe-stat-counter">0</span>
+          </div>
+          <p class="sqe-stat-label">No stats added yet</p>
         </div>
-      {%- endfor -%}
+      {%- endif -%}
     </div>
   </div>
 </div>
@@ -255,23 +382,30 @@
     var counters = wrap.querySelectorAll('.sqe-stat-counter');
     if (!cards.length) return;
 
-    /* Mark JS-ready: hides cards for entrance animation */
+    /* Mark JS-ready: triggers entrance animation via CSS */
     wrap.classList.add('sqe-js-ready');
 
-    /* Reset counter text to 0 (since we show real number by default for no-JS) */
+    /* Reset counter text to 0 (since we show real number by default for no-JS fallback) */
     counters.forEach(function(c) { c.textContent = '0'; });
 
     var hasAnimated = false;
 
     function animateCounter(el, target, duration) {
       var end = parseInt(target, 10);
-      if (isNaN(end)) { el.textContent = target; return; }
+      if (isNaN(end)) {
+        el.textContent = target;
+        return;
+      }
       var inc = end / (duration / 50);
       var cur = 0;
       var timer = setInterval(function() {
         cur += inc;
-        if (cur >= end) { el.textContent = end; clearInterval(timer); }
-        else { el.textContent = Math.floor(cur); }
+        if (cur >= end) {
+          el.textContent = end;
+          clearInterval(timer);
+        } else {
+          el.textContent = Math.floor(cur);
+        }
       }, 50);
     }
 
@@ -289,15 +423,18 @@
       });
     }
 
+    /* Use IntersectionObserver for performance; fallback to immediate reveal */
     if ('IntersectionObserver' in window) {
       var obs = new IntersectionObserver(function(entries) {
         entries.forEach(function(e) {
-          if (e.isIntersecting) { revealCards(); obs.disconnect(); }
+          if (e.isIntersecting) {
+            revealCards();
+            obs.disconnect();
+          }
         });
       }, { threshold: 0.3 });
       obs.observe(wrap);
     } else {
-      /* Fallback: reveal immediately */
       revealCards();
     }
   })();

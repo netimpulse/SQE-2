@@ -15,33 +15,37 @@
   endif
 -%}
 
-<section id="sqe-trust-banner-{{ section.id }}" class="sqe-trust-banner" style="background-color: {{ bg_color }};">
-  <div class="sqe-trust-container">
+<section id="sqe-trust-banner-{{ section.id }}" class="sqe-trust-banner" style="--sqe-bg-color: {{ bg_color }}; --sqe-heading-font: {{ h_font }}; --sqe-heading-size: {{ h_size }}px; --sqe-heading-color: {{ h_color }}; --sqe-heading-weight: {{ h_weight }}; --sqe-desc-font: {{ section.settings.description_font | default: \"'Inter', sans-serif\" }}; --sqe-desc-size: {{ section.settings.description_size | default: 16 }}px; --sqe-desc-color: {{ section.settings.description_color | default: '#666' }};">
+  <div class="sqe-trust-banner__container">
     {%- if show_label and label_text != blank -%}
-      <span class="sqe-section-label">{{ label_text }}</span>
+      <span class="sqe-trust-banner__label">{{ label_text }}</span>
     {%- endif -%}
     {% if heading != blank %}
-      <h2 class="sqe-trust-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
+      <h2 class="sqe-trust-banner__heading">{{ heading }}</h2>
+    {% else %}
+      <h2 class="sqe-trust-banner__heading sqe-trust-banner__heading--empty">Credentials</h2>
     {% endif %}
 
     {% if subheading != blank %}
-      <p class="sqe-trust-subheading">{{ subheading }}</p>
+      <p class="sqe-trust-banner__subheading">{{ subheading }}</p>
+    {% else %}
+      <p class="sqe-trust-banner__subheading sqe-trust-banner__subheading--empty">Add your credentials</p>
     {% endif %}
 
-    <div class="sqe-credentials-grid">
+    <div class="sqe-trust-banner__grid">
       {% for block in section.blocks %}
         {% if block.type == 'credential' %}
-          <div class="sqe-credential-card" {{ block.shopify_attributes }}>
+          <div class="sqe-trust-banner__card" {{ block.shopify_attributes }}>
             {% if block.settings.credential_name != blank %}
-              <h3 class="sqe-credential-name">{{ block.settings.credential_name }}</h3>
+              <h3 class="sqe-trust-banner__card-name">{{ block.settings.credential_name }}</h3>
             {% endif %}
 
             {% if block.settings.description != blank %}
-              <p class="sqe-credential-description">{{ block.settings.description }}</p>
+              <p class="sqe-trust-banner__card-description">{{ block.settings.description }}</p>
             {% endif %}
 
             {% if block.settings.issuer != blank %}
-              <p class="sqe-credential-issuer">{{ block.settings.issuer }}</p>
+              <p class="sqe-trust-banner__card-issuer">{{ block.settings.issuer }}</p>
             {% endif %}
           </div>
         {% endif %}
@@ -49,16 +53,16 @@
     </div>
 
     {% if show_ticker %}
-      <div class="sqe-ticker-wrapper">
-        <div class="sqe-ticker-track">
+      <div class="sqe-trust-banner__ticker">
+        <div class="sqe-trust-banner__ticker-track">
           {% for block in section.blocks %}
             {% if block.type == 'credential' %}
-              <span class="sqe-ticker-badge">{{ block.settings.credential_name }}</span>
+              <span class="sqe-trust-banner__ticker-badge">{{ block.settings.credential_name }}</span>
             {% endif %}
           {% endfor %}
           {% for block in section.blocks %}
             {% if block.type == 'credential' %}
-              <span class="sqe-ticker-badge">{{ block.settings.credential_name }}</span>
+              <span class="sqe-trust-banner__ticker-badge">{{ block.settings.credential_name }}</span>
             {% endif %}
           {% endfor %}
         </div>
@@ -69,113 +73,148 @@
 
 <style>
   #sqe-trust-banner-{{ section.id }} {
-    padding: 60px 20px;
+    --sqe-label-color: #C75B12;
+    --sqe-label-bg: rgba(199, 91, 18, 0.1);
+    --sqe-card-bg: #FFFFFF;
+    --sqe-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --sqe-card-shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.15);
+    --sqe-card-transform: translateY(-4px);
+    --sqe-primary-blue: #1F3A5F;
+    --sqe-text-light: #999999;
+    --sqe-badge-bg: #F2F4F7;
+    --sqe-padding-lg: 60px;
+    --sqe-padding-h: 20px;
+    background-color: var(--sqe-bg-color);
+    padding: var(--sqe-padding-lg) var(--sqe-padding-h);
   }
 
-  /* ===== SECTION LABEL (orange pill) ===== */
-  #sqe-trust-banner-{{ section.id }} .sqe-section-label {
+  /* Section label (orange pill) */
+  #sqe-trust-banner-{{ section.id }} .sqe-trust-banner__label {
     display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sqe-label-color);
+    background-color: var(--sqe-label-bg);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-trust-container {
+  .sqe-trust-banner__container {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
   }
 
-  .sqe-trust-heading {
-    font-family: {{ section.settings.heading_font }};
-    font-size: {{ section.settings.heading_size }}px;
-    font-weight: 700;
-    color: {{ section.settings.heading_color }};
+  .sqe-trust-banner__heading {
+    font-family: var(--sqe-heading-font);
+    font-size: var(--sqe-heading-size);
+    font-weight: var(--sqe-heading-weight);
+    color: var(--sqe-heading-color);
     text-align: center;
     margin-bottom: 10px;
     letter-spacing: -0.5px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-trust-subheading {
-    font-family: {{ section.settings.description_font | default: "'Inter', sans-serif" }};
-    font-size: {{ section.settings.description_size | default: 16 }}px;
-    color: {{ section.settings.description_color | default: '#666' }};
+  .sqe-trust-banner__heading--empty {
+    color: #999999;
+    opacity: 0.5;
+  }
+
+  .sqe-trust-banner__subheading {
+    font-family: var(--sqe-desc-font);
+    font-size: var(--sqe-desc-size);
+    color: var(--sqe-desc-color);
     text-align: center;
     margin-bottom: 40px;
     line-height: 1.6;
+    overflow-wrap: break-word;
   }
 
-  .sqe-credentials-grid {
+  .sqe-trust-banner__subheading--empty {
+    color: #999999;
+    opacity: 0.5;
+  }
+
+  .sqe-trust-banner__grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
     margin-bottom: 40px;
   }
 
-  .sqe-credential-card {
-    background: white;
+  .sqe-trust-banner__card {
+    background-color: var(--sqe-card-bg);
     padding: 30px;
     border-radius: 8px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--sqe-card-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .sqe-credential-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  .sqe-trust-banner__card:hover {
+    transform: var(--sqe-card-transform);
+    box-shadow: var(--sqe-card-shadow-hover);
   }
 
-  .sqe-credential-name {
-    font-family: {{ section.settings.heading_font }};
+  .sqe-trust-banner__card-name {
+    font-family: var(--sqe-heading-font);
     font-size: 18px;
     font-weight: 700;
-    color: #1F3A5F;
+    color: var(--sqe-primary-blue);
     margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-credential-description {
-    font-family: {{ section.settings.description_font | default: "'Inter', sans-serif" }};
+  .sqe-trust-banner__card-description {
+    font-family: var(--sqe-desc-font);
     font-size: 14px;
-    color: #666;
+    color: #666666;
     line-height: 1.6;
     margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-credential-issuer {
-    font-family: {{ section.settings.description_font | default: "'Inter', sans-serif" }};
+  .sqe-trust-banner__card-issuer {
+    font-family: var(--sqe-desc-font);
     font-size: 12px;
-    color: #999;
+    color: var(--sqe-text-light);
     margin: 0;
+    overflow-wrap: break-word;
   }
 
-  .sqe-ticker-wrapper {
-    background: white;
+  .sqe-trust-banner__ticker {
+    background-color: var(--sqe-card-bg);
     padding: 20px 0;
     border-radius: 8px;
     overflow: hidden;
     margin-top: 40px;
   }
 
-  .sqe-ticker-track {
+  .sqe-trust-banner__ticker-track {
     display: flex;
     gap: 30px;
-    animation: sqe-ticker-scroll 30s linear infinite;
+    animation: sqe-trust-banner-ticker-scroll 30s linear infinite;
     width: max-content;
   }
 
-  .sqe-ticker-badge {
+  .sqe-trust-banner__ticker-badge {
     display: inline-block;
-    background: #F2F4F7;
-    color: #1F3A5F;
+    background-color: var(--sqe-badge-bg);
+    color: var(--sqe-primary-blue);
     padding: 10px 20px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
+    overflow-wrap: break-word;
   }
 
-  @keyframes sqe-ticker-scroll {
+  @keyframes sqe-trust-banner-ticker-scroll {
     0% {
       transform: translateX(0);
     }
@@ -186,29 +225,30 @@
 
   @media (max-width: 768px) {
     #sqe-trust-banner-{{ section.id }} {
-      padding: 45px 16px;
+      --sqe-padding-lg: 45px;
+      --sqe-padding-h: 16px;
     }
 
-    .sqe-credentials-grid {
+    .sqe-trust-banner__grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
 
-    .sqe-trust-heading {
+    .sqe-trust-banner__heading {
       font-size: 28px;
       margin-bottom: 8px;
     }
 
-    .sqe-trust-subheading {
+    .sqe-trust-banner__subheading {
       font-size: 15px;
       margin-bottom: 30px;
     }
 
-    .sqe-credential-card {
+    .sqe-trust-banner__card {
       padding: 20px;
     }
 
-    .sqe-ticker-badge {
+    .sqe-trust-banner__ticker-badge {
       padding: 8px 16px;
       font-size: 11px;
     }
@@ -216,41 +256,42 @@
 
   @media (max-width: 480px) {
     #sqe-trust-banner-{{ section.id }} {
-      padding: 30px 12px;
+      --sqe-padding-lg: 30px;
+      --sqe-padding-h: 12px;
     }
 
-    .sqe-credentials-grid {
+    .sqe-trust-banner__grid {
       grid-template-columns: 1fr;
       gap: 15px;
     }
 
-    .sqe-trust-heading {
+    .sqe-trust-banner__heading {
       font-size: 22px;
       margin-bottom: 6px;
     }
 
-    .sqe-trust-subheading {
+    .sqe-trust-banner__subheading {
       font-size: 14px;
       margin-bottom: 24px;
     }
 
-    .sqe-credential-card {
+    .sqe-trust-banner__card {
       padding: 16px;
     }
 
-    .sqe-credential-name {
+    .sqe-trust-banner__card-name {
       font-size: 16px;
     }
 
-    .sqe-credential-description {
+    .sqe-trust-banner__card-description {
       font-size: 13px;
     }
 
-    .sqe-credential-issuer {
+    .sqe-trust-banner__card-issuer {
       font-size: 11px;
     }
 
-    .sqe-ticker-badge {
+    .sqe-trust-banner__ticker-badge {
       padding: 6px 12px;
       font-size: 10px;
     }
@@ -258,18 +299,22 @@
 </style>
 
 <script>
-  var trustBannerSection = document.getElementById('sqe-trust-banner-' + '{{ section.id }}');
-  if (trustBannerSection) {
-    var cards = trustBannerSection.querySelectorAll('.sqe-credential-card');
+  (function() {
+    var trustBannerSection = document.getElementById('sqe-trust-banner-' + '{{ section.id }}');
+    if (!trustBannerSection) return;
+
+    var cards = trustBannerSection.querySelectorAll('.sqe-trust-banner__card');
+    if (cards.length === 0) return;
+
     cards.forEach(function(card) {
       card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-4px)';
+        this.style.transform = 'var(--sqe-card-transform)';
       });
       card.addEventListener('mouseleave', function() {
         this.style.transform = 'translateY(0)';
       });
     });
-  }
+  })();
 </script>
 
 {% schema %}

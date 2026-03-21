@@ -15,262 +15,316 @@
 -%}
 
 <style>
-  /* ===== SECTION LABEL (orange pill) ===== */
-  #sqe-process-section-{{ section.id }} .sqe-section-label {
-    display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+  #sqe-process-section-{{ section.id }} {
+    --sqe-color-primary: #1F3A5F;
+    --sqe-color-accent: #F2B705;
+    --sqe-color-border: #E8ECEF;
+    --sqe-color-text-muted: #999;
+    --sqe-color-text-dark: #666;
+    --sqe-color-label: #C75B12;
+    --sqe-color-label-bg: rgba(199, 91, 18, 0.1);
+    --sqe-color-white: white;
+    --sqe-shadow-sm: 0 4px 15px rgba(31, 58, 95, 0.08);
+    --sqe-shadow-md: 0 8px 25px rgba(242, 183, 5, 0.3);
+    --sqe-shadow-lg: 0 20px 60px rgba(31, 58, 95, 0.12);
+    --sqe-transition: 0.3s ease;
+    --sqe-transition-cubic: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --sqe-spacing-xs: 12px;
+    --sqe-spacing-sm: 20px;
+    --sqe-spacing-md: 40px;
+    --sqe-spacing-lg: 60px;
+    --sqe-radius-sm: 12px;
+    --sqe-radius-md: 16px;
   }
 
-  .sqe-process-section {
-    padding: 60px 20px;
+  #sqe-process-section-{{ section.id }} .sqe-process-section {
+    padding: var(--sqe-spacing-lg) 20px;
     background: linear-gradient(135deg, #f8fafb 0%, #eef2f7 100%);
     font-family: 'Inter', sans-serif;
   }
 
-  .sqe-process-container {
+  #sqe-process-section-{{ section.id }} .sqe-process-container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  .sqe-process-header {
+  #sqe-process-section-{{ section.id }} .sqe-process-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: var(--sqe-spacing-lg);
   }
 
-  .sqe-process-header h2 {
+  #sqe-process-section-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sqe-color-label);
+    background: var(--sqe-color-label-bg);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: var(--sqe-spacing-xs);
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  #sqe-process-section-{{ section.id }} .sqe-process-header h2 {
     font-family: {{ h_font }};
     font-size: {{ h_size }}px;
     font-weight: {{ h_weight }};
     color: {{ h_color }};
     margin: 0 0 12px 0;
     letter-spacing: -0.5px;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
-  .sqe-process-header p {
+  #sqe-process-section-{{ section.id }} .sqe-process-header p {
     font-family: {{ d_font }};
     font-size: {{ d_size }}px;
     color: {{ d_color }};
     margin: 0;
     font-weight: 400;
     line-height: 1.6;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
-  /* Desktop Timeline */
-  .sqe-timeline-wrapper {
+  /* ===== TIMELINE (Desktop & Mobile) ===== */
+  #sqe-process-section-{{ section.id }} .sqe-timeline-wrapper {
     position: relative;
-    padding: 40px 0;
+    padding: var(--sqe-spacing-md) 0;
   }
 
-  .sqe-timeline-track {
+  #sqe-process-section-{{ section.id }} .sqe-timeline-track {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 50px;
-    padding: 0 40px;
+    padding: 0 var(--sqe-spacing-md);
   }
 
-  .sqe-timeline-track::before {
+  #sqe-process-section-{{ section.id }} .sqe-timeline-track::before {
     content: '';
     position: absolute;
     top: 30px;
-    left: 40px;
-    right: 40px;
+    left: var(--sqe-spacing-md);
+    right: var(--sqe-spacing-md);
     height: 3px;
-    background: #E8ECEF;
+    background: var(--sqe-color-border);
     z-index: 0;
   }
 
-  .sqe-timeline-track.animated::before {
-    background: linear-gradient(to right, #1F3A5F 0%, #1F3A5F var(--progress), #E8ECEF var(--progress), #E8ECEF 100%);
-    transition: background 0.3s ease;
+  #sqe-process-section-{{ section.id }} .sqe-timeline-track.animated::before {
+    background: linear-gradient(
+      to right,
+      var(--sqe-color-primary) 0%,
+      var(--sqe-color-primary) var(--progress),
+      var(--sqe-color-border) var(--progress),
+      var(--sqe-color-border) 100%
+    );
+    transition: background var(--sqe-transition);
   }
 
-  .sqe-timeline-step {
+  #sqe-process-section-{{ section.id }} .sqe-timeline-step {
     position: relative;
     flex: 1;
     text-align: center;
     cursor: pointer;
     z-index: 2;
-    transition: all 0.3s ease;
+    transition: transform var(--sqe-transition);
     padding: 0 15px;
   }
 
-  .sqe-timeline-step:hover {
+  #sqe-process-section-{{ section.id }} .sqe-timeline-step:hover {
     transform: translateY(-8px);
   }
 
-  .sqe-timeline-dot {
+  #sqe-process-section-{{ section.id }} .sqe-timeline-dot {
     width: 60px;
     height: 60px;
-    margin: 0 auto 20px auto;
+    margin: 0 auto var(--sqe-spacing-sm) auto;
     border-radius: 50%;
-    background: white;
-    border: 3px solid #E8ECEF;
+    background: var(--sqe-color-white);
+    border: 3px solid var(--sqe-color-border);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     font-size: 18px;
-    color: #999;
+    color: var(--sqe-color-text-muted);
     position: relative;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 15px rgba(31, 58, 95, 0.08);
+    box-shadow: var(--sqe-shadow-sm);
   }
 
-  .sqe-timeline-step.active .sqe-timeline-dot {
+  #sqe-process-section-{{ section.id }} .sqe-timeline-step.active .sqe-timeline-dot {
     width: 72px;
     height: 72px;
-    background: #F2B705;
-    border-color: #F2B705;
-    color: #1F3A5F;
+    background: var(--sqe-color-accent);
+    border-color: var(--sqe-color-accent);
+    color: var(--sqe-color-primary);
     box-shadow: 0 8px 25px rgba(242, 183, 5, 0.3);
-    animation: pulse-dot 2s infinite;
+    animation: sqe-pulse-dot-{{ section.id }} 2s infinite;
   }
 
-  @keyframes pulse-dot {
-    0% {
-      box-shadow: 0 8px 25px rgba(242, 183, 5, 0.3);
+  @keyframes sqe-pulse-dot-{{ section.id }} {
+    0%, 100% {
+      box-shadow: var(--sqe-shadow-md);
     }
     50% {
       box-shadow: 0 8px 35px rgba(242, 183, 5, 0.5);
     }
-    100% {
-      box-shadow: 0 8px 25px rgba(242, 183, 5, 0.3);
-    }
   }
 
-  .sqe-timeline-dot.completed {
-    background: #1F3A5F;
-    border-color: #1F3A5F;
-    color: white;
+  #sqe-process-section-{{ section.id }} .sqe-timeline-dot.completed {
+    background: var(--sqe-color-primary);
+    border-color: var(--sqe-color-primary);
+    color: var(--sqe-color-white);
   }
 
-  .sqe-timeline-label {
+  #sqe-process-section-{{ section.id }} .sqe-timeline-label {
     font-size: 14px;
-    color: #999;
+    color: var(--sqe-color-text-muted);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    transition: all 0.3s ease;
+    transition: all var(--sqe-transition);
     line-height: 1.4;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
-  .sqe-timeline-step.active .sqe-timeline-label {
-    color: #1F3A5F;
+  #sqe-process-section-{{ section.id }} .sqe-timeline-step.active .sqe-timeline-label {
+    color: var(--sqe-color-primary);
     font-weight: 600;
   }
 
-  /* Detail Panel */
-  .sqe-detail-panel-wrapper {
+  /* ===== DETAIL PANEL ===== */
+  #sqe-process-section-{{ section.id }} .sqe-detail-panel-wrapper {
     position: relative;
     height: 400px;
     margin-top: 50px;
-    border-radius: 16px;
+    border-radius: var(--sqe-radius-md);
     overflow: hidden;
   }
 
-  .sqe-detail-panel {
+  #sqe-process-section-{{ section.id }} .sqe-detail-panel {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: white;
-    border-radius: 16px;
-    padding: 40px;
+    background: var(--sqe-color-white);
+    border-radius: var(--sqe-radius-md);
+    padding: var(--sqe-spacing-md);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: var(--sqe-spacing-md);
     align-items: center;
     opacity: 0;
     transform: translateX(60px);
     pointer-events: none;
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 20px 60px rgba(31, 58, 95, 0.12);
+    transition: all var(--sqe-transition-cubic);
+    box-shadow: var(--sqe-shadow-lg);
     border: 1px solid rgba(242, 183, 5, 0.1);
   }
 
-  .sqe-detail-panel.active {
+  #sqe-process-section-{{ section.id }} .sqe-detail-panel.active {
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
   }
 
-  .sqe-detail-content h3 {
+  #sqe-process-section-{{ section.id }} .sqe-detail-content h3 {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 28px;
     font-weight: 700;
-    color: #1F3A5F;
+    color: var(--sqe-color-primary);
     margin: 0 0 16px 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
-  .sqe-detail-content p {
+  #sqe-process-section-{{ section.id }} .sqe-detail-content p {
     font-size: 15px;
-    color: #666;
+    color: var(--sqe-color-text-dark);
     line-height: 1.6;
     margin: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
-  .sqe-detail-image {
+  #sqe-process-section-{{ section.id }} .sqe-detail-image {
     position: relative;
     height: 100%;
     min-height: 300px;
-    border-radius: 12px;
+    border-radius: var(--sqe-radius-sm);
     overflow: hidden;
-    background: linear-gradient(135deg, #1F3A5F 0%, #F2B705 100%);
+    background: linear-gradient(135deg, var(--sqe-color-primary) 0%, var(--sqe-color-accent) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sqe-color-white);
+    font-weight: 600;
+    font-size: 14px;
   }
 
-  .sqe-detail-image img {
+  #sqe-process-section-{{ section.id }} .sqe-detail-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform var(--sqe-transition-cubic);
   }
 
-  .sqe-detail-panel.active .sqe-detail-image img {
+  #sqe-process-section-{{ section.id }} .sqe-detail-panel.active .sqe-detail-image img {
     transform: scale(1.05);
   }
 
-  /* Mobile Timeline */
+  /* ===== MOBILE TIMELINE (768px & below) ===== */
   @media (max-width: 768px) {
-    .sqe-process-section {
+    #sqe-process-section-{{ section.id }} .sqe-process-section {
       padding: 40px 16px;
     }
 
-    .sqe-process-header h2 {
+    #sqe-process-section-{{ section.id }} .sqe-process-header h2 {
       font-size: 28px;
     }
 
-    .sqe-process-header p {
+    #sqe-process-section-{{ section.id }} .sqe-process-header p {
       font-size: 15px;
     }
 
-    .sqe-timeline-track {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-track {
       flex-direction: column;
       padding: 0;
       align-items: stretch;
       margin-bottom: 0;
     }
 
-    .sqe-timeline-track::before {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-track::before {
       position: absolute;
       top: 0;
       left: 29px;
       right: auto;
       width: 3px;
       height: 100%;
-      background: #E8ECEF;
-      transition: all 0.3s ease;
+      background: var(--sqe-color-border);
+      transition: all var(--sqe-transition);
     }
 
-    .sqe-timeline-track.animated::before {
-      background: linear-gradient(to bottom, #1F3A5F 0%, #1F3A5F var(--progress), #E8ECEF var(--progress), #E8ECEF 100%);
+    #sqe-process-section-{{ section.id }} .sqe-timeline-track.animated::before {
+      background: linear-gradient(
+        to bottom,
+        var(--sqe-color-primary) 0%,
+        var(--sqe-color-primary) var(--progress),
+        var(--sqe-color-border) var(--progress),
+        var(--sqe-color-border) 100%
+      );
     }
 
-    .sqe-timeline-step {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-step {
       flex: none;
       padding: 0 0 40px 80px;
       text-align: left;
@@ -278,7 +332,7 @@
       margin-bottom: 20px;
     }
 
-    .sqe-timeline-dot {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-dot {
       position: absolute;
       left: -15px;
       top: 0;
@@ -287,149 +341,189 @@
       margin: 0;
     }
 
-    .sqe-detail-panel {
+    #sqe-process-section-{{ section.id }} .sqe-detail-panel {
       grid-template-columns: 1fr;
       gap: 20px;
       padding: 25px;
       height: auto;
     }
 
-    .sqe-detail-image {
+    #sqe-process-section-{{ section.id }} .sqe-detail-image {
       min-height: 200px;
     }
 
-    .sqe-detail-panel-wrapper {
+    #sqe-process-section-{{ section.id }} .sqe-detail-panel-wrapper {
       height: auto;
       margin-top: 30px;
     }
   }
 
+  /* ===== MOBILE TIMELINE (480px & below) ===== */
   @media (max-width: 480px) {
-    .sqe-process-section {
+    #sqe-process-section-{{ section.id }} .sqe-process-section {
       padding: 30px 12px;
     }
 
-    .sqe-process-header {
+    #sqe-process-section-{{ section.id }} .sqe-process-header {
       margin-bottom: 40px;
     }
 
-    .sqe-process-header h2 {
+    #sqe-process-section-{{ section.id }} .sqe-process-header h2 {
       font-size: 24px;
       margin-bottom: 10px;
     }
 
-    .sqe-process-header p {
+    #sqe-process-section-{{ section.id }} .sqe-process-header p {
       font-size: 14px;
     }
 
-    .sqe-timeline-wrapper {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-wrapper {
       padding: 30px 0;
     }
 
-    .sqe-timeline-step {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-step {
       padding: 0 0 30px 70px;
       margin-bottom: 0;
     }
 
-    .sqe-timeline-dot {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-dot {
       width: 50px;
       height: 50px;
       font-size: 16px;
     }
 
-    .sqe-timeline-step.active .sqe-timeline-dot {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-step.active .sqe-timeline-dot {
       width: 60px;
       height: 60px;
     }
 
-    .sqe-timeline-label {
+    #sqe-process-section-{{ section.id }} .sqe-timeline-label {
       font-size: 13px;
     }
 
-    .sqe-detail-panel {
+    #sqe-process-section-{{ section.id }} .sqe-detail-panel {
       padding: 20px;
       gap: 15px;
     }
 
-    .sqe-detail-content h3 {
+    #sqe-process-section-{{ section.id }} .sqe-detail-content h3 {
       font-size: 24px;
       margin-bottom: 12px;
     }
 
-    .sqe-detail-content p {
+    #sqe-process-section-{{ section.id }} .sqe-detail-content p {
       font-size: 14px;
     }
 
-    .sqe-detail-image {
+    #sqe-process-section-{{ section.id }} .sqe-detail-image {
       min-height: 150px;
     }
   }
 </style>
 
 <script>
-  class SQEInteractiveProcess {
-    constructor(container) {
-      this.container = container;
-      this.steps = container.querySelectorAll('.sqe-timeline-step');
-      this.panels = container.querySelectorAll('.sqe-detail-panel');
-      this.track = container.querySelector('.sqe-timeline-track');
-      this.activeIndex = 0;
+  (function() {
+    'use strict';
 
-      this.init();
-    }
+    class SQEInteractiveProcess {
+      constructor(container) {
+        this.container = container;
+        this.sectionId = container.querySelector('[id^="sqe-process-section-"]')?.id;
 
-    init() {
-      this.steps.forEach((step, index) => {
-        step.addEventListener('click', () => this.selectStep(index));
-      });
-
-      if (this.track.classList.contains('animated')) {
-        window.addEventListener('scroll', () => this.updateProgress());
-      }
-
-      this.selectStep(0);
-    }
-
-    selectStep(index) {
-      this.activeIndex = index;
-
-      this.steps.forEach((step, i) => {
-        if (i < index) {
-          step.classList.remove('active');
-          step.classList.add('completed');
-        } else if (i === index) {
-          step.classList.add('active');
-          step.classList.remove('completed');
-        } else {
-          step.classList.remove('active', 'completed');
+        if (!this.sectionId) {
+          console.warn('SQEInteractiveProcess: Could not find section ID');
+          return;
         }
-      });
 
-      this.panels.forEach((panel, i) => {
-        panel.classList.toggle('active', i === index);
-      });
-    }
+        this.steps = container.querySelectorAll('.sqe-timeline-step');
+        this.panels = container.querySelectorAll('.sqe-detail-panel');
+        this.track = container.querySelector('.sqe-timeline-track');
+        this.activeIndex = 0;
 
-    updateProgress() {
-      const trackRect = this.track.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const trackStart = trackRect.top;
-      const trackEnd = trackRect.bottom;
+        if (this.steps.length === 0) {
+          console.warn('SQEInteractiveProcess: No timeline steps found');
+          return;
+        }
 
-      if (trackEnd < 0 || trackStart > windowHeight) {
-        return;
+        this.init();
       }
 
-      const visibleHeight = Math.min(trackEnd, windowHeight) - Math.max(trackStart, 0);
-      const progress = Math.max(0, visibleHeight / (windowHeight + trackRect.height)) * 100;
+      init() {
+        // Bind step click handlers
+        this.steps.forEach((step, index) => {
+          step.addEventListener('click', () => this.selectStep(index));
+        });
 
-      this.track.style.setProperty('--progress', Math.min(100, progress * 2) + '%');
+        // Set up scroll animation if enabled
+        if (this.track && this.track.classList.contains('animated')) {
+          window.addEventListener('scroll', () => this.updateProgress());
+        }
+
+        // Initialize with first step
+        this.selectStep(0);
+      }
+
+      selectStep(index) {
+        if (index < 0 || index >= this.steps.length) {
+          return;
+        }
+
+        this.activeIndex = index;
+
+        // Update step states (active/completed)
+        this.steps.forEach((step, i) => {
+          if (i < index) {
+            step.classList.remove('active');
+            step.classList.add('completed');
+          } else if (i === index) {
+            step.classList.add('active');
+            step.classList.remove('completed');
+          } else {
+            step.classList.remove('active', 'completed');
+          }
+        });
+
+        // Show/hide detail panels
+        this.panels.forEach((panel, i) => {
+          panel.classList.toggle('active', i === index);
+        });
+      }
+
+      updateProgress() {
+        if (!this.track) return;
+
+        const trackRect = this.track.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const trackStart = trackRect.top;
+        const trackEnd = trackRect.bottom;
+
+        // Exit early if track is completely off-screen
+        if (trackEnd < 0 || trackStart > windowHeight) {
+          return;
+        }
+
+        const visibleHeight = Math.min(trackEnd, windowHeight) - Math.max(trackStart, 0);
+        const progress = Math.max(0, visibleHeight / (windowHeight + trackRect.height)) * 100;
+
+        this.track.style.setProperty('--progress', Math.min(100, progress * 2) + '%');
+      }
     }
-  }
 
-  document.querySelectorAll('.sqe-process-wrapper').forEach(wrapper => {
-    new SQEInteractiveProcess(wrapper);
-  });
+    // Initialize only the current section instance
+    function initializeSQEProcess() {
+      const wrapper = document.querySelector('.sqe-process-wrapper');
+      if (wrapper) {
+        new SQEInteractiveProcess(wrapper);
+      }
+    }
+
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeSQEProcess);
+    } else {
+      initializeSQEProcess();
+    }
+  })();
 </script>
 
 <div class="sqe-process-wrapper">
@@ -457,16 +551,16 @@
           {% for block in section.blocks %}
             <div class="sqe-detail-panel" {{ block.shopify_attributes }}>
               <div class="sqe-detail-content">
-                <h3>{{ block.settings.step_name }}</h3>
-                <p>{{ block.settings.step_description }}</p>
+                <h3>{% if block.settings.step_name != blank %}{{ block.settings.step_name }}{% else %}Step {{ forloop.index }}{% endif %}</h3>
+                <p>{% if block.settings.step_description != blank %}{{ block.settings.step_description }}{% else %}No description provided.{% endif %}</p>
               </div>
               {% if block.settings.step_image %}
                 <div class="sqe-detail-image">
-                  {{ block.settings.step_image | image_url: width: 600 | image_tag }}
+                  {{ block.settings.step_image | image_url: width: 600 | image_tag: alt: block.settings.step_name }}
                 </div>
               {% else %}
-                <div class="sqe-detail-image" style="display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                  Image placeholder
+                <div class="sqe-detail-image">
+                  No image
                 </div>
               {% endif %}
             </div>

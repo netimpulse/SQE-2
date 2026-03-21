@@ -4,29 +4,29 @@
   assign columns = section.settings.columns | default: 4
 -%}
 
-<section id="section-{{ section.id }}" class="sqe-team-v2">
-  <div class="team-container">
+<section id="sqe-team-v2-{{ section.id }}" class="sqe-team-v2">
+  <div class="sqe-team-v2__container">
     {% if heading %}
-      <h2 class="team-heading">{{ heading }}</h2>
+      <h2 class="sqe-team-v2__label">{{ heading }}</h2>
     {% endif %}
     {% if subheading %}
-      <p class="team-subheading">{{ subheading }}</p>
+      <p class="sqe-team-v2__subheading">{{ subheading }}</p>
     {% endif %}
 
-    <div class="team-cards" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+    <div class="sqe-team-v2__grid">
       {% for block in section.blocks %}
-        <div class="team-card" data-member-id="{{ block.id }}" data-member-name="{{ block.settings.name | escape }}" data-member-title="{{ block.settings.title | escape }}" data-member-bio="{{ block.settings.bio | escape }}" data-member-expertise="{{ block.settings.expertise | escape }}" data-member-linkedin="{{ block.settings.linkedin_url | escape }}" data-member-email="{{ block.settings.email_address | escape }}" data-member-years="{{ block.settings.years_experience }}" {% if block.settings.photo %}data-member-photo="{{ block.settings.photo | img_url: '400x400' }}"{% endif %}>
-          <div class="card-image-wrapper">
+        <div class="sqe-team-v2__card" data-member-id="{{ block.id }}" data-member-name="{{ block.settings.name | escape }}" data-member-title="{{ block.settings.title | escape }}" data-member-bio="{{ block.settings.bio | escape }}" data-member-expertise="{{ block.settings.expertise | escape }}" data-member-linkedin="{{ block.settings.linkedin_url | escape }}" data-member-email="{{ block.settings.email_address | escape }}" data-member-years="{{ block.settings.years_experience }}" {% if block.settings.photo %}data-member-photo="{{ block.settings.photo | image_url: width: 400 }}"{% endif %}>
+          <div class="sqe-team-v2__image-wrapper">
             {% if block.settings.photo %}
-              <img src="{{ block.settings.photo | img_url: '400x400' }}" alt="{{ block.settings.name }}" class="card-image">
+              <img src="{{ block.settings.photo | image_url: width: 400 }}" alt="{{ block.settings.name }}" class="sqe-team-v2__image">
             {% else %}
-              <div class="card-image-placeholder">No image</div>
+              <div class="sqe-team-v2__placeholder">No image</div>
             {% endif %}
           </div>
-          <div class="card-content">
-            <h3 class="member-name">{{ block.settings.name }}</h3>
-            <p class="member-title">{{ block.settings.title }}</p>
-            <button class="card-expand-btn" data-member-id="{{ block.id }}">View Profile</button>
+          <div class="sqe-team-v2__content">
+            <h3 class="sqe-team-v2__name">{{ block.settings.name }}</h3>
+            <p class="sqe-team-v2__title">{{ block.settings.title }}</p>
+            <button class="sqe-team-v2__btn" type="button" data-member-id="{{ block.id }}">View Profile</button>
           </div>
         </div>
       {% endfor %}
@@ -34,23 +34,23 @@
   </div>
 </section>
 
-<div id="member-modal-{{ section.id }}" class="member-modal" style="display: none;">
-  <div class="modal-overlay"></div>
-  <div class="modal-content">
-    <button class="modal-close">Close</button>
-    <div class="modal-body">
-      <img src="" alt="" class="modal-image">
-      <div class="modal-info">
-        <h2 class="modal-name"></h2>
-        <p class="modal-title"></p>
-        <p class="modal-bio"></p>
-        <div class="modal-meta">
-          <p><strong>Expertise:</strong> <span class="modal-expertise"></span></p>
-          <p><strong>Experience:</strong> <span class="modal-years"></span> years</p>
+<div id="sqe-team-v2-modal-{{ section.id }}" class="sqe-team-v2__modal" hidden>
+  <div class="sqe-team-v2__overlay"></div>
+  <div class="sqe-team-v2__modal-content">
+    <button class="sqe-team-v2__modal-close" type="button" aria-label="Close">Close</button>
+    <div class="sqe-team-v2__modal-body">
+      <img src="" alt="" class="sqe-team-v2__modal-image">
+      <div class="sqe-team-v2__modal-info">
+        <h2 class="sqe-team-v2__modal-name"></h2>
+        <p class="sqe-team-v2__modal-title"></p>
+        <p class="sqe-team-v2__modal-bio"></p>
+        <div class="sqe-team-v2__modal-meta">
+          <p><strong>Expertise:</strong> <span class="sqe-team-v2__modal-expertise"></span></p>
+          <p><strong>Experience:</strong> <span class="sqe-team-v2__modal-years"></span> years</p>
         </div>
-        <div class="modal-links">
-          <a href="" class="modal-linkedin" target="_blank" style="display: none;">LinkedIn</a>
-          <a href="" class="modal-email" style="display: none;">Email</a>
+        <div class="sqe-team-v2__modal-links">
+          <a href="" class="sqe-team-v2__modal-link sqe-team-v2__modal-linkedin" target="_blank" rel="noopener noreferrer" hidden>LinkedIn</a>
+          <a href="" class="sqe-team-v2__modal-link sqe-team-v2__modal-email" hidden>Email</a>
         </div>
       </div>
     </div>
@@ -58,38 +58,48 @@
 </div>
 
 <style>
-  #section-{{ section.id }} {
+  :root {
+    --sqe-v2-primary: #1F3A5F;
+    --sqe-v2-primary-dark: #142a45;
+    --sqe-v2-accent: #C75B12;
+    --sqe-v2-bg-light: #F2F4F7;
+    --sqe-v2-text: #333333;
+    --sqe-v2-text-muted: #999;
+  }
+
+  #sqe-team-v2-{{ section.id }} {
     padding: 60px 20px;
     background-color: #FFFFFF;
   }
 
-  .team-container {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  .team-heading {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__label {
     font-size: 48px;
     font-weight: 700;
-    color: #1F3A5F;
+    color: var(--sqe-v2-primary);
     margin-bottom: 10px;
     text-align: center;
   }
 
-  .team-subheading {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__subheading {
     font-size: 18px;
-    color: #333333;
+    color: var(--sqe-v2-text);
     text-align: center;
     margin-bottom: 50px;
   }
 
-  .team-cards {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__grid {
     display: grid;
     gap: 30px;
     margin-bottom: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 
-  .team-card {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__card {
     background: white;
     border-radius: 8px;
     overflow: hidden;
@@ -98,57 +108,59 @@
     cursor: pointer;
   }
 
-  .team-card:hover {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__card:hover {
     box-shadow: 0 8px 24px rgba(31, 58, 95, 0.15);
     transform: translateY(-5px);
   }
 
-  .card-image-wrapper {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__image-wrapper {
     width: 100%;
     height: 280px;
     overflow: hidden;
-    background: #F2F4F7;
+    background: var(--sqe-v2-bg-light);
   }
 
-  .card-image {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .card-image-placeholder {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__placeholder {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #F2F4F7;
-    color: #999;
+    background: var(--sqe-v2-bg-light);
+    color: var(--sqe-v2-text-muted);
     font-size: 14px;
   }
 
-  .card-content {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__content {
     padding: 25px;
   }
 
-  .member-name {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__name {
     font-size: 20px;
     font-weight: 700;
-    color: #1F3A5F;
+    color: var(--sqe-v2-primary);
     margin-bottom: 5px;
+    overflow-wrap: break-word;
   }
 
-  .member-title {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__title {
     font-size: 14px;
-    color: #C75B12;
+    color: var(--sqe-v2-accent);
     margin-bottom: 15px;
     font-weight: 600;
+    overflow-wrap: break-word;
   }
 
-  .card-expand-btn {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__btn {
     width: 100%;
     padding: 12px;
-    background-color: #1F3A5F;
+    background-color: var(--sqe-v2-primary);
     color: white;
     border: none;
     border-radius: 6px;
@@ -157,11 +169,11 @@
     transition: background-color 0.3s ease;
   }
 
-  .card-expand-btn:hover {
-    background-color: #142a45;
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__btn:hover {
+    background-color: var(--sqe-v2-primary-dark);
   }
 
-  .member-modal {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -170,7 +182,7 @@
     z-index: 1000;
   }
 
-  .modal-overlay {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -179,7 +191,7 @@
     background: rgba(0, 0, 0, 0.5);
   }
 
-  .modal-content {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-content {
     position: relative;
     width: 90%;
     max-width: 700px;
@@ -193,106 +205,111 @@
     z-index: 1001;
   }
 
-  .modal-close {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-close {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: #F2F4F7;
+    background: var(--sqe-v2-bg-light);
     border: none;
     width: 40px;
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
     font-weight: 600;
-    color: #333333;
+    color: var(--sqe-v2-text);
   }
 
-  .modal-body {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     margin-top: 20px;
   }
 
-  .modal-image {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-image {
     width: 100%;
     height: 400px;
     object-fit: cover;
     border-radius: 8px;
   }
 
-  .modal-info {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-info {
     padding: 20px 0;
   }
 
-  .modal-name {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-name {
     font-size: 32px;
     font-weight: 700;
-    color: #1F3A5F;
+    color: var(--sqe-v2-primary);
     margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
 
-  .modal-title {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-title {
     font-size: 18px;
-    color: #C75B12;
+    color: var(--sqe-v2-accent);
     font-weight: 600;
     margin-bottom: 20px;
+    overflow-wrap: break-word;
   }
 
-  .modal-bio {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-bio {
     font-size: 16px;
-    color: #333333;
+    color: var(--sqe-v2-text);
     line-height: 1.6;
     margin-bottom: 20px;
+    overflow-wrap: break-word;
   }
 
-  .modal-meta {
-    background: #F2F4F7;
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-meta {
+    background: var(--sqe-v2-bg-light);
     padding: 20px;
     border-radius: 6px;
     margin-bottom: 20px;
   }
 
-  .modal-meta p {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-meta p {
     font-size: 14px;
-    color: #333333;
+    color: var(--sqe-v2-text);
     margin-bottom: 8px;
   }
 
-  .modal-links {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-links {
     display: flex;
     gap: 15px;
   }
 
-  .modal-linkedin,
-  .modal-email {
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-link {
     flex: 1;
     padding: 12px;
     text-align: center;
-    background-color: #1F3A5F;
+    background-color: var(--sqe-v2-primary);
     color: white;
     text-decoration: none;
     border-radius: 6px;
     font-weight: 600;
+    transition: background-color 0.3s ease;
   }
 
-  .modal-linkedin:hover,
-  .modal-email:hover {
-    background-color: #142a45;
+  #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-link:hover {
+    background-color: var(--sqe-v2-primary-dark);
   }
 
   @media (max-width: 768px) {
-    .team-cards {
+    #sqe-team-v2-{{ section.id }} .sqe-team-v2__grid {
       grid-template-columns: 1fr;
     }
-    .modal-body {
+
+    #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-body {
       grid-template-columns: 1fr;
     }
-    .modal-content {
+
+    #sqe-team-v2-{{ section.id }} .sqe-team-v2__modal-content {
       width: 95%;
       padding: 25px;
     }
-    .team-heading {
+
+    #sqe-team-v2-{{ section.id }} .sqe-team-v2__label {
       font-size: 32px;
     }
   }
@@ -300,62 +317,79 @@
 
 <script>
   (function() {
-    var sectionId = '{{ section.id }}';
-    var modal = document.getElementById('member-modal-' + sectionId);
-    var modalOverlay = modal.querySelector('.modal-overlay');
-    var modalClose = modal.querySelector('.modal-close');
-    var cards = document.querySelectorAll('#section-' + sectionId + ' .team-card');
+    const sectionId = '{{ section.id }}';
+    const sectionEl = document.getElementById('sqe-team-v2-' + sectionId);
+    if (!sectionEl) return;
+
+    const modal = document.getElementById('sqe-team-v2-modal-' + sectionId);
+    const modalOverlay = modal.querySelector('.sqe-team-v2__overlay');
+    const modalClose = modal.querySelector('.sqe-team-v2__modal-close');
+    const cards = sectionEl.querySelectorAll('.sqe-team-v2__card');
+
+    function closeModal() {
+      modal.setAttribute('hidden', '');
+    }
+
+    function openModal(cardEl) {
+      const name = cardEl.getAttribute('data-member-name');
+      const title = cardEl.getAttribute('data-member-title');
+      const bio = cardEl.getAttribute('data-member-bio');
+      const expertise = cardEl.getAttribute('data-member-expertise');
+      const years = cardEl.getAttribute('data-member-years');
+      const linkedin = cardEl.getAttribute('data-member-linkedin');
+      const email = cardEl.getAttribute('data-member-email');
+      const photo = cardEl.getAttribute('data-member-photo');
+
+      modal.querySelector('.sqe-team-v2__modal-name').textContent = name;
+      modal.querySelector('.sqe-team-v2__modal-title').textContent = title;
+      modal.querySelector('.sqe-team-v2__modal-bio').textContent = bio;
+      modal.querySelector('.sqe-team-v2__modal-expertise').textContent = expertise;
+      modal.querySelector('.sqe-team-v2__modal-years').textContent = years;
+
+      const imgEl = modal.querySelector('.sqe-team-v2__modal-image');
+      if (photo) {
+        imgEl.src = photo;
+        imgEl.alt = name;
+      } else {
+        imgEl.src = '';
+        imgEl.alt = '';
+      }
+
+      const linkedinLink = modal.querySelector('.sqe-team-v2__modal-linkedin');
+      const emailLink = modal.querySelector('.sqe-team-v2__modal-email');
+
+      if (linkedin) {
+        linkedinLink.href = linkedin;
+        linkedinLink.removeAttribute('hidden');
+      } else {
+        linkedinLink.setAttribute('hidden', '');
+      }
+
+      if (email) {
+        emailLink.href = 'mailto:' + email;
+        emailLink.removeAttribute('hidden');
+      } else {
+        emailLink.setAttribute('hidden', '');
+      }
+
+      modal.removeAttribute('hidden');
+    }
 
     cards.forEach(function(card) {
-      var btn = card.querySelector('.card-expand-btn');
+      const btn = card.querySelector('.sqe-team-v2__btn');
       btn.addEventListener('click', function(e) {
         e.stopPropagation();
-        var name = card.getAttribute('data-member-name');
-        var title = card.getAttribute('data-member-title');
-        var bio = card.getAttribute('data-member-bio');
-        var expertise = card.getAttribute('data-member-expertise');
-        var years = card.getAttribute('data-member-years');
-        var linkedin = card.getAttribute('data-member-linkedin');
-        var email = card.getAttribute('data-member-email');
-        var photo = card.getAttribute('data-member-photo');
-
-        modal.querySelector('.modal-name').textContent = name;
-        modal.querySelector('.modal-title').textContent = title;
-        modal.querySelector('.modal-bio').textContent = bio;
-        modal.querySelector('.modal-expertise').textContent = expertise;
-        modal.querySelector('.modal-years').textContent = years;
-
-        if (photo) {
-          modal.querySelector('.modal-image').src = photo;
-        }
-
-        var linkedinLink = modal.querySelector('.modal-linkedin');
-        var emailLink = modal.querySelector('.modal-email');
-
-        if (linkedin) {
-          linkedinLink.href = linkedin;
-          linkedinLink.style.display = 'block';
-        } else {
-          linkedinLink.style.display = 'none';
-        }
-
-        if (email) {
-          emailLink.href = 'mailto:' + email;
-          emailLink.style.display = 'block';
-        } else {
-          emailLink.style.display = 'none';
-        }
-
-        modal.style.display = 'block';
+        openModal(card);
       });
     });
 
-    modalClose.addEventListener('click', function() {
-      modal.style.display = 'none';
-    });
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
 
-    modalOverlay.addEventListener('click', function() {
-      modal.style.display = 'none';
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.hasAttribute('hidden')) {
+        closeModal();
+      }
     });
   })();
 </script>

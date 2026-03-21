@@ -32,105 +32,178 @@
   assign desc_font = section.settings.desc_font
   assign desc_size = section.settings.desc_size
   assign desc_color = section.settings.desc_color
+  assign cred_title_font = "'Source Sans 3', sans-serif"
+  assign cred_title_size = '15'
+  assign cred_title_color = '#1F3A5F'
+  assign cred_title_weight = '700'
+  assign cred_desc_size = '13'
+  assign cred_desc_color = '#666'
 -%}
 
 <style>
   /* ===== SECTION ===== */
   #sqe-about-{{ section.id }} {
+    --bg-color: {{ bg_color }};
+    --heading-font: {{ h_font }};
+    --heading-size: {{ h_size }}px;
+    --heading-color: {{ h_color }};
+    --heading-weight: {{ h_weight }};
+    --subheading-font: {{ sh_font }};
+    --subheading-size: {{ sh_size }}px;
+    --subheading-color: {{ sh_color }};
+    --desc-font: {{ desc_font }};
+    --desc-size: {{ desc_size }}px;
+    --desc-color: {{ desc_color }};
+    --cred-title-font: {{ cred_title_font }};
+    --cred-title-size: {{ cred_title_size }}px;
+    --cred-title-color: {{ cred_title_color }};
+    --cred-title-weight: {{ cred_title_weight }};
+    --cred-desc-size: {{ cred_desc_size }}px;
+    --cred-desc-color: {{ cred_desc_color }};
+
     padding: 60px 20px;
-    background-color: {{ bg_color }};
+    background-color: var(--bg-color);
   }
   #sqe-about-{{ section.id }} .sqe-about-ctr {
-    max-width: 1200px; margin: 0 auto;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   /* ===== SECTION LABEL (orange pill) ===== */
   #sqe-about-{{ section.id }} .sqe-section-label {
     display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
 
   /* ===== HEADER ===== */
   #sqe-about-{{ section.id }} .sqe-about-hdr {
-    text-align: center; margin-bottom: 50px;
+    text-align: center;
+    margin-bottom: 50px;
   }
   #sqe-about-{{ section.id }} .sqe-about-hdr-sub {
-    font-family: {{ sh_font }};
-    font-size: {{ sh_size }}px;
-    font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
-    color: {{ sh_color }}; margin-bottom: 10px;
+    font-family: var(--subheading-font);
+    font-size: var(--subheading-size);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--subheading-color);
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
   #sqe-about-{{ section.id }} .sqe-about-hdr h2 {
-    font-family: {{ h_font }};
-    font-size: {{ h_size }}px;
-    font-weight: {{ h_weight }};
-    color: {{ h_color }};
-    margin: 0; line-height: 1.2;
+    font-family: var(--heading-font);
+    font-size: var(--heading-size);
+    font-weight: var(--heading-weight);
+    color: var(--heading-color);
+    margin: 0;
+    line-height: 1.2;
+    overflow-wrap: break-word;
   }
 
   /* ===== CONTENT GRID ===== */
   #sqe-about-{{ section.id }} .sqe-about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 50px; align-items: center; margin-bottom: 50px;
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 50px;
   }
   #sqe-about-{{ section.id }} .sqe-about-grid--rev {
-    direction: rtl;
+    grid-auto-flow: dense;
   }
-  #sqe-about-{{ section.id }} .sqe-about-grid--rev > * {
-    direction: ltr;
+  #sqe-about-{{ section.id }} .sqe-about-grid--rev .sqe-about-img-wrap {
+    order: 2;
+  }
+  #sqe-about-{{ section.id }} .sqe-about-grid--rev .sqe-about-text {
+    order: 1;
   }
 
   /* ===== IMAGE ===== */
   #sqe-about-{{ section.id }} .sqe-about-img-wrap {
-    position: relative; overflow: hidden;
+    position: relative;
+    overflow: hidden;
   }
   #sqe-about-{{ section.id }} .sqe-about-img {
-    width: 100%; height: auto; display: block; border-radius: 8px;
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
   }
   #sqe-about-{{ section.id }} .sqe-about-img--bordered {
     border: 8px solid #1F3A5F;
   }
   #sqe-about-{{ section.id }} .sqe-about-img--shadowed {
-    box-shadow: 0 10px 40px rgba(31,58,95,.15);
+    box-shadow: 0 10px 40px rgba(31, 58, 95, 0.15);
   }
   #sqe-about-{{ section.id }} .sqe-about-img--both {
     border: 8px solid #1F3A5F;
-    box-shadow: 0 10px 40px rgba(31,58,95,.15);
+    box-shadow: 0 10px 40px rgba(31, 58, 95, 0.15);
+  }
+
+  /* Placeholder image for missing images */
+  #sqe-about-{{ section.id }} .placeholder-svg {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
   }
 
   /* Experience badge */
   #sqe-about-{{ section.id }} .sqe-about-exp {
-    position: absolute; bottom: -20px; right: -20px;
-    background: #F2B705; color: #1F3A5F;
-    width: 120px; height: 120px; border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: #F2B705;
+    color: #1F3A5F;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     font-family: 'Source Sans 3', sans-serif;
-    box-shadow: 0 8px 32px rgba(242,183,5,.35);
+    box-shadow: 0 8px 32px rgba(242, 183, 5, 0.35);
     z-index: 2;
+    flex-shrink: 0;
   }
   #sqe-about-{{ section.id }} .sqe-about-exp .num {
-    font-size: 40px; font-weight: 900; line-height: 1;
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
   }
   #sqe-about-{{ section.id }} .sqe-about-exp .txt {
-    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
 
   /* ===== TEXT CONTENT ===== */
   #sqe-about-{{ section.id }} .sqe-about-text h2 {
-    font-family: {{ h_font }};
-    font-size: {{ h_size | minus: 6 }}px;
-    font-weight: {{ h_weight }};
-    color: {{ h_color }};
-    margin: 0 0 20px; line-height: 1.3;
+    font-family: var(--heading-font);
+    font-size: calc(var(--heading-size) - 6px);
+    font-weight: var(--heading-weight);
+    color: var(--heading-color);
+    margin: 0 0 20px;
+    line-height: 1.3;
+    overflow-wrap: break-word;
   }
   #sqe-about-{{ section.id }} .sqe-about-desc {
-    font-family: {{ desc_font }};
-    font-size: {{ desc_size }}px;
-    line-height: 1.6; color: {{ desc_color }};
+    font-family: var(--desc-font);
+    font-size: var(--desc-size);
+    line-height: 1.6;
+    color: var(--desc-color);
     margin-bottom: 30px;
+    overflow-wrap: break-word;
   }
   #sqe-about-{{ section.id }} .sqe-about-desc p {
     margin: 0 0 15px;
@@ -139,7 +212,8 @@
     margin-bottom: 0;
   }
   #sqe-about-{{ section.id }} .sqe-about-desc strong {
-    color: #1F3A5F; font-weight: 600;
+    color: #1F3A5F;
+    font-weight: 600;
   }
 
   /* ===== CREDENTIALS – SINGLE COLUMN ===== */
@@ -151,7 +225,9 @@
   }
 
   #sqe-about-{{ section.id }} .sqe-about-cred {
-    display: flex; gap: 14px; align-items: flex-start;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
     padding: 16px;
     background-color: #F2F4F7;
     border-radius: 10px;
@@ -166,68 +242,109 @@
 
   #sqe-about-{{ section.id }} .sqe-about-cred:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   }
 
   #sqe-about-{{ section.id }} .sqe-about-cred-icon {
-    width: 44px; height: 44px; min-width: 44px;
-    background: rgba(31,58,95,.07); border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    background: rgba(31, 58, 95, 0.07);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
   }
 
   #sqe-about-{{ section.id }} .sqe-about-cred h3 {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 15px; font-weight: 700; color: #1F3A5F;
+    font-family: var(--block-title-font, var(--cred-title-font));
+    font-size: var(--block-title-size, var(--cred-title-size));
+    font-weight: var(--block-title-weight, var(--cred-title-weight));
+    color: var(--block-title-color, var(--cred-title-color));
     margin: 0 0 3px;
+    overflow-wrap: break-word;
   }
 
   #sqe-about-{{ section.id }} .sqe-about-cred p {
     font-family: 'Inter', sans-serif;
-    font-size: 13px; color: #666; margin: 0; line-height: 1.5;
+    font-size: var(--block-desc-size, var(--cred-desc-size));
+    color: var(--block-desc-color, var(--cred-desc-color));
+    margin: 0;
+    line-height: 1.5;
+    overflow-wrap: break-word;
   }
 
   /* ===== STATS ROW ===== */
   #sqe-about-{{ section.id }} .sqe-about-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 30px; margin-top: 50px;
+    gap: 30px;
+    margin-top: 50px;
   }
   #sqe-about-{{ section.id }} .sqe-about-stat {
-    text-align: center; padding: 20px;
+    text-align: center;
+    padding: 20px;
   }
   #sqe-about-{{ section.id }} .sqe-about-stat-num {
     font-family: 'Source Sans 3', sans-serif;
-    font-size: 42px; font-weight: 700; color: #F2B705;
-    margin: 0; line-height: 1;
+    font-size: 42px;
+    font-weight: 700;
+    color: #F2B705;
+    margin: 0;
+    line-height: 1;
+    overflow-wrap: break-word;
   }
   #sqe-about-{{ section.id }} .sqe-about-stat-lbl {
     font-family: 'Inter', sans-serif;
-    font-size: 14px; color: #333; margin: 10px 0 0; font-weight: 500;
+    font-size: 14px;
+    color: #333;
+    margin: 10px 0 0;
+    font-weight: 500;
+    overflow-wrap: break-word;
   }
 
   /* ===== MOBILE ===== */
   @media (max-width: 768px) {
-    #sqe-about-{{ section.id }} .sqe-about-hdr h2 { font-size: 28px; }
-    #sqe-about-{{ section.id }} .sqe-about-grid {
-      grid-template-columns: 1fr; gap: 30px;
+    #sqe-about-{{ section.id }} .sqe-about-hdr h2 {
+      font-size: 28px;
     }
-    #sqe-about-{{ section.id }} .sqe-about-grid--rev {
-      direction: ltr;
+    #sqe-about-{{ section.id }} .sqe-about-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    #sqe-about-{{ section.id }} .sqe-about-grid--rev .sqe-about-img-wrap {
+      order: unset;
+    }
+    #sqe-about-{{ section.id }} .sqe-about-grid--rev .sqe-about-text {
+      order: unset;
     }
     #sqe-about-{{ section.id }} .sqe-about-exp {
-      width: 90px; height: 90px; bottom: -10px; right: -10px;
+      width: 90px;
+      height: 90px;
+      bottom: -10px;
+      right: -10px;
     }
-    #sqe-about-{{ section.id }} .sqe-about-exp .num { font-size: 30px; }
-    #sqe-about-{{ section.id }} .sqe-about-exp .txt { font-size: 9px; }
-    #sqe-about-{{ section.id }} .sqe-about-text h2 { font-size: 24px; }
+    #sqe-about-{{ section.id }} .sqe-about-exp .num {
+      font-size: 30px;
+    }
+    #sqe-about-{{ section.id }} .sqe-about-exp .txt {
+      font-size: 9px;
+    }
+    #sqe-about-{{ section.id }} .sqe-about-text h2 {
+      font-size: 24px;
+    }
     #sqe-about-{{ section.id }} .sqe-about-stats {
-      grid-template-columns: 1fr 1fr; gap: 16px;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
   }
 
   @media (max-width: 480px) {
-    #sqe-about-{{ section.id }} { padding: 40px 16px; }
+    #sqe-about-{{ section.id }} {
+      padding: 40px 16px;
+    }
     #sqe-about-{{ section.id }} .sqe-about-stats {
       grid-template-columns: 1fr;
     }
@@ -301,11 +418,15 @@
                   assign bd_size = block.settings.desc_size
                   assign bd_color = block.settings.desc_color
                 -%}
-                <div class="sqe-about-cred" {{ block.shopify_attributes }}>
+                <div
+                  class="sqe-about-cred"
+                  style="--block-title-font:{{ bt_font }};--block-title-size:{{ bt_size }}px;--block-title-color:{{ bt_color }};--block-title-weight:{{ bt_weight }};--block-desc-size:{{ bd_size }}px;--block-desc-color:{{ bd_color }};"
+                  {{ block.shopify_attributes }}
+                >
                   <div class="sqe-about-cred-icon">{{ block.settings.icon }}</div>
                   <div>
-                    <h3 style="font-family:{{ bt_font }};font-size:{{ bt_size }}px;color:{{ bt_color }};font-weight:{{ bt_weight }};">{{ block.settings.credential_title }}</h3>
-                    <p style="font-size:{{ bd_size }}px;color:{{ bd_color }};">{{ block.settings.credential_text }}</p>
+                    <h3>{{ block.settings.credential_title }}</h3>
+                    <p>{{ block.settings.credential_text }}</p>
                   </div>
                 </div>
               {%- endif -%}

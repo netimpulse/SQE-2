@@ -17,26 +17,36 @@
   assign sh_color = section.settings.subheading_color
 -%}
 
-<section id="sqe-service-explorer-{{ section.id }}" class="sqe-service-explorer">
+<section
+  id="sqe-service-explorer-{{ section.id }}"
+  class="sqe-service-explorer"
+  style="--sqe-heading-font: {{ h_font }}; --sqe-heading-size: {{ h_size }}px; --sqe-heading-color: {{ h_color }}; --sqe-heading-weight: {{ h_weight }}; --sqe-subheading-font: {{ sh_font }}; --sqe-subheading-size: {{ sh_size }}px; --sqe-subheading-color: {{ sh_color }}; --sqe-accent-color: {{ accent_color }};"
+>
   <div class="explorer-container">
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
     {% if heading %}
-      <h2 class="explorer-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
+      <h2 class="explorer-heading">{{ heading }}</h2>
     {% endif %}
     {% if subheading %}
-      <p class="explorer-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
+      <p class="explorer-subheading">{{ subheading }}</p>
     {% endif %}
 
     <div class="explorer-wrapper">
       <div class="service-list">
-        {% for block in section.blocks %}
-          <div class="service-item" data-service-id="{{ block.id }}" data-service-title="{{ block.settings.title | escape }}" data-service-description="{{ block.settings.description | escape }}" data-service-features="{{ block.settings.features | escape }}" data-service-link="{{ block.settings.link_url | escape }}" data-service-link-text="{{ block.settings.link_text | escape }}" {% if block.settings.image %}data-service-image="{{ block.settings.image | img_url: '500x400' }}"{% endif %}>
-            <div class="service-number">{{ forloop.index }}</div>
-            <h3 class="service-title">{{ block.settings.title }}</h3>
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            <div class="service-item" data-service-id="{{ block.id }}">
+              <div class="service-number">{{ forloop.index }}</div>
+              <h3 class="service-title">{{ block.settings.title }}</h3>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="service-list-empty">
+            <p>No services added yet. Add blocks to get started.</p>
           </div>
-        {% endfor %}
+        {% endif %}
       </div>
 
       {% if section.blocks.size > 0 %}
@@ -44,7 +54,16 @@
         <div class="detail-panel" data-service-id="{{ first_block.id }}">
           <div class="detail-content">
             {% if first_block.settings.image %}
-              <img src="{{ first_block.settings.image | img_url: '500x400' }}" alt="{{ first_block.settings.title }}" class="detail-image">
+              <img
+                src="{{ first_block.settings.image | image_url: width: 500 }}"
+                alt="{{ first_block.settings.title }}"
+                class="detail-image"
+                loading="lazy"
+              >
+            {% else %}
+              <div class="detail-image detail-image-placeholder">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
             {% endif %}
             <h3 class="detail-title">{{ first_block.settings.title }}</h3>
             {% if first_block.settings.description %}
@@ -57,11 +76,49 @@
               </div>
             {% endif %}
             {% if first_block.settings.link_url %}
-              <a href="{{ first_block.settings.link_url }}" class="detail-link" style="color: {{ accent_color }};">
+              <a href="{{ first_block.settings.link_url }}" class="detail-link">
                 {{ first_block.settings.link_text | default: 'Learn More' }}
               </a>
             {% endif %}
           </div>
+        </div>
+
+        {%- comment -%}
+          Hidden panel templates for each service to avoid XSS via innerHTML.
+          JavaScript will clone these instead of building HTML strings.
+        {%- endcomment -%}
+        <div class="detail-templates" style="display: none;">
+          {% for block in section.blocks %}
+            <template id="service-template-{{ block.id }}">
+              {% if block.settings.image %}
+                <img
+                  src="{{ block.settings.image | image_url: width: 500 }}"
+                  alt="{{ block.settings.title }}"
+                  class="detail-image"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="detail-image detail-image-placeholder">
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {% endif %}
+              <h3 class="detail-title">{{ block.settings.title }}</h3>
+              {% if block.settings.description %}
+                <p class="detail-description">{{ block.settings.description }}</p>
+              {% endif %}
+              {% if block.settings.features %}
+                <div class="detail-features">
+                  <h4>Features</h4>
+                  <p>{{ block.settings.features }}</p>
+                </div>
+              {% endif %}
+              {% if block.settings.link_url %}
+                <a href="{{ block.settings.link_url }}" class="detail-link">
+                  {{ block.settings.link_text | default: 'Learn More' }}
+                </a>
+              {% endif %}
+            </template>
+          {% endfor %}
         </div>
       {% endif %}
     </div>
@@ -74,48 +131,67 @@
     background-color: #F2F4F7;
   }
 
-  /* ===== SECTION LABEL (orange pill) ===== */
+  /* ===== SECTION LABEL (orange pill) - scoped ===== */
   #sqe-service-explorer-{{ section.id }} .sqe-section-label {
     display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
   }
 
-  .explorer-container {
+  /* ===== CONTAINER & LAYOUT - scoped ===== */
+  #sqe-service-explorer-{{ section.id }} .explorer-container {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
   }
 
-  .explorer-heading {
-    font-size: 48px;
-    font-weight: 700;
-    color: #1F3A5F;
+  #sqe-service-explorer-{{ section.id }} .explorer-heading {
+    font-family: var(--sqe-heading-font);
+    font-size: var(--sqe-heading-size);
+    color: var(--sqe-heading-color);
+    font-weight: var(--sqe-heading-weight);
     margin-bottom: 10px;
     text-align: center;
   }
 
-  .explorer-subheading {
-    font-size: 18px;
-    color: #333333;
+  #sqe-service-explorer-{{ section.id }} .explorer-subheading {
+    font-family: var(--sqe-subheading-font);
+    font-size: var(--sqe-subheading-size);
+    color: var(--sqe-subheading-color);
     text-align: center;
     margin-bottom: 50px;
   }
 
-  .explorer-wrapper {
+  #sqe-service-explorer-{{ section.id }} .explorer-wrapper {
     display: grid;
     grid-template-columns: 350px 1fr;
     gap: 40px;
   }
 
-  .service-list {
+  /* ===== SERVICE LIST - scoped ===== */
+  #sqe-service-explorer-{{ section.id }} .service-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
 
-  .service-item {
+  #sqe-service-explorer-{{ section.id }} .service-list-empty {
+    background: white;
+    padding: 40px 20px;
+    border-radius: 8px;
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  #sqe-service-explorer-{{ section.id }} .service-item {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -127,35 +203,40 @@
     transition: all 0.3s ease;
   }
 
-  .service-item:hover,
-  .service-item.active {
-    border-color: {{ section.settings.accent_color | default: '#F2B705' }};
+  #sqe-service-explorer-{{ section.id }} .service-item:hover,
+  #sqe-service-explorer-{{ section.id }} .service-item.active {
+    border-color: var(--sqe-accent-color);
     background-color: #FFFFFF;
     box-shadow: 0 4px 12px rgba(31, 58, 95, 0.1);
   }
 
-  .service-number {
+  #sqe-service-explorer-{{ section.id }} .service-number {
     font-size: 20px;
     font-weight: 700;
-    color: {{ section.settings.accent_color | default: '#F2B705' }};
+    color: var(--sqe-accent-color);
     min-width: 30px;
+    flex-shrink: 0;
   }
 
-  .service-title {
+  #sqe-service-explorer-{{ section.id }} .service-title {
     font-size: 16px;
     font-weight: 600;
     color: #1F3A5F;
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .detail-panel {
+  /* ===== DETAIL PANEL - scoped ===== */
+  #sqe-service-explorer-{{ section.id }} .detail-panel {
     background: white;
     padding: 40px;
     border-radius: 8px;
-    animation: fadeIn 0.3s ease;
+    animation: sqeServiceExplorerFadeIn 0.3s ease;
   }
 
-  @keyframes fadeIn {
+  @keyframes sqeServiceExplorerFadeIn {
     from {
       opacity: 0;
       transform: translateY(10px);
@@ -166,51 +247,72 @@
     }
   }
 
-  .detail-image {
+  #sqe-service-explorer-{{ section.id }} .detail-content {
+    width: 100%;
+  }
+
+  #sqe-service-explorer-{{ section.id }} .detail-image {
     width: 100%;
     height: 300px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 30px;
+    display: block;
   }
 
-  .detail-title {
+  #sqe-service-explorer-{{ section.id }} .detail-image-placeholder {
+    background-color: #F2F4F7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #sqe-service-explorer-{{ section.id }} .detail-image-placeholder svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.3;
+  }
+
+  #sqe-service-explorer-{{ section.id }} .detail-title {
     font-size: 32px;
     font-weight: 700;
     color: #1F3A5F;
     margin-bottom: 20px;
+    margin-top: 0;
   }
 
-  .detail-description {
+  #sqe-service-explorer-{{ section.id }} .detail-description {
     font-size: 16px;
     color: #333333;
     line-height: 1.6;
     margin-bottom: 25px;
   }
 
-  .detail-features {
+  #sqe-service-explorer-{{ section.id }} .detail-features {
     margin-bottom: 25px;
     padding: 20px;
     background-color: #F2F4F7;
     border-radius: 6px;
   }
 
-  .detail-features h4 {
+  #sqe-service-explorer-{{ section.id }} .detail-features h4 {
     font-size: 14px;
     font-weight: 600;
     color: #1F3A5F;
     margin-bottom: 10px;
+    margin-top: 0;
     text-transform: uppercase;
   }
 
-  .detail-features p {
+  #sqe-service-explorer-{{ section.id }} .detail-features p {
     font-size: 14px;
     color: #666;
     margin: 0;
     line-height: 1.5;
   }
 
-  .detail-link {
+  #sqe-service-explorer-{{ section.id }} .detail-link {
     display: inline-block;
     padding: 12px 30px;
     background-color: #1F3A5F;
@@ -221,47 +323,56 @@
     transition: background-color 0.3s ease;
   }
 
-  .detail-link:hover {
+  #sqe-service-explorer-{{ section.id }} .detail-link:hover {
     background-color: #142a45;
   }
 
+  /* ===== RESPONSIVE DESIGN ===== */
   @media (max-width: 768px) {
     #sqe-service-explorer-{{ section.id }} {
       padding: 40px 16px;
     }
 
-    .explorer-wrapper {
+    #sqe-service-explorer-{{ section.id }} .explorer-wrapper {
       grid-template-columns: 1fr;
       gap: 20px;
     }
 
-    .service-list {
+    #sqe-service-explorer-{{ section.id }} .service-list {
       flex-direction: row;
       overflow-x: auto;
       padding-bottom: 10px;
     }
 
-    .service-item {
+    #sqe-service-explorer-{{ section.id }} .service-item {
       flex: 0 0 150px;
       flex-direction: column;
       text-align: center;
       justify-content: center;
     }
 
-    .detail-panel {
+    #sqe-service-explorer-{{ section.id }} .service-title {
+      white-space: normal;
+    }
+
+    #sqe-service-explorer-{{ section.id }} .detail-panel {
       padding: 20px;
     }
 
-    .explorer-heading {
+    #sqe-service-explorer-{{ section.id }} .explorer-heading {
       font-size: 32px;
     }
 
-    .explorer-subheading {
+    #sqe-service-explorer-{{ section.id }} .explorer-subheading {
       font-size: 16px;
     }
 
-    .detail-title {
+    #sqe-service-explorer-{{ section.id }} .detail-title {
       font-size: 24px;
+    }
+
+    #sqe-service-explorer-{{ section.id }} .detail-image {
+      height: 250px;
     }
   }
 
@@ -270,31 +381,31 @@
       padding: 30px 12px;
     }
 
-    .explorer-heading {
+    #sqe-service-explorer-{{ section.id }} .explorer-heading {
       font-size: 24px;
     }
 
-    .explorer-subheading {
+    #sqe-service-explorer-{{ section.id }} .explorer-subheading {
       font-size: 14px;
     }
 
-    .service-item {
+    #sqe-service-explorer-{{ section.id }} .service-item {
       padding: 12px 16px;
     }
 
-    .service-title {
+    #sqe-service-explorer-{{ section.id }} .service-title {
       font-size: 14px;
     }
 
-    .detail-image {
+    #sqe-service-explorer-{{ section.id }} .detail-image {
       height: 200px;
     }
 
-    .detail-title {
+    #sqe-service-explorer-{{ section.id }} .detail-title {
       font-size: 20px;
     }
 
-    .detail-description {
+    #sqe-service-explorer-{{ section.id }} .detail-description {
       font-size: 14px;
     }
   }
@@ -302,46 +413,49 @@
 
 <script>
   (function() {
-    var el = document.getElementById('sqe-service-explorer-' + '{{ section.id }}');
+    var sectionId = '{{ section.id }}';
+    var el = document.getElementById('sqe-service-explorer-' + sectionId);
     if (!el) return;
 
     var serviceItems = el.querySelectorAll('.service-item');
     var detailPanel = el.querySelector('.detail-panel');
+    var detailContent = detailPanel ? detailPanel.querySelector('.detail-content') : null;
 
+    if (!detailContent) return;
+
+    // Add click handlers to service items
     serviceItems.forEach(function(item) {
       item.addEventListener('click', function() {
-        serviceItems.forEach(function(i) { i.classList.remove('active'); });
+        var serviceId = this.getAttribute('data-service-id');
+        var template = el.querySelector('#service-template-' + serviceId);
+
+        if (!template) return;
+
+        // Remove active class from all items
+        serviceItems.forEach(function(i) {
+          i.classList.remove('active');
+        });
+
+        // Add active class to clicked item
         this.classList.add('active');
 
-        var title = this.getAttribute('data-service-title');
-        var desc = this.getAttribute('data-service-description');
-        var features = this.getAttribute('data-service-features');
-        var link = this.getAttribute('data-service-link');
-        var linkText = this.getAttribute('data-service-link-text');
-        var img = this.getAttribute('data-service-image');
-
-        var html = '';
-        if (img) {
-          html += '<img src="' + img + '" alt="' + title + '" class="detail-image">';
-        }
-        html += '<h3 class="detail-title">' + title + '</h3>';
-        if (desc) {
-          html += '<p class="detail-description">' + desc + '</p>';
-        }
-        if (features) {
-          html += '<div class="detail-features"><h4>Features</h4><p>' + features + '</p></div>';
-        }
-        if (link) {
-          var accentColor = '{{ section.settings.accent_color | default: "#F2B705" }}';
-          html += '<a href="' + link + '" class="detail-link" style="color: ' + accentColor + ';">' + (linkText || 'Learn More') + '</a>';
-        }
-
-        detailPanel.innerHTML = html;
+        // Clone template content and insert into detail panel
+        var clone = template.content.cloneNode(true);
+        detailContent.innerHTML = '';
+        detailContent.appendChild(clone);
       });
     });
 
+    // Activate first service by default
     if (serviceItems.length > 0) {
       serviceItems[0].classList.add('active');
+      var firstServiceId = serviceItems[0].getAttribute('data-service-id');
+      var firstTemplate = el.querySelector('#service-template-' + firstServiceId);
+      if (firstTemplate) {
+        var firstClone = firstTemplate.content.cloneNode(true);
+        detailContent.innerHTML = '';
+        detailContent.appendChild(firstClone);
+      }
     }
   })();
 </script>

@@ -18,17 +18,21 @@
   assign sh_color = section.settings.subheading_color
 -%}
 
-<section id="sqe-case-studies-{{ section.id }}" class="sqe-case-studies" style="background-color: {{ bg_color }};">
+<section
+  id="sqe-case-studies-{{ section.id }}"
+  class="sqe-case-studies"
+  style="--sqe-bg-color: {{ bg_color }}; --sqe-h-font: {{ h_font }}; --sqe-h-size: {{ h_size }}px; --sqe-h-color: {{ h_color }}; --sqe-h-weight: {{ h_weight }}; --sqe-sh-font: {{ sh_font }}; --sqe-sh-size: {{ sh_size }}px; --sqe-sh-color: {{ sh_color }};"
+>
   <div class="sqe-case-studies-container">
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
     {% if heading != blank %}
-      <h2 class="sqe-case-studies-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
+      <h2 class="sqe-case-studies-heading">{{ heading }}</h2>
     {% endif %}
 
     {% if subheading != blank %}
-      <p class="sqe-case-studies-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
+      <p class="sqe-case-studies-subheading">{{ subheading }}</p>
     {% endif %}
 
     <div class="sqe-case-studies-grid" data-columns="{{ columns }}">
@@ -41,7 +45,16 @@
                   src="{{ block.settings.image | image_url: width: 600 }}"
                   alt="{{ block.settings.title }}"
                   loading="lazy"
+                  width="600"
+                  height="250"
                 >
+              </div>
+            {% else %}
+              <div class="sqe-case-study-image sqe-case-study-image--placeholder">
+                <svg aria-hidden="true" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+                  <rect fill="#F2F4F7" width="600" height="250"/>
+                  <text x="50%" y="50%" text-anchor="middle" dy="0.3em" fill="#999" font-family="sans-serif" font-size="16">No image available</text>
+                </svg>
               </div>
             {% endif %}
 
@@ -69,20 +82,19 @@
           </div>
         {% endif %}
       {% endfor %}
+
+      {% if section.blocks.size == 0 %}
+        <div class="sqe-case-study-empty-state" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: #999;">
+          <p>No case studies added yet. Add a case study block to get started.</p>
+        </div>
+      {% endif %}
     </div>
   </div>
 </section>
 
 <style>
-  /* ===== SECTION LABEL (orange pill) ===== */
-  #sqe-case-studies-{{ section.id }} .sqe-section-label {
-    display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
-  }
-
   #sqe-case-studies-{{ section.id }} {
+    background-color: var(--sqe-bg-color);
     padding: 60px 20px;
   }
 
@@ -92,40 +104,58 @@
     text-align: center;
   }
 
-  #sqe-case-studies-{{ section.id }} .sqe-case-studies-heading {
-    font-size: 36px;
+  /* ===== SECTION LABEL (orange pill) ===== */
+  #sqe-case-studies-{{ section.id }} .sqe-section-label {
+    display: inline-block;
+    font-size: 11px;
     font-weight: 700;
-    color: #1F3A5F;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  #sqe-case-studies-{{ section.id }} .sqe-case-studies-heading {
+    font-family: var(--sqe-h-font);
+    font-size: var(--sqe-h-size);
+    font-weight: var(--sqe-h-weight);
+    color: var(--sqe-h-color);
     margin-bottom: 10px;
     text-align: center;
+    overflow-wrap: break-word;
   }
 
-  .sqe-case-studies-subheading {
-    font-size: 16px;
-    color: #666;
+  #sqe-case-studies-{{ section.id }} .sqe-case-studies-subheading {
+    font-family: var(--sqe-sh-font);
+    font-size: var(--sqe-sh-size);
+    color: var(--sqe-sh-color);
     text-align: center;
     margin-bottom: 40px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-case-studies-grid {
+  #sqe-case-studies-{{ section.id }} .sqe-case-studies-grid {
     display: grid;
     gap: 30px;
     margin-top: 40px;
   }
 
-  .sqe-case-studies-grid[data-columns="2"] {
+  #sqe-case-studies-{{ section.id }} .sqe-case-studies-grid[data-columns="2"] {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .sqe-case-studies-grid[data-columns="3"] {
+  #sqe-case-studies-{{ section.id }} .sqe-case-studies-grid[data-columns="3"] {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .sqe-case-studies-grid[data-columns="4"] {
+  #sqe-case-studies-{{ section.id }} .sqe-case-studies-grid[data-columns="4"] {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .sqe-case-study-card {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-card {
     background: white;
     border-radius: 8px;
     overflow: hidden;
@@ -133,86 +163,96 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .sqe-case-study-card:hover {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
 
-  .sqe-case-study-image {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-image {
     width: 100%;
     height: 250px;
     overflow: hidden;
     background-color: #F2F4F7;
   }
 
-  .sqe-case-study-image img {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
 
-  .sqe-case-study-content {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-image--placeholder svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-content {
     padding: 25px;
   }
 
-  .sqe-case-study-category {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-category {
     display: inline-block;
     font-size: 12px;
     font-weight: 600;
     color: #C75B12;
     text-transform: uppercase;
     margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-case-study-title {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-title {
     font-size: 20px;
     font-weight: 700;
     color: #1F3A5F;
     margin-bottom: 8px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-case-study-location {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-location {
     font-size: 14px;
     color: #999;
     margin-bottom: 12px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-case-study-description {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-description {
     font-size: 14px;
     color: #666;
     line-height: 1.6;
     margin-bottom: 15px;
+    overflow-wrap: break-word;
   }
 
-  .sqe-case-study-link {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-link {
     color: #1F3A5F;
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
+    transition: color 0.3s ease;
   }
 
-  .sqe-case-study-link:hover {
+  #sqe-case-studies-{{ section.id }} .sqe-case-study-link:hover {
     color: #C75B12;
   }
 
   @media (max-width: 768px) {
-    .sqe-case-studies-grid[data-columns="3"],
-    .sqe-case-studies-grid[data-columns="4"] {
+    #sqe-case-studies-{{ section.id }} .sqe-case-studies-grid[data-columns="3"],
+    #sqe-case-studies-{{ section.id }} .sqe-case-studies-grid[data-columns="4"] {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .sqe-case-studies-grid[data-columns="2"] {
+    #sqe-case-studies-{{ section.id }} .sqe-case-studies-grid[data-columns="2"] {
       grid-template-columns: 1fr;
     }
 
     #sqe-case-studies-{{ section.id }} .sqe-case-studies-heading {
-      font-size: 28px;
+      font-size: clamp(22px, 5vw, 28px);
     }
   }
 
   @media (max-width: 480px) {
-    .sqe-case-studies-grid {
+    #sqe-case-studies-{{ section.id }} .sqe-case-studies-grid {
       grid-template-columns: 1fr !important;
     }
 
@@ -220,32 +260,16 @@
       font-size: 22px;
     }
 
-    .sqe-case-studies-subheading {
+    #sqe-case-studies-{{ section.id }} .sqe-case-studies-subheading {
       font-size: 14px;
     }
 
-    .sqe-case-study-image {
+    #sqe-case-studies-{{ section.id }} .sqe-case-study-image {
       height: 200px;
     }
   }
 </style>
 
-<script>
-  (function() {
-    var caseStudiesSection = document.getElementById('sqe-case-studies-' + '{{ section.id }}');
-    if (caseStudiesSection) {
-      var cards = caseStudiesSection.querySelectorAll('.sqe-case-study-card');
-      cards.forEach(function(card) {
-        card.addEventListener('mouseenter', function() {
-          this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.15)';
-        });
-        card.addEventListener('mouseleave', function() {
-          this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
-        });
-      });
-    }
-  })();
-</script>
 
 {% schema %}
 {

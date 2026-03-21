@@ -19,41 +19,53 @@
   assign sh_color = section.settings.subheading_color
 -%}
 
-<section id="sqe-partners-{{ section.id }}" class="sqe-partners">
+<section id="sqe-partners-{{ section.id }}" class="sqe-partners" style="--logo-height: {{ logo_height }}px; --h-font: {{ h_font }}; --h-size: {{ h_size }}px; --h-color: {{ h_color }}; --h-weight: {{ h_weight }}; --sh-font: {{ sh_font }}; --sh-size: {{ sh_size }}px; --sh-color: {{ sh_color }};">
   <div class="sqe-partners-container">
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
-    {% if heading != blank %}
-      <h2 class="sqe-partners-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
-    {% endif %}
+    {%- if heading != blank -%}
+      <h2 class="sqe-partners-heading">{{ heading }}</h2>
+    {%- endif -%}
 
-    {% if subheading != blank %}
-      <p class="sqe-partners-subheading" style="font-family:{{ sh_font }};font-size:{{ sh_size }}px;color:{{ sh_color }};">{{ subheading }}</p>
-    {% endif %}
+    {%- if subheading != blank -%}
+      <p class="sqe-partners-subheading">{{ subheading }}</p>
+    {%- endif -%}
 
     <div class="sqe-partners-grid" data-columns="{{ columns }}">
-      {% for block in section.blocks %}
-        {% if block.type == 'partner' %}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'partner' -%}
           <div class="sqe-partner-item" {{ block.shopify_attributes }}>
-            {% if block.settings.image != blank %}
+            {%- if block.settings.image != blank -%}
               <div class="sqe-partner-logo" data-grayscale="{{ grayscale }}">
                 <img
                   src="{{ block.settings.image | image_url: width: 300 }}"
-                  alt="{{ block.settings.name }}"
-                  style="height: {{ logo_height }}px;"
+                  alt="{{ block.settings.name | default: 'Partner logo' }}"
                   loading="lazy"
                 >
               </div>
-            {% endif %}
+            {%- else -%}
+              <div class="sqe-partner-logo sqe-partner-logo--empty">
+                <svg class="sqe-partner-placeholder" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect width="300" height="80" fill="#E8E8E8" rx="4"/>
+                  <text x="150" y="45" font-family="system-ui, sans-serif" font-size="14" fill="#999" text-anchor="middle" dominant-baseline="middle">Logo</text>
+                </svg>
+              </div>
+            {%- endif -%}
 
-            {% if block.settings.name != blank %}
+            {%- if block.settings.name != blank -%}
               <p class="sqe-partner-name">{{ block.settings.name }}</p>
-            {% endif %}
+            {%- endif -%}
           </div>
-        {% endif %}
-      {% endfor %}
+        {%- endif -%}
+      {%- endfor -%}
     </div>
+
+    {%- if section.blocks.size == 0 -%}
+      <div class="sqe-partners-empty">
+        <p>No partners added yet</p>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -66,51 +78,63 @@
   /* ===== SECTION LABEL (orange pill) ===== */
   #sqe-partners-{{ section.id }} .sqe-section-label {
     display: inline-block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: #C75B12; background: rgba(199,91,18,.1);
-    padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C75B12;
+    background: rgba(199, 91, 18, 0.1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
   }
 
-  .sqe-partners-container {
+  #sqe-partners-{{ section.id }} .sqe-partners-container {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
   }
 
-  .sqe-partners-heading {
-    font-size: 36px;
-    font-weight: 700;
-    color: #1F3A5F;
+  #sqe-partners-{{ section.id }} .sqe-partners-heading {
+    font-family: var(--h-font);
+    font-size: var(--h-size);
+    font-weight: var(--h-weight);
+    color: var(--h-color);
     text-align: center;
     margin-bottom: 10px;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
-  .sqe-partners-subheading {
-    font-size: 16px;
-    color: #666;
+  #sqe-partners-{{ section.id }} .sqe-partners-subheading {
+    font-family: var(--sh-font);
+    font-size: var(--sh-size);
+    color: var(--sh-color);
     text-align: center;
     margin-bottom: 40px;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
-  .sqe-partners-grid {
+  #sqe-partners-{{ section.id }} .sqe-partners-grid {
     display: grid;
     gap: 30px;
     align-items: center;
   }
 
-  .sqe-partners-grid[data-columns="2"] {
+  #sqe-partners-{{ section.id }} .sqe-partners-grid[data-columns="2"] {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .sqe-partners-grid[data-columns="3"] {
+  #sqe-partners-{{ section.id }} .sqe-partners-grid[data-columns="3"] {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .sqe-partners-grid[data-columns="4"] {
+  #sqe-partners-{{ section.id }} .sqe-partners-grid[data-columns="4"] {
     grid-template-columns: repeat(4, 1fr);
   }
 
-  .sqe-partner-item {
+  #sqe-partners-{{ section.id }} .sqe-partner-item {
     background: white;
     padding: 20px;
     border-radius: 8px;
@@ -121,85 +145,91 @@
     transition: box-shadow 0.3s ease;
   }
 
-  .sqe-partner-item:hover {
+  #sqe-partners-{{ section.id }} .sqe-partner-item:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  .sqe-partner-logo {
+  #sqe-partners-{{ section.id }} .sqe-partner-logo {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
+    height: var(--logo-height);
     margin-bottom: 12px;
   }
 
-  .sqe-partner-logo img {
+  #sqe-partners-{{ section.id }} .sqe-partner-logo img {
     max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
+    overflow-wrap: break-word;
   }
 
-  .sqe-partner-logo[data-grayscale="true"] img {
+  #sqe-partners-{{ section.id }} .sqe-partner-logo--empty {
+    background: #F5F5F5;
+    border-radius: 4px;
+  }
+
+  #sqe-partners-{{ section.id }} .sqe-partner-placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  #sqe-partners-{{ section.id }} .sqe-partner-logo[data-grayscale="true"] img {
     filter: grayscale(100%);
     transition: filter 0.3s ease;
   }
 
-  .sqe-partner-item:hover .sqe-partner-logo[data-grayscale="true"] img {
+  #sqe-partners-{{ section.id }} .sqe-partner-item:hover .sqe-partner-logo[data-grayscale="true"] img {
     filter: grayscale(0%);
   }
 
-  .sqe-partner-name {
+  #sqe-partners-{{ section.id }} .sqe-partner-name {
     font-size: 14px;
     color: #666;
     text-align: center;
     margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  #sqe-partners-{{ section.id }} .sqe-partners-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: #999;
+    font-size: 16px;
   }
 
   @media (max-width: 768px) {
-    .sqe-partners-grid[data-columns="3"],
-    .sqe-partners-grid[data-columns="4"] {
+    #sqe-partners-{{ section.id }} .sqe-partners-grid[data-columns="3"],
+    #sqe-partners-{{ section.id }} .sqe-partners-grid[data-columns="4"] {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .sqe-partners-grid[data-columns="2"] {
+    #sqe-partners-{{ section.id }} .sqe-partners-grid[data-columns="2"] {
       grid-template-columns: 1fr;
     }
 
-    .sqe-partners-heading {
+    #sqe-partners-{{ section.id }} .sqe-partners-heading {
       font-size: 28px;
     }
   }
 
   @media (max-width: 480px) {
-    .sqe-partners-grid {
+    #sqe-partners-{{ section.id }} .sqe-partners-grid {
       grid-template-columns: 1fr !important;
     }
 
-    .sqe-partners-heading {
+    #sqe-partners-{{ section.id }} .sqe-partners-heading {
       font-size: 22px;
     }
 
-    .sqe-partners-subheading {
+    #sqe-partners-{{ section.id }} .sqe-partners-subheading {
       font-size: 14px;
     }
   }
 </style>
 
-<script>
-  (function() {
-    var partnersSection = document.getElementById('sqe-partners-' + '{{ section.id }}');
-    if (partnersSection) {
-      var items = partnersSection.querySelectorAll('.sqe-partner-item');
-      items.forEach(function(item) {
-        item.addEventListener('mouseenter', function() {
-          this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.15)';
-        });
-        item.addEventListener('mouseleave', function() {
-          this.style.boxShadow = '0 0 0 transparent';
-        });
-      });
-    }
-  })();
-</script>
 
 {% schema %}
 {

@@ -27,29 +27,36 @@
   assign role_color = section.settings.client_role_color
 -%}
 
-<section id="sqe-testi-{{ section.id }}" class="sqe-testimonials-v2" style="background-color: {{ background_color }};">
+<section id="sqe-testi-{{ section.id }}" class="sqe-testimonials-v2" style="--sqe-bg-color: {{ background_color }};">
   <div class="testimonials-container">
     {%- if show_label and label_text != blank -%}
       <span class="sqe-section-label">{{ label_text }}</span>
     {%- endif -%}
     {% if heading %}
-      <h2 class="testimonials-heading" style="font-family:{{ h_font }};font-size:{{ h_size }}px;color:{{ h_color }};font-weight:{{ h_weight }};">{{ heading }}</h2>
+      <h2 class="testimonials-heading" style="--sqe-h-font: {{ h_font }}; --sqe-h-size: {{ h_size }}px; --sqe-h-color: {{ h_color }}; --sqe-h-weight: {{ h_weight }};">{{ heading }}</h2>
     {% endif %}
 
     {% if section.blocks.size > 0 %}
       {% assign first_block = section.blocks.first %}
-      <div class="featured-testimonial" data-testimonial-id="{{ first_block.id }}" data-quote="{{ first_block.settings.quote | escape }}" data-client-name="{{ first_block.settings.client_name | escape }}" data-client-title="{{ first_block.settings.client_title | escape }}" data-company="{{ first_block.settings.company | escape }}" data-rating="{{ first_block.settings.rating }}" {% if first_block.settings.photo %}data-photo="{{ first_block.settings.photo | img_url: '150x150' }}"{% endif %}>
+      <div class="featured-testimonial" data-testimonial-id="{{ first_block.id }}">
         <div class="quote-content">
-          <p class="quote-text" style="font-family:{{ q_font }};font-size:{{ q_size }}px;color:{{ q_color }};">{{ first_block.settings.quote }}</p>
+          <p class="quote-text" style="--sqe-q-font: {{ q_font }}; --sqe-q-size: {{ q_size }}px; --sqe-q-color: {{ q_color }};">{{ first_block.settings.quote | escape }}</p>
         </div>
         <div class="client-info">
           {% if first_block.settings.photo %}
-            <img src="{{ first_block.settings.photo | img_url: '100x100' }}" alt="{{ first_block.settings.client_name }}" class="client-photo">
+            <img src="{{ first_block.settings.photo | image_url: width: 100 }}" alt="{{ first_block.settings.client_name }}" class="client-photo">
+          {% else %}
+            <div class="client-photo-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
           {% endif %}
           <div class="client-details">
-            <h3 class="client-name" style="font-size:{{ name_size }}px;color:{{ name_color }};font-weight:{{ name_weight }};">{{ first_block.settings.client_name }}</h3>
-            <p class="client-title" style="font-size:{{ role_size }}px;color:{{ role_color }};">{{ first_block.settings.client_title }}</p>
-            <p class="client-company" style="font-size:{{ role_size }}px;color:{{ role_color }};">{{ first_block.settings.company }}</p>
+            <h3 class="client-name" style="--sqe-name-size: {{ name_size }}px; --sqe-name-color: {{ name_color }}; --sqe-name-weight: {{ name_weight }};">{{ first_block.settings.client_name | escape }}</h3>
+            <p class="client-title" style="--sqe-role-size: {{ role_size }}px; --sqe-role-color: {{ role_color }};">{{ first_block.settings.client_title | escape }}</p>
+            <p class="client-company" style="--sqe-role-size: {{ role_size }}px; --sqe-role-color: {{ role_color }};">{{ first_block.settings.company | escape }}</p>
           </div>
           {% if first_block.settings.rating %}
             <div class="client-rating">
@@ -60,12 +67,26 @@
           {% endif %}
         </div>
       </div>
+    {% else %}
+      <div class="featured-testimonial featured-testimonial-placeholder">
+        <div class="quote-content">
+          <p class="quote-text">Add testimonials to get started</p>
+        </div>
+        <div class="client-info">
+          <div class="client-photo-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+        </div>
+      </div>
     {% endif %}
 
     {% if section.blocks.size > 1 %}
       <div class="testimonial-nav">
         {% for block in section.blocks %}
-          <button class="nav-dot" data-slide-index="{{ forloop.index0 }}" data-quote="{{ block.settings.quote | escape }}" data-client-name="{{ block.settings.client_name | escape }}" data-client-title="{{ block.settings.client_title | escape }}" data-company="{{ block.settings.company | escape }}" data-rating="{{ block.settings.rating }}" {% if block.settings.photo %}data-photo="{{ block.settings.photo | img_url: '150x150' }}"{% endif %} aria-label="Testimonial {{ forloop.index }}"></button>
+          <button class="nav-dot" data-slide-index="{{ forloop.index0 }}" aria-label="Testimonial {{ forloop.index }}" data-quote="{{ block.settings.quote | escape }}" data-client-name="{{ block.settings.client_name | escape }}" data-client-title="{{ block.settings.client_title | escape }}" data-company="{{ block.settings.company | escape }}" data-rating="{{ block.settings.rating }}" {% if block.settings.photo %}data-photo="{{ block.settings.photo | image_url: width: 150 }}"{% endif %}></button>
         {% endfor %}
       </div>
     {% endif %}
@@ -74,18 +95,29 @@
 
 <style>
   #sqe-testi-{{ section.id }} {
+    --sqe-bg-color: #F2F4F7;
+    --sqe-label-color: #C75B12;
+    --sqe-label-bg: rgba(199, 91, 18, 0.1);
+    --sqe-card-bg: white;
+    --sqe-card-shadow: 0 4px 12px rgba(31, 58, 95, 0.1);
+    --sqe-card-radius: 8px;
+    --sqe-card-padding: 50px;
+    --sqe-star-color: #F2B705;
+    --sqe-nav-color: #1F3A5F;
+    --sqe-border-color: #F2F4F7;
+
     padding: 60px 20px;
+    background-color: var(--sqe-bg-color);
   }
 
-  /* ===== SECTION LABEL (orange pill) ===== */
   #sqe-testi-{{ section.id }} .sqe-section-label {
     display: inline-block;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #C75B12;
-    background: rgba(199, 91, 18, 0.1);
+    color: var(--sqe-label-color);
+    background: var(--sqe-label-bg);
     padding: 4px 14px;
     border-radius: 20px;
     margin-bottom: 12px;
@@ -98,15 +130,24 @@
   }
 
   #sqe-testi-{{ section.id }} .testimonials-heading {
+    --sqe-h-font: 'Source Sans 3', sans-serif;
+    --sqe-h-size: 48px;
+    --sqe-h-color: #1F3A5F;
+    --sqe-h-weight: 700;
+
     margin-bottom: 50px;
     text-align: center;
+    font-family: var(--sqe-h-font);
+    font-size: var(--sqe-h-size);
+    color: var(--sqe-h-color);
+    font-weight: var(--sqe-h-weight);
   }
 
   #sqe-testi-{{ section.id }} .featured-testimonial {
-    background: white;
-    padding: 50px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(31, 58, 95, 0.1);
+    background: var(--sqe-card-bg);
+    padding: var(--sqe-card-padding);
+    border-radius: var(--sqe-card-radius);
+    box-shadow: var(--sqe-card-shadow);
     transition: all 0.4s ease;
     min-height: 350px;
     display: flex;
@@ -114,16 +155,28 @@
     justify-content: space-between;
   }
 
+  #sqe-testi-{{ section.id }} .featured-testimonial-placeholder {
+    opacity: 0.5;
+  }
+
   #sqe-testi-{{ section.id }} .quote-content {
     margin-bottom: 30px;
   }
 
   #sqe-testi-{{ section.id }} .quote-text {
+    --sqe-q-font: 'Source Sans 3', sans-serif;
+    --sqe-q-size: 28px;
+    --sqe-q-color: #1F3A5F;
+
+    font-family: var(--sqe-q-font);
+    font-size: var(--sqe-q-size);
+    color: var(--sqe-q-color);
     font-style: italic;
     line-height: 1.8;
     margin: 0;
     position: relative;
     padding-left: 30px;
+    overflow-wrap: break-word;
   }
 
   #sqe-testi-{{ section.id }} .quote-text::before {
@@ -131,7 +184,7 @@
     position: absolute;
     left: 0;
     font-size: 48px;
-    color: #F2B705;
+    color: var(--sqe-star-color);
     opacity: 0.3;
   }
 
@@ -140,7 +193,7 @@
     align-items: center;
     gap: 20px;
     padding-top: 30px;
-    border-top: 2px solid #F2F4F7;
+    border-top: 2px solid var(--sqe-border-color);
   }
 
   #sqe-testi-{{ section.id }} .client-photo {
@@ -149,23 +202,62 @@
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
+    display: block;
+  }
+
+  #sqe-testi-{{ section.id }} .client-photo-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    flex-shrink: 0;
+  }
+
+  #sqe-testi-{{ section.id }} .client-photo-placeholder svg {
+    width: 40px;
+    height: 40px;
   }
 
   #sqe-testi-{{ section.id }} .client-details {
     flex: 1;
+    min-width: 0;
   }
 
   #sqe-testi-{{ section.id }} .client-name {
+    --sqe-name-size: 18px;
+    --sqe-name-color: #1F3A5F;
+    --sqe-name-weight: 700;
+
+    font-size: var(--sqe-name-size);
+    color: var(--sqe-name-color);
+    font-weight: var(--sqe-name-weight);
     margin: 0 0 5px 0;
+    overflow-wrap: break-word;
   }
 
   #sqe-testi-{{ section.id }} .client-title {
+    --sqe-role-size: 14px;
+    --sqe-role-color: #C75B12;
+
+    font-size: var(--sqe-role-size);
+    color: var(--sqe-role-color);
     font-weight: 600;
     margin: 0 0 3px 0;
+    overflow-wrap: break-word;
   }
 
   #sqe-testi-{{ section.id }} .client-company {
+    --sqe-role-size: 14px;
+    --sqe-role-color: #C75B12;
+
+    font-size: var(--sqe-role-size);
+    color: var(--sqe-role-color);
     margin: 0;
+    overflow-wrap: break-word;
   }
 
   #sqe-testi-{{ section.id }} .client-rating {
@@ -174,7 +266,7 @@
   }
 
   #sqe-testi-{{ section.id }} .star {
-    color: #F2B705;
+    color: var(--sqe-star-color);
     font-size: 18px;
   }
 
@@ -189,23 +281,22 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid #1F3A5F;
+    border: 2px solid var(--sqe-nav-color);
     background: transparent;
     cursor: pointer;
     transition: all 0.3s ease;
   }
 
   #sqe-testi-{{ section.id }} .nav-dot:hover {
-    background: #1F3A5F;
+    background: var(--sqe-nav-color);
   }
 
   #sqe-testi-{{ section.id }} .nav-dot.active {
-    background: #1F3A5F;
+    background: var(--sqe-nav-color);
     width: 30px;
     border-radius: 6px;
   }
 
-  /* Tablet Breakpoint (768px) */
   @media (max-width: 768px) {
     #sqe-testi-{{ section.id }} {
       padding: 50px 16px;
@@ -236,7 +327,6 @@
     }
   }
 
-  /* Mobile Breakpoint (480px) */
   @media (max-width: 480px) {
     #sqe-testi-{{ section.id }} {
       padding: 40px 12px;
@@ -260,9 +350,15 @@
       font-size: 36px;
     }
 
-    #sqe-testi-{{ section.id }} .client-photo {
+    #sqe-testi-{{ section.id }} .client-photo,
+    #sqe-testi-{{ section.id }} .client-photo-placeholder {
       width: 60px;
       height: 60px;
+    }
+
+    #sqe-testi-{{ section.id }} .client-photo-placeholder svg {
+      width: 30px;
+      height: 30px;
     }
 
     #sqe-testi-{{ section.id }} .client-name {
@@ -284,6 +380,9 @@
   (function() {
     var sectionId = '{{ section.id }}';
     var el = document.getElementById('sqe-testi-' + sectionId);
+
+    if (!el) return;
+
     var featured = el.querySelector('.featured-testimonial');
     var navDots = el.querySelectorAll('.nav-dot');
     var autoRotate = {{ auto_rotate | json }};
@@ -291,18 +390,26 @@
     var currentIndex = 0;
     var rotateInterval = null;
 
+    function sanitizeHtml(text) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
     function updateTestimonial(index) {
+      if (navDots.length === 0) return;
+
       if (index < 0) index = navDots.length - 1;
       if (index >= navDots.length) index = 0;
       currentIndex = index;
 
       var dot = navDots[index];
-      var quote = dot.getAttribute('data-quote');
-      var name = dot.getAttribute('data-client-name');
-      var title = dot.getAttribute('data-client-title');
-      var company = dot.getAttribute('data-company');
-      var rating = dot.getAttribute('data-rating');
-      var photo = dot.getAttribute('data-photo');
+      var quote = dot.getAttribute('data-quote') || '';
+      var name = dot.getAttribute('data-client-name') || '';
+      var title = dot.getAttribute('data-client-title') || '';
+      var company = dot.getAttribute('data-company') || '';
+      var rating = dot.getAttribute('data-rating') || '';
+      var photo = dot.getAttribute('data-photo') || '';
 
       navDots.forEach(function(d) { d.classList.remove('active'); });
       dot.classList.add('active');
@@ -311,24 +418,31 @@
       var nameStyle = 'font-size:{{ name_size }}px;color:{{ name_color }};font-weight:{{ name_weight }};';
       var roleStyle = 'font-size:{{ role_size }}px;color:{{ role_color }};';
 
-      var html = '<div class="quote-content"><p class="quote-text" style="' + quoteStyle + '">' + quote + '</p></div>';
-      html += '<div class="client-info">';
-      if (photo) {
-        html += '<img src="' + photo + '" alt="' + name + '" class="client-photo">';
-      }
-      html += '<div class="client-details"><h3 class="client-name" style="' + nameStyle + '">' + name + '</h3>';
-      html += '<p class="client-title" style="' + roleStyle + '">' + title + '</p>';
-      html += '<p class="client-company" style="' + roleStyle + '">' + company + '</p></div>';
-      if (rating) {
-        html += '<div class="client-rating">';
-        for (var i = 0; i < rating; i++) {
-          html += '<span class="star">★</span>';
-        }
-        html += '</div>';
-      }
-      html += '</div>';
+      var content = '';
+      content += '<div class="quote-content"><p class="quote-text" style="' + quoteStyle + '">' + sanitizeHtml(quote) + '</p></div>';
+      content += '<div class="client-info">';
 
-      featured.innerHTML = html;
+      if (photo) {
+        content += '<img src="' + sanitizeHtml(photo) + '" alt="' + sanitizeHtml(name) + '" class="client-photo">';
+      } else {
+        content += '<div class="client-photo-placeholder"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>';
+      }
+
+      content += '<div class="client-details"><h3 class="client-name" style="' + nameStyle + '">' + sanitizeHtml(name) + '</h3>';
+      content += '<p class="client-title" style="' + roleStyle + '">' + sanitizeHtml(title) + '</p>';
+      content += '<p class="client-company" style="' + roleStyle + '">' + sanitizeHtml(company) + '</p></div>';
+
+      if (rating) {
+        content += '<div class="client-rating">';
+        for (var i = 0; i < parseInt(rating, 10); i++) {
+          content += '<span class="star">★</span>';
+        }
+        content += '</div>';
+      }
+
+      content += '</div>';
+
+      featured.innerHTML = content;
     }
 
     navDots.forEach(function(dot, index) {
