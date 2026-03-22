@@ -386,7 +386,7 @@
         "show_experience": true,
         "years_of_experience": "15",
         "experience_label": "Jahre",
-        "show_stats": true,
+        "show_stats": false,
         "stat_1_number": "500+",
         "stat_1_label": "Projects Completed",
         "stat_2_number": "98%",
@@ -405,12 +405,75 @@
         "desc_color": "#333333",
         "background_color": "#e6eaea"
       }
+    },
+    "sqe_interactive_process_Kt8fV4": {
+      "type": "sqe-interactive-process",
+      "blocks": {
+        "process_step_KCC48K": {
+          "type": "process_step",
+          "settings": {
+            "step_name": "Initial Consultation",
+            "step_description": "We understand your specific needs, goals, and current solar setup to create a tailored strategy."
+          }
+        },
+        "process_step_FCpJWR": {
+          "type": "process_step",
+          "settings": {
+            "step_name": "Site Assessment",
+            "step_description": "Our expert team conducts a comprehensive on-site evaluation, analyzing roof orientation, shading, and structural integrity."
+          }
+        },
+        "process_step_47KEEW": {
+          "type": "process_step",
+          "settings": {
+            "step_name": "Technical Analysis",
+            "step_description": "We perform detailed modeling using thermal imaging and advanced analytics to identify all potential issues."
+          }
+        },
+        "process_step_rKjnEP": {
+          "type": "process_step",
+          "settings": {
+            "step_name": "Report Delivery",
+            "step_description": "You receive a detailed, easy-to-understand report with findings, recommendations, and actionable next steps."
+          }
+        },
+        "process_step_r9jHzQ": {
+          "type": "process_step",
+          "settings": {
+            "step_name": "Implementation Support",
+            "step_description": "We guide you through implementation, connecting you with trusted partners and ensuring optimal performance."
+          }
+        }
+      },
+      "block_order": [
+        "process_step_KCC48K",
+        "process_step_FCpJWR",
+        "process_step_47KEEW",
+        "process_step_rKjnEP",
+        "process_step_r9jHzQ"
+      ],
+      "name": "SQE Interactive Process",
+      "settings": {
+        "show_section_label": false,
+        "section_label_text": "Process",
+        "heading": "Our Process",
+        "subheading": "See how we work with clients step by step",
+        "animate_progress": true,
+        "heading_font": "'Source Sans 3', sans-serif",
+        "heading_size": 42,
+        "heading_color": "#1F3A5F",
+        "heading_bold": true,
+        "description_font": "'Inter', sans-serif",
+        "description_size": 16,
+        "description_color": "#666666"
+      }
     }
   },
   "order": [
     "sqe_hero_Qqba3L",
     "sqe_news_insights_enPaAW",
     "sqe_services_yKFaU6",
-    "sqe_about_yBKwwJ"
+    "sqe_about_yBKwwJ",
+    "sqe_interactive_process_Kt8fV4"
   ]
 }
