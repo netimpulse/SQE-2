@@ -149,7 +149,8 @@
         "service_card_KCMUU7": {
           "type": "service_card",
           "settings": {
-            "title": "Service Title",
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143646.png",
+            "title": "Solar farm inspections",
             "description": "Brief service description",
             "link_text": "Learn More",
             "link_url": "",
@@ -164,7 +165,8 @@
         "service_card_8bqbVx": {
           "type": "service_card",
           "settings": {
-            "title": "Service Title",
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143653.png",
+            "title": "Energy yield expertises",
             "description": "Brief service description",
             "link_text": "Learn More",
             "link_url": "",
@@ -179,7 +181,8 @@
         "service_card_UtgLG3": {
           "type": "service_card",
           "settings": {
-            "title": "Service Title",
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143659.png",
+            "title": "Fault finding and damage expertises",
             "description": "Brief service description",
             "link_text": "Learn More",
             "link_url": "",
@@ -194,7 +197,8 @@
         "service_card_VabedL": {
           "type": "service_card",
           "settings": {
-            "title": "Service Title",
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143940.png",
+            "title": "Project QA and Quality Management",
             "description": "Brief service description",
             "link_text": "Learn More",
             "link_url": "",
@@ -209,7 +213,8 @@
         "service_card_6tYEWT": {
           "type": "service_card",
           "settings": {
-            "title": "Service Title",
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143943.png",
+            "title": "Project and Site Management",
             "description": "Brief service description",
             "link_text": "Learn More",
             "link_url": "",
@@ -224,13 +229,62 @@
         "service_card_kj8q7k": {
           "type": "service_card",
           "settings": {
-            "title": "Service Title",
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143947.png",
+            "title": "Corrosion protection of solar PV plants",
             "description": "Brief service description",
             "link_text": "Learn More",
             "link_url": "",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 20,
             "title_color": "#1F3A5F",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        },
+        "service_card_pWpNq9": {
+          "type": "service_card",
+          "settings": {
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143646.png",
+            "title": "Supplier audits",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1f3a5f",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        },
+        "service_card_Aj9GrF": {
+          "type": "service_card",
+          "settings": {
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143953.png",
+            "title": "Commissioning and acceptance support",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1f3a5f",
+            "title_bold": true,
+            "description_size": 14,
+            "description_color": "#666666"
+          }
+        },
+        "service_card_VfMGLW": {
+          "type": "service_card",
+          "settings": {
+            "icon": "shopify://shop_images/Screenshot_2026-03-22_143958.png",
+            "title": "Drone measuring and thermal imaging",
+            "description": "Brief service description",
+            "link_text": "Learn More",
+            "link_url": "",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 20,
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "description_size": 14,
             "description_color": "#666666"
@@ -243,7 +297,10 @@
         "service_card_UtgLG3",
         "service_card_VabedL",
         "service_card_6tYEWT",
-        "service_card_kj8q7k"
+        "service_card_kj8q7k",
+        "service_card_pWpNq9",
+        "service_card_Aj9GrF",
+        "service_card_VfMGLW"
       ],
       "name": "SQE Services",
       "settings": {
