@@ -1,0 +1,224 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "sqe_about_4Jaixb": {
+      "type": "sqe-about",
+      "blocks": {
+        "credential_aMgMkE": {
+          "type": "credential",
+          "settings": {
+            "icon": "⚡",
+            "credential_title": "ISO Certified",
+            "credential_text": "ISO 9001:2015 Quality Management certified",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 15,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "desc_size": 13,
+            "desc_color": "#666666"
+          }
+        },
+        "credential_cxTEdG": {
+          "type": "credential",
+          "settings": {
+            "icon": "✓",
+            "credential_title": "NICEIC Approved",
+            "credential_text": "NICEIC approved electrical contractor",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 15,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "desc_size": 13,
+            "desc_color": "#666666"
+          }
+        },
+        "credential_p3T7Pk": {
+          "type": "credential",
+          "settings": {
+            "icon": "🏆",
+            "credential_title": "MCS Registered",
+            "credential_text": "Microgeneration Certification Scheme registered",
+            "title_font": "'Source Sans 3', sans-serif",
+            "title_size": 15,
+            "title_color": "#1F3A5F",
+            "title_bold": true,
+            "desc_size": 13,
+            "desc_color": "#666666"
+          }
+        }
+      },
+      "block_order": [
+        "credential_aMgMkE",
+        "credential_cxTEdG",
+        "credential_p3T7Pk"
+      ],
+      "name": "SQE About Section",
+      "settings": {
+        "show_section_label": true,
+        "section_label_text": "Über uns",
+        "show_header": true,
+        "header_subheading": "About Us",
+        "header_heading": "Trusted Solar PV Engineering Excellence",
+        "section_heading": "Our Expertise",
+        "description": "<p>SQE Solar Quality Experts Ltd is a UK-based solar PV engineering consultancy dedicated to delivering excellence in renewable energy solutions.</p>",
+        "image_position": "left",
+        "image_style": "both",
+        "show_credential_bar": true,
+        "show_experience": true,
+        "years_of_experience": "15",
+        "experience_label": "Jahre",
+        "show_stats": true,
+        "stat_1_number": "500+",
+        "stat_1_label": "Projects Completed",
+        "stat_2_number": "98%",
+        "stat_2_label": "Client Satisfaction",
+        "stat_3_number": "12",
+        "stat_3_label": "Industry Certifications",
+        "heading_font": "'Source Sans 3', sans-serif",
+        "heading_size": 42,
+        "heading_color": "#1F3A5F",
+        "heading_bold": true,
+        "subheading_font": "'Inter', sans-serif",
+        "subheading_size": 14,
+        "subheading_color": "#C75B12",
+        "desc_font": "'Inter', sans-serif",
+        "desc_size": 16,
+        "desc_color": "#333333",
+        "background_color": "#FFFFFF"
+      }
+    },
+    "sqe_case_studies_m7ERLa": {
+      "type": "sqe-case-studies",
+      "blocks": {
+        "case_study_CTAAJ3": {
+          "type": "case_study",
+          "settings": {
+            "title": "Project Title",
+            "location": "City, Country",
+            "description": "Brief description",
+            "category": "Category",
+            "link": ""
+          }
+        },
+        "case_study_rjAYer": {
+          "type": "case_study",
+          "settings": {
+            "title": "Project Title",
+            "location": "City, Country",
+            "description": "Brief description",
+            "category": "Category",
+            "link": ""
+          }
+        },
+        "case_study_p7t8LL": {
+          "type": "case_study",
+          "settings": {
+            "title": "Project Title",
+            "location": "City, Country",
+            "description": "Brief description",
+            "category": "Category",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "case_study_CTAAJ3",
+        "case_study_rjAYer",
+        "case_study_p7t8LL"
+      ],
+      "name": "SQE Case Studies",
+      "settings": {
+        "show_section_label": false,
+        "section_label_text": "Case Studies",
+        "heading": "Our Case Studies",
+        "subheading": "Real results from real clients",
+        "columns": "3",
+        "background_color": "#FFFFFF",
+        "heading_font": "'Source Sans 3', sans-serif",
+        "heading_size": 36,
+        "heading_color": "#1F3A5F",
+        "heading_bold": true,
+        "subheading_font": "'Inter', sans-serif",
+        "subheading_size": 16,
+        "subheading_color": "#666666"
+      }
+    },
+    "sqe_team_Pp69A4": {
+      "type": "sqe-team",
+      "blocks": {
+        "team_member_jgHcFh": {
+          "type": "team_member",
+          "settings": {
+            "name": "Alex Johnson",
+            "title": "Solar Engineer",
+            "bio": "10+ years experience in solar installation and system design. Certified solar professional.",
+            "linkedin_url": ""
+          }
+        },
+        "team_member_eWeGDc": {
+          "type": "team_member",
+          "settings": {
+            "name": "Emma Davis",
+            "title": "Quality Assurance Manager",
+            "bio": "Expert in quality control and testing procedures. Ensures all projects meet highest standards.",
+            "linkedin_url": ""
+          }
+        },
+        "team_member_XAAMKF": {
+          "type": "team_member",
+          "settings": {
+            "name": "Michael Wong",
+            "title": "Project Manager",
+            "bio": "Specializes in project coordination and customer relations. Ensures timely project completion.",
+            "linkedin_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "team_member_jgHcFh",
+        "team_member_eWeGDc",
+        "team_member_XAAMKF"
+      ],
+      "name": "Team",
+      "settings": {
+        "show_heading": true,
+        "heading": "Our Team",
+        "subheading": "Meet our experienced professionals",
+        "columns": "3",
+        "card_style": "default",
+        "show_social_links": true,
+        "primary_color": "#1F3A5F",
+        "accent_color": "#F2B705",
+        "title_color": "#1F3A5F",
+        "background_color": "#F2F4F7",
+        "card_border_color": "#E8EBF0",
+        "card_border_radius": 8,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_side": 20
+      }
+    }
+  },
+  "order": [
+    "main",
+    "sqe_about_4Jaixb",
+    "sqe_case_studies_m7ERLa",
+    "sqe_team_Pp69A4"
+  ]
+}
