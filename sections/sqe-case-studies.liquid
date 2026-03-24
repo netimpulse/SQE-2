@@ -95,7 +95,7 @@
 <style>
   #sqe-case-studies-{{ section.id }} {
     background-color: var(--sqe-bg-color);
-    padding: 60px 20px;
+    padding: {{ section.settings.padding_top }}px 20px 60px 20px;
   }
 
   #sqe-case-studies-{{ section.id }} .sqe-case-studies-container {
@@ -391,6 +391,20 @@
       "id": "subheading_color",
       "label": "Subheading color",
       "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

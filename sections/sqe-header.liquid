@@ -83,6 +83,20 @@
     color: {{ text_color }};
     width: 100%;
     box-sizing: border-box;
+    position: relative;
+    z-index: 3;
+    padding-top: {{ section.settings.padding_top }}px;
+  }
+
+  /* Ensure Shopify section wrapper (section-header) has background color */
+  .section-header .sqe-hdr-{{ section.id }} {
+    background-color: {{ bg_color }};
+  }
+
+  /* Ensure section wrapper itself has proper z-index */
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    z-index: 4;
   }
 
   /* Override Dawn's .header-wrapper to use SQE background */
@@ -1266,6 +1280,20 @@
       "unit": "px",
       "label": "Mobile Icon Size",
       "default": 38
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "presets": [

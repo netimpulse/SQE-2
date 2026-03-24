@@ -50,7 +50,7 @@
 <style>
   #sqe-map-locations-{{ section.id }} {
     background-color: var(--bg-color);
-    padding: 60px 20px;
+    padding: {{ section.settings.padding_top }}px 20px 60px 20px;
     transition: background-color 0.3s ease;
   }
 
@@ -367,6 +367,20 @@
         }
       ],
       "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

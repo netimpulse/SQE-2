@@ -71,8 +71,8 @@
 
 <style>
   #sqe-partners-{{ section.id }} {
-    padding: 60px 20px;
-    background: #F2F4F7;
+    padding: {{ section.settings.padding_top }}px 20px 60px 20px;
+    background: {{ section.settings.background_color }};
   }
 
   /* ===== SECTION LABEL (orange pill) ===== */
@@ -364,6 +364,30 @@
         { "value": "4", "label": "4" }
       ],
       "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F2F4F7"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

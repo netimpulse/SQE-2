@@ -106,7 +106,7 @@
     --sqe-nav-color: #1F3A5F;
     --sqe-border-color: #F2F4F7;
 
-    padding: 60px 20px;
+    padding: {{ section.settings.padding_top }}px 20px 60px 20px;
     background-color: var(--sqe-bg-color);
   }
 
@@ -637,6 +637,20 @@
       "id": "client_role_color",
       "label": "Color",
       "default": "#C75B12"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

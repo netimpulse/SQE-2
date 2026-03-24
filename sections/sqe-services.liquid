@@ -17,12 +17,14 @@
   assign sh_font = section.settings.subheading_font
   assign sh_size = section.settings.subheading_size
   assign sh_color = section.settings.subheading_color
+  assign link_color = section.settings.link_color
+  assign link_hover_color = section.settings.link_hover_color
 -%}
 
 <section
   id="sqe-services-{{ section.id }}"
   class="sqe-services"
-  style="--bg-color: {{ bg_color }}; --heading-font: {{ h_font }}; --heading-size: {{ h_size }}px; --heading-color: {{ h_color }}; --heading-weight: {{ h_weight }}; --subheading-font: {{ sh_font }}; --subheading-size: {{ sh_size }}px; --subheading-color: {{ sh_color }};"
+  style="--bg-color: {{ bg_color }}; --heading-font: {{ h_font }}; --heading-size: {{ h_size }}px; --heading-color: {{ h_color }}; --heading-weight: {{ h_weight }}; --subheading-font: {{ sh_font }}; --subheading-size: {{ sh_size }}px; --subheading-color: {{ sh_color }}; --link-color: {{ link_color }}; --link-hover-color: {{ link_hover_color }};"
 >
   <div class="sqe-services-container">
     {%- if show_label and label_text != blank -%}
@@ -89,7 +91,7 @@
 
 <style>
   #sqe-services-{{ section.id }} {
-    padding: 60px 20px;
+    padding: {{ section.settings.padding_top }}px 20px 60px 20px;
     background-color: var(--bg-color, #ffffff);
   }
 
@@ -227,7 +229,7 @@
   }
 
   #sqe-services-{{ section.id }} .sqe-service-link {
-    color: #1F3A5F;
+    color: var(--link-color, #1F3A5F);
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
@@ -236,7 +238,7 @@
   }
 
   #sqe-services-{{ section.id }} .sqe-service-link:hover {
-    color: #C75B12;
+    color: var(--link-hover-color, #C75B12);
   }
 
   @media (max-width: 768px) {
@@ -406,6 +408,36 @@
       "id": "subheading_color",
       "label": "Color",
       "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Link Typography"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#C75B12"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

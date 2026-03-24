@@ -146,7 +146,8 @@
   #sqe-faq-{{ section.id }} .sqe-faq-container {
     max-width: var(--max-width);
     margin: var(--margin-top) auto var(--margin-bottom);
-    padding: var(--padding-horizontal);
+    padding: {{ section.settings.padding_top }}px var(--padding-horizontal) var(--padding-horizontal) var(--padding-horizontal);
+    background-color: {{ section.settings.background_color }};
   }
 
   #sqe-faq-{{ section.id }} .sqe-faq-header {
@@ -797,6 +798,30 @@
       "step": 10,
       "unit": "px",
       "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

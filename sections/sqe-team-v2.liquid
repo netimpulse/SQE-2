@@ -68,8 +68,8 @@
   }
 
   #sqe-team-v2-{{ section.id }} {
-    padding: 60px 20px;
-    background-color: #FFFFFF;
+    padding: {{ section.settings.padding_top }}px 20px 60px 20px;
+    background-color: {{ section.settings.background_color }};
   }
 
   #sqe-team-v2-{{ section.id }} .sqe-team-v2__container {
@@ -417,6 +417,30 @@
       "default": 4,
       "min": 1,
       "max": 6
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

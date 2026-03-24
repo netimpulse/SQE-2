@@ -85,7 +85,7 @@
     --sqe-padding-lg: 60px;
     --sqe-padding-h: 20px;
     background-color: var(--sqe-bg-color);
-    padding: var(--sqe-padding-lg) var(--sqe-padding-h);
+    padding: {{ section.settings.padding_top }}px var(--sqe-padding-h) var(--sqe-padding-lg) var(--sqe-padding-h);
   }
 
   /* Section label (orange pill) */
@@ -432,6 +432,20 @@
       "id": "description_color",
       "label": "Description color",
       "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

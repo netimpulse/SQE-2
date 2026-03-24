@@ -61,7 +61,7 @@
     --cred-desc-size: {{ cred_desc_size }}px;
     --cred-desc-color: {{ cred_desc_color }};
 
-    padding: 60px 20px;
+    padding: {{ section.settings.padding_top }}px 20px 60px 20px;
     background-color: var(--bg-color);
   }
   #sqe-about-{{ section.id }} .sqe-about-ctr {
@@ -730,6 +730,20 @@
       "id": "background_color",
       "label": "Background color",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

@@ -45,8 +45,8 @@
     --sqe-sub-size: {{ sub_size }}px;
     --sqe-sub-color: {{ sub_color }};
 
-    padding: 100px 20px;
-    background: linear-gradient(135deg, var(--sqe-dark-bg) 0%, var(--sqe-dark-accent) 50%, var(--sqe-dark-light) 100%);
+    padding: {{ section.settings.padding_top }}px 20px 100px 20px;
+    background: {{ section.settings.background_color }};
     position: relative;
     overflow: hidden;
     font-family: 'Inter', sans-serif;
@@ -549,6 +549,30 @@
       "id": "sub_color",
       "label": "Subheading color",
       "default": "#ffffffb3"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

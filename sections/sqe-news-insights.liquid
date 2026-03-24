@@ -167,7 +167,8 @@
   #sqe-news-container-{{ section.id }} {
     max-width: {{ section.settings.max_width }}px;
     margin: {{ section.settings.margin_top }}px auto {{ section.settings.margin_bottom }}px;
-    padding: {{ section.settings.padding }}px;
+    padding: {{ section.settings.padding_top }}px {{ section.settings.padding }}px {{ section.settings.padding }}px {{ section.settings.padding }}px;
+    background-color: {{ section.settings.background_color }};
   }
 
   /* ===== SECTION LABEL (orange pill) ===== */
@@ -815,6 +816,22 @@
       "step": 10,
       "unit": "px",
       "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

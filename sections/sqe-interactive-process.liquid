@@ -12,6 +12,10 @@
   assign d_font = section.settings.description_font
   assign d_size = section.settings.description_size
   assign d_color = section.settings.description_color
+  assign step_title_color = section.settings.step_title_color
+  assign step_description_color = section.settings.step_description_color
+  assign timeline_label_color = section.settings.timeline_label_color
+  assign active_dot_color = section.settings.active_dot_color
 -%}
 
 <style>
@@ -24,6 +28,10 @@
     --sqe-color-label: #C75B12;
     --sqe-color-label-bg: rgba(199, 91, 18, 0.1);
     --sqe-color-white: white;
+    --sqe-step-title-color: {{ step_title_color }};
+    --sqe-step-description-color: {{ step_description_color }};
+    --sqe-timeline-label-color: {{ timeline_label_color }};
+    --sqe-active-dot-color: {{ active_dot_color }};
     --sqe-shadow-sm: 0 4px 15px rgba(31, 58, 95, 0.08);
     --sqe-shadow-md: 0 8px 25px rgba(242, 183, 5, 0.3);
     --sqe-shadow-lg: 0 20px 60px rgba(31, 58, 95, 0.12);
@@ -38,8 +46,8 @@
   }
 
   #sqe-process-section-{{ section.id }} .sqe-process-section {
-    padding: var(--sqe-spacing-lg) 20px;
-    background: linear-gradient(135deg, #f8fafb 0%, #eef2f7 100%);
+    padding: {{ section.settings.padding_top }}px 20px var(--sqe-spacing-lg) 20px;
+    background: {{ section.settings.background_color }};
     font-family: 'Inter', sans-serif;
   }
 
@@ -162,19 +170,19 @@
   #sqe-process-section-{{ section.id }} .sqe-timeline-step.active .sqe-timeline-dot {
     width: 72px;
     height: 72px;
-    background: var(--sqe-color-accent);
-    border-color: var(--sqe-color-accent);
+    background: var(--sqe-active-dot-color);
+    border-color: var(--sqe-active-dot-color);
     color: var(--sqe-color-primary);
-    box-shadow: 0 8px 25px rgba(242, 183, 5, 0.3);
+    box-shadow: 0 8px 25px color-mix(in srgb, var(--sqe-active-dot-color) 30%, transparent);
     animation: sqe-pulse-dot-{{ section.id }} 2s infinite;
   }
 
   @keyframes sqe-pulse-dot-{{ section.id }} {
     0%, 100% {
-      box-shadow: var(--sqe-shadow-md);
+      box-shadow: 0 8px 25px color-mix(in srgb, var(--sqe-active-dot-color) 30%, transparent);
     }
     50% {
-      box-shadow: 0 8px 35px rgba(242, 183, 5, 0.5);
+      box-shadow: 0 8px 35px color-mix(in srgb, var(--sqe-active-dot-color) 50%, transparent);
     }
   }
 
@@ -186,7 +194,7 @@
 
   #sqe-process-section-{{ section.id }} .sqe-timeline-label {
     font-size: 14px;
-    color: var(--sqe-color-text-muted);
+    color: var(--sqe-timeline-label-color);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -241,7 +249,7 @@
     font-family: 'Source Sans 3', sans-serif;
     font-size: 28px;
     font-weight: 700;
-    color: var(--sqe-color-primary);
+    color: var(--sqe-step-title-color);
     margin: 0 0 16px 0;
     word-break: break-word;
     overflow-wrap: break-word;
@@ -249,7 +257,7 @@
 
   #sqe-process-section-{{ section.id }} .sqe-detail-content p {
     font-size: 15px;
-    color: var(--sqe-color-text-dark);
+    color: var(--sqe-step-description-color);
     line-height: 1.6;
     margin: 0;
     word-break: break-word;
@@ -680,6 +688,58 @@
       "id": "description_color",
       "label": "Description color",
       "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "step_title_color",
+      "label": "Step Title Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "step_description_color",
+      "label": "Step Description Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "timeline_label_color",
+      "label": "Timeline Label Color",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "active_dot_color",
+      "label": "Active Dot Color",
+      "default": "#F2B705"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#eef2f7"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

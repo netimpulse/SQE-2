@@ -159,8 +159,8 @@
     --sqe-text-primary: #333;
     --sqe-text-secondary: #999;
 
-    padding: 60px 20px;
-    background-color: var(--sqe-bg-color);
+    padding: {{ section.settings.padding_top }}px 20px 60px 20px;
+    background-color: {{ section.settings.background_color }};
   }
 
   #sqe-testimonials-{{ section.id }} .sqe-testimonials-container {
@@ -395,6 +395,20 @@
       "id": "text_color",
       "label": "Heading Color",
       "default": "#1F3A5F"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [

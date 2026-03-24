@@ -172,7 +172,8 @@
   #sqe-video-{{ section.id }}.sqe-video-container {
     max-width: var(--sqe-max-width);
     margin: var(--sqe-margin-top) auto var(--sqe-margin-bottom);
-    padding: var(--sqe-padding);
+    padding: {{ section.settings.padding_top }}px var(--sqe-padding) var(--sqe-padding) var(--sqe-padding);
+    background-color: {{ section.settings.background_color }};
   }
 
   #sqe-video-{{ section.id }} .sqe-video-wrapper {
@@ -695,6 +696,30 @@
       "step": 10,
       "unit": "px",
       "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
     }
   ],
   "blocks": [
