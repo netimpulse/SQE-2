@@ -156,7 +156,7 @@
             "link_url": "",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 20,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "description_size": 14,
             "description_color": "#666666"
@@ -172,7 +172,7 @@
             "link_url": "",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 20,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "description_size": 14,
             "description_color": "#666666"
@@ -188,7 +188,7 @@
             "link_url": "",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 20,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "description_size": 14,
             "description_color": "#666666"
@@ -204,7 +204,7 @@
             "link_url": "",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 20,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "description_size": 14,
             "description_color": "#666666"
@@ -220,7 +220,7 @@
             "link_url": "",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 20,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "description_size": 14,
             "description_color": "#666666"
@@ -236,7 +236,7 @@
             "link_url": "",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 20,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "description_size": 14,
             "description_color": "#666666"
@@ -249,7 +249,7 @@
             "title": "Supplier audits",
             "description": "Brief service description",
             "link_text": "Learn More",
-            "link_url": "",
+            "link_url": "shopify://pages/faq",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 20,
             "title_color": "#1f3a5f",
@@ -309,11 +309,11 @@
         "heading": "Our Services",
         "subheading": "Professional solutions for your needs",
         "columns": "3",
-        "background_color": "#FFFFFF",
+        "background_color": "#ffffff",
         "card_style": "shadow",
         "heading_font": "'Source Sans 3', sans-serif",
         "heading_size": 36,
-        "heading_color": "#1F3A5F",
+        "heading_color": "#1f3a5f",
         "heading_bold": true,
         "subheading_font": "'Source Sans 3', sans-serif",
         "subheading_size": 16,
@@ -331,7 +331,7 @@
             "credential_text": "ISO 9001:2015 Quality Management certified",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 15,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "desc_size": 13,
             "desc_color": "#666666"
@@ -345,7 +345,7 @@
             "credential_text": "NICEIC approved electrical contractor",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 15,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "desc_size": 13,
             "desc_color": "#666666"
@@ -359,7 +359,7 @@
             "credential_text": "Microgeneration Certification Scheme registered",
             "title_font": "'Source Sans 3', sans-serif",
             "title_size": 15,
-            "title_color": "#1F3A5F",
+            "title_color": "#1f3a5f",
             "title_bold": true,
             "desc_size": 13,
             "desc_color": "#666666"
@@ -376,7 +376,7 @@
         "show_section_label": false,
         "section_label_text": "Über uns",
         "show_header": true,
-        "header_subheading": "About Us",
+        "header_subheading": "",
         "header_heading": "Trusted Solar PV Engineering Excellence",
         "section_heading": "Our Expertise",
         "description": "<p>SQE Solar Quality Experts Ltd is a UK-based solar PV engineering consultancy dedicated to delivering excellence in renewable energy solutions.</p>",
@@ -395,15 +395,15 @@
         "stat_3_label": "Industry Certifications",
         "heading_font": "'Source Sans 3', sans-serif",
         "heading_size": 42,
-        "heading_color": "#1F3A5F",
+        "heading_color": "#333333",
         "heading_bold": true,
         "subheading_font": "'Inter', sans-serif",
         "subheading_size": 14,
-        "subheading_color": "#C75B12",
+        "subheading_color": "#c75b12",
         "desc_font": "'Inter', sans-serif",
         "desc_size": 16,
         "desc_color": "#333333",
-        "background_color": "#e6eaea"
+        "background_color": "#f2f4f7"
       }
     },
     "sqe_interactive_process_Kt8fV4": {
@@ -461,11 +461,11 @@
         "animate_progress": true,
         "heading_font": "'Source Sans 3', sans-serif",
         "heading_size": 42,
-        "heading_color": "#1F3A5F",
+        "heading_color": "#333333",
         "heading_bold": true,
         "description_font": "'Inter', sans-serif",
         "description_size": 16,
-        "description_color": "#666666"
+        "description_color": "#1f3a5f"
       }
     }
   },
