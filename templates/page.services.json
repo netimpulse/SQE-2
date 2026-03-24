@@ -20,6 +20,17 @@
     "sqe_service_explorer_CVrRMG": {
       "type": "sqe-service-explorer",
       "blocks": {
+        "service_pbX6yC": {
+          "type": "service",
+          "settings": {
+            "title": "Drone measuring and thermal imaging",
+            "description": "Comprehensive aerial inspections for solar farms using high-tech drones with thermal and visual scanning. Our live data analysis instantly identifies hotspots, critical panel conditions, and potential faults for optimized maintenance.",
+            "features": "Test",
+            "image": "shopify://shop_images/Gemini_Generated_Image_qgh8h6qgh8h6qgh8.png",
+            "link_url": "shopify://pages/about-us",
+            "link_text": "Learn More"
+          }
+        },
         "service_HWCggM": {
           "type": "service",
           "settings": {
@@ -46,17 +57,6 @@
             "title": "Commissioning and acceptance support",
             "description": "",
             "features": "",
-            "link_url": "",
-            "link_text": "Learn More"
-          }
-        },
-        "service_pbX6yC": {
-          "type": "service",
-          "settings": {
-            "title": "Drone measuring and thermal imaging",
-            "description": "Comprehensive aerial inspections for solar farms using high-tech drones with thermal and visual scanning. Our live data analysis instantly identifies hotspots, critical panel conditions, and potential faults for optimized maintenance.",
-            "features": "Test",
-            "image": "shopify://shop_images/Gemini_Generated_Image_qgh8h6qgh8h6qgh8.png",
             "link_url": "",
             "link_text": "Learn More"
           }
@@ -113,10 +113,10 @@
         }
       },
       "block_order": [
+        "service_pbX6yC",
         "service_HWCggM",
         "service_QjywqG",
         "service_Pe3VAt",
-        "service_pbX6yC",
         "service_Binitj",
         "service_f9FnxN",
         "service_wtgU4x",
