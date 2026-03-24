@@ -85,7 +85,7 @@
     box-sizing: border-box;
     position: relative;
     z-index: 3;
-    padding-top: {{ section.settings.padding_top }}px;
+    /* padding-top intentionally omitted – breaks sticky positioning */
   }
 
   /* Ensure Shopify section wrapper (section-header) has background color */
@@ -93,9 +93,19 @@
     background-color: {{ bg_color }};
   }
 
-  /* Ensure section wrapper itself has proper z-index */
-  #shopify-section-{{ section.id }} {
-    position: relative;
+  /*
+   * Section wrapper z-index.
+   * DO NOT set 'position' here – it would override Dawn's
+   * .shopify-section-header-sticky { position: sticky } because
+   * an ID selector (#shopify-section-…) beats a class selector.
+   * Dawn's sticky class already provides the positioning context
+   * that z-index needs.
+   */
+  .section-header#shopify-section-{{ section.id }} {
+    z-index: 4;
+  }
+  /* When sticky is active, ensure z-index still applies */
+  .shopify-section-header-sticky#shopify-section-{{ section.id }} {
     z-index: 4;
   }
 
@@ -1281,20 +1291,6 @@
       "label": "Mobile Icon Size",
       "default": 38
     },
-    {
-      "type": "header",
-      "content": "Spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Padding Top",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "default": 60,
-      "unit": "px"
-    }
   ],
   "presets": [
     {

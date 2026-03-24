@@ -51,7 +51,9 @@
           {% endif %}
           {% assign bd_size = block.settings.description_size %}
           {% assign bd_color = block.settings.description_color %}
-          <div class="sqe-service-card" {{ block.shopify_attributes }} style="--card-title-font: {{ bt_font }}; --card-title-size: {{ bt_size }}px; --card-title-color: {{ bt_color }}; --card-title-weight: {{ bt_weight }}; --card-desc-size: {{ bd_size }}px; --card-desc-color: {{ bd_color }};">
+          {% assign bl_color = block.settings.link_color %}
+          {% assign bl_hover = block.settings.link_hover_color %}
+          <div class="sqe-service-card" {{ block.shopify_attributes }} style="--card-title-font: {{ bt_font }}; --card-title-size: {{ bt_size }}px; --card-title-color: {{ bt_color }}; --card-title-weight: {{ bt_weight }}; --card-desc-size: {{ bd_size }}px; --card-desc-color: {{ bd_color }}; --card-link-color: {{ bl_color }}; --card-link-hover-color: {{ bl_hover }};">
             {% if block.settings.icon != blank %}
               <div class="sqe-service-icon">
                 <img
@@ -229,7 +231,7 @@
   }
 
   #sqe-services-{{ section.id }} .sqe-service-link {
-    color: var(--link-color, #1F3A5F);
+    color: var(--card-link-color, var(--link-color, #1F3A5F));
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
@@ -238,7 +240,7 @@
   }
 
   #sqe-services-{{ section.id }} .sqe-service-link:hover {
-    color: var(--link-hover-color, #C75B12);
+    color: var(--card-link-hover-color, var(--link-hover-color, #C75B12));
   }
 
   @media (max-width: 768px) {
@@ -529,6 +531,22 @@
           "id": "description_color",
           "label": "Color",
           "default": "#666666"
+        },
+        {
+          "type": "header",
+          "content": "Link Typography"
+        },
+        {
+          "type": "color",
+          "id": "link_color",
+          "label": "Link Color",
+          "default": "#1F3A5F"
+        },
+        {
+          "type": "color",
+          "id": "link_hover_color",
+          "label": "Link Hover Color",
+          "default": "#C75B12"
         }
       ]
     }
