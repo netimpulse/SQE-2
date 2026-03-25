@@ -352,24 +352,16 @@
 
   /* ===== Shopify section wrapper – ensure full-width ===== */
   #shopify-section-{{ section.id }} {
-    margin: 0;
-    padding: 0;
-    max-width: 100%;
-    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
   }
 
   /* ===== MOBILE RESPONSIVE (768px) ===== */
   @media (max-width: 768px) {
     #sqe-hero-{{ section.id }}.sqe-hero {
-      margin-left: 0;
-      margin-right: 0;
-      width: 100vw;
-      max-width: 100vw;
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
+      width: 100%;
     }
 
     #sqe-hero-{{ section.id }}.sqe-hero--small {

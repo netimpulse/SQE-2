@@ -446,108 +446,31 @@
     margin: 0;
   }
 
-  /* --- DAWN DRAWER FULL COMPAT (mobile menu) --- */
+  /*
+   * --- DAWN DRAWER COMPAT (visual tweaks only) ---
+   * DO NOT override position/transform/visibility – Dawn's
+   * component-menu-drawer.css + header-drawer JS handle that.
+   * We only style colours, fonts and add CTA here.
+   */
   .sqe-hdr-{{ section.id }} .menu-drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    max-width: 380px;
-    height: 100vh;
-    height: 100dvh;
-    background: #fff;
-    z-index: 9999;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 0;
-    box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer__inner-container {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer__navigation-container {
-    flex: 1;
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer__menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    background-color: #fff;
   }
   .sqe-hdr-{{ section.id }} .menu-drawer__menu-item {
-    display: flex;
-    align-items: center;
-    padding: 14px 16px;
     font-family: 'Source Sans 3', 'Source Sans Pro', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: #1F3A5F;
-    text-decoration: none;
-    border-bottom: 1px solid #f0f0f0;
-    transition: background 0.2s ease, color 0.2s ease;
+    color: {{ text_color }};
   }
-  .sqe-hdr-{{ section.id }} .menu-drawer__menu-item:hover {
-    background: #f7f7f7;
-    color: #F2B705;
-  }
+  .sqe-hdr-{{ section.id }} .menu-drawer__menu-item:hover,
   .sqe-hdr-{{ section.id }} .menu-drawer__menu-item--active {
-    color: #F2B705;
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer__submenu {
-    background: #f9f9f9;
-    padding-left: 16px;
+    color: {{ menu_hover_color }};
   }
   .sqe-hdr-{{ section.id }} .menu-drawer__close-button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 14px 16px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #1F3A5F;
-    background: none;
-    border: none;
-    border-bottom: 1px solid #f0f0f0;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
     font-family: 'Source Sans 3', 'Source Sans Pro', sans-serif;
+    color: {{ text_color }};
   }
-  .sqe-hdr-{{ section.id }} .menu-drawer__close-button .svg-wrapper {
-    transform: rotate(180deg);
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer summary .svg-wrapper:first-of-type {
-    display: none;
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer summary .svg-wrapper:last-of-type {
-    margin-left: auto;
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer summary .svg-wrapper svg {
-    width: 12px;
-    height: 12px;
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer .list-social {
-    display: flex;
-    gap: 12px;
-    padding: 20px 16px;
-    list-style: none;
-    margin: 0;
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer .list-social__link svg {
-    width: 20px;
-    height: 20px;
-    color: #1F3A5F;
-  }
-  .sqe-hdr-{{ section.id }} .menu-drawer__utility-links {
-    padding-top: 20px;
-    border-top: 1px solid #e8e8e8;
-    margin-top: auto;
-  }
+  /* CTA button inside drawer */
   .sqe-hdr-{{ section.id }} .sqe-drawer-cta {
     display: block;
-    margin: 20px 16px;
+    margin: 20px 3rem;
     padding: 14px 24px;
     background: {{ cta_bg }};
     color: {{ cta_color }};
@@ -557,10 +480,10 @@
     font-weight: 700;
     font-size: 16px;
     border-radius: 6px;
-    transition: background 0.2s ease;
+    transition: opacity 0.2s ease;
   }
   .sqe-hdr-{{ section.id }} .sqe-drawer-cta:hover {
-    opacity: 0.9;
+    opacity: 0.85;
   }
 
   /* ===== MOBILE (max-width: 989px) ===== */
