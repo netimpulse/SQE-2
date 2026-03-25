@@ -191,6 +191,9 @@
   }
 
   #sqe-hero-{{ section.id }} .sqe-hero__placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, var(--sqe-primary-blue), var(--sqe-light-grey));
@@ -200,10 +203,12 @@
     color: rgba(255, 255, 255, 0.5);
   }
 
-  #sqe-hero-{{ section.id }} .sqe-hero__placeholder svg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  #sqe-hero-{{ section.id }} .sqe-hero__placeholder svg,
+  #sqe-hero-{{ section.id }} .sqe-hero__placeholder .placeholder-svg {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    opacity: 0.15;
   }
 
   #sqe-hero-{{ section.id }} .sqe-hero__overlay {
@@ -345,14 +350,34 @@
     word-break: break-word;
   }
 
+  /* ===== Shopify section wrapper – ensure full-width ===== */
+  #shopify-section-{{ section.id }} {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+
   /* ===== MOBILE RESPONSIVE (768px) ===== */
   @media (max-width: 768px) {
+    #sqe-hero-{{ section.id }}.sqe-hero {
+      margin-left: 0;
+      margin-right: 0;
+      width: 100vw;
+      max-width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+    }
+
     #sqe-hero-{{ section.id }}.sqe-hero--small {
-      min-height: 300px;
+      min-height: 350px;
     }
 
     #sqe-hero-{{ section.id }}.sqe-hero--medium {
-      min-height: 400px;
+      min-height: 450px;
     }
 
     #sqe-hero-{{ section.id }}.sqe-hero--large {
@@ -360,22 +385,28 @@
     }
 
     #sqe-hero-{{ section.id }}.sqe-hero--full {
-      min-height: 80vh;
+      min-height: 85vh;
+    }
+
+    #sqe-hero-{{ section.id }} .sqe-hero__content {
+      padding: 60px 24px 40px;
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__heading {
-      font-size: clamp(32px, 8vw, var(--heading-size));
+      font-size: clamp(28px, 7vw, var(--heading-size));
       margin-bottom: 16px;
+      line-height: 1.15;
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__subheading {
-      font-size: clamp(16px, 5vw, var(--subheading-size));
+      font-size: clamp(15px, 4.5vw, var(--subheading-size));
       margin-bottom: 32px;
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__buttons {
       flex-direction: column;
       gap: 12px;
+      padding: 0 8px;
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__button {
@@ -389,7 +420,7 @@
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__stat-number {
-      font-size: clamp(24px, 6vw, 32px);
+      font-size: clamp(28px, 7vw, 36px);
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__stat-text {
@@ -400,17 +431,18 @@
   /* ===== MOBILE RESPONSIVE (480px) ===== */
   @media (max-width: 480px) {
     #sqe-hero-{{ section.id }} .sqe-hero__content {
-      padding: 30px 16px;
+      padding: 50px 20px 30px;
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__heading {
-      font-size: clamp(24px, 7vw, 40px);
+      font-size: clamp(24px, 7vw, 36px);
       margin-bottom: 12px;
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__subheading {
-      font-size: clamp(14px, 4vw, 18px);
+      font-size: clamp(14px, 4vw, 17px);
       margin-bottom: 24px;
+      line-height: 1.5;
     }
 
     #sqe-hero-{{ section.id }} .sqe-hero__button {

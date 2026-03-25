@@ -334,19 +334,23 @@
 
     #sqe-process-section-{{ section.id }} .sqe-timeline-step {
       flex: none;
-      padding: 0 0 40px 80px;
+      padding: 0 0 20px 90px;
       text-align: left;
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 36px;
     }
 
     #sqe-process-section-{{ section.id }} .sqe-timeline-dot {
       position: absolute;
-      left: -15px;
+      left: 0;
       top: 0;
       width: 60px;
       height: 60px;
       margin: 0;
+    }
+
+    #sqe-process-section-{{ section.id }} .sqe-timeline-track::before {
+      left: 30px;
     }
 
     #sqe-process-section-{{ section.id }} .sqe-detail-panel {
@@ -390,19 +394,25 @@
     }
 
     #sqe-process-section-{{ section.id }} .sqe-timeline-step {
-      padding: 0 0 30px 70px;
-      margin-bottom: 0;
+      padding: 0 0 16px 76px;
+      margin-bottom: 28px;
     }
 
     #sqe-process-section-{{ section.id }} .sqe-timeline-dot {
       width: 50px;
       height: 50px;
       font-size: 16px;
+      left: 0;
+    }
+
+    #sqe-process-section-{{ section.id }} .sqe-timeline-track::before {
+      left: 25px;
     }
 
     #sqe-process-section-{{ section.id }} .sqe-timeline-step.active .sqe-timeline-dot {
-      width: 60px;
-      height: 60px;
+      width: 58px;
+      height: 58px;
+      left: -4px;
     }
 
     #sqe-process-section-{{ section.id }} .sqe-timeline-label {

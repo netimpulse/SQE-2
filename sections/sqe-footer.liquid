@@ -1,0 +1,552 @@
+{%- liquid
+  assign bg_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+  assign accent_color = section.settings.accent_color
+  assign logo_size = section.settings.logo_size
+  assign show_newsletter = section.settings.show_newsletter
+  assign newsletter_heading = section.settings.newsletter_heading
+  assign newsletter_text = section.settings.newsletter_text
+  assign copyright_text = section.settings.copyright_text
+  assign show_social = section.settings.show_social
+-%}
+
+<footer
+  id="sqe-footer-{{ section.id }}"
+  class="sqe-footer"
+  style="
+    --footer-bg: {{ bg_color }};
+    --footer-text: {{ text_color }};
+    --footer-accent: {{ accent_color }};
+  "
+>
+  <div class="sqe-footer__inner">
+    {%- comment -%} TOP ROW: Logo + columns + newsletter {%- endcomment -%}
+    <div class="sqe-footer__top">
+      {%- comment -%} Brand column {%- endcomment -%}
+      <div class="sqe-footer__brand">
+        {%- if settings.logo != blank -%}
+          <a href="{{ routes.root_url }}" class="sqe-footer__logo-link">
+            <img
+              src="{{ settings.logo | image_url: width: logo_size | times: 2 }}"
+              alt="{{ shop.name }}"
+              width="{{ logo_size }}"
+              height="{{ logo_size | divided_by: settings.logo.aspect_ratio }}"
+              loading="lazy"
+              class="sqe-footer__logo"
+            >
+          </a>
+        {%- else -%}
+          <a href="{{ routes.root_url }}" class="sqe-footer__shop-name">{{ shop.name }}</a>
+        {%- endif -%}
+
+        {%- if section.settings.company_description != blank -%}
+          <p class="sqe-footer__description">{{ section.settings.company_description }}</p>
+        {%- endif -%}
+
+        {%- if show_social -%}
+          <div class="sqe-footer__social">
+            {%- if settings.social_facebook_link != blank -%}
+              <a href="{{ settings.social_facebook_link }}" class="sqe-footer__social-link" aria-label="Facebook" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_instagram_link != blank -%}
+              <a href="{{ settings.social_instagram_link }}" class="sqe-footer__social-link" aria-label="Instagram" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_twitter_link != blank -%}
+              <a href="{{ settings.social_twitter_link }}" class="sqe-footer__social-link" aria-label="X / Twitter" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_youtube_link != blank -%}
+              <a href="{{ settings.social_youtube_link }}" class="sqe-footer__social-link" aria-label="YouTube" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_tiktok_link != blank -%}
+              <a href="{{ settings.social_tiktok_link }}" class="sqe-footer__social-link" aria-label="TikTok" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.46V13.2a8.16 8.16 0 005.58 2.2V12a4.85 4.85 0 01-3.77-1.56V6.69h3.77z"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_pinterest_link != blank -%}
+              <a href="{{ settings.social_pinterest_link }}" class="sqe-footer__social-link" aria-label="Pinterest" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 00-4.37 23.17c-.1-.94-.2-2.38.04-3.41l1.44-6.13s-.37-.74-.37-1.82c0-1.71.99-2.98 2.23-2.98 1.05 0 1.56.79 1.56 1.74 0 1.06-.67 2.64-1.02 4.11-.29 1.23.62 2.23 1.83 2.23 2.2 0 3.89-2.32 3.89-5.66 0-2.96-2.13-5.03-5.16-5.03-3.52 0-5.58 2.64-5.58 5.37 0 1.06.41 2.2.92 2.82.1.12.12.23.09.35l-.34 1.42c-.06.23-.18.28-.42.17-1.56-.73-2.54-3.01-2.54-4.84 0-3.95 2.87-7.57 8.27-7.57 4.34 0 7.72 3.09 7.72 7.23 0 4.31-2.72 7.79-6.49 7.79-1.27 0-2.46-.66-2.87-1.44l-.78 2.98c-.28 1.09-1.04 2.45-1.55 3.28A12 12 0 1012 0z"/></svg>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Navigation columns from blocks {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link_column' -%}
+          <div class="sqe-footer__column" {{ block.shopify_attributes }}>
+            {%- if block.settings.column_title != blank -%}
+              <h4 class="sqe-footer__column-title">{{ block.settings.column_title }}</h4>
+            {%- endif -%}
+            {%- if block.settings.menu != blank -%}
+              <ul class="sqe-footer__nav-list">
+                {%- for link in block.settings.menu.links -%}
+                  <li>
+                    <a href="{{ link.url }}" class="sqe-footer__nav-link">{{ link.title }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if block.type == 'text_column' -%}
+          <div class="sqe-footer__column" {{ block.shopify_attributes }}>
+            {%- if block.settings.column_title != blank -%}
+              <h4 class="sqe-footer__column-title">{{ block.settings.column_title }}</h4>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="sqe-footer__text-content">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} Newsletter column {%- endcomment -%}
+      {%- if show_newsletter -%}
+        <div class="sqe-footer__newsletter">
+          {%- if newsletter_heading != blank -%}
+            <h4 class="sqe-footer__column-title">{{ newsletter_heading }}</h4>
+          {%- endif -%}
+          {%- if newsletter_text != blank -%}
+            <p class="sqe-footer__newsletter-text">{{ newsletter_text }}</p>
+          {%- endif -%}
+          {%- form 'customer', id: 'sqe-footer-newsletter' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="sqe-footer__newsletter-form">
+              <input
+                type="email"
+                name="contact[email]"
+                class="sqe-footer__newsletter-input"
+                placeholder="{{ 'newsletter.label' | t }}"
+                required
+                autocomplete="email"
+                aria-label="{{ 'newsletter.label' | t }}"
+              >
+              <button type="submit" class="sqe-footer__newsletter-btn" aria-label="Subscribe">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p class="sqe-footer__form-error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+            {%- endif -%}
+            {%- if form.posted_successfully? -%}
+              <p class="sqe-footer__form-success">{{ 'newsletter.success' | t }}</p>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} BOTTOM ROW: Copyright + policies {%- endcomment -%}
+    <div class="sqe-footer__bottom">
+      <p class="sqe-footer__copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ copyright_text | default: shop.name }}. {{ 'general.footer.all_rights_reserved' | t | default: 'All rights reserved.' }}
+      </p>
+      {%- if section.settings.show_policies -%}
+        <div class="sqe-footer__policies">
+          {%- for policy in shop.policies -%}
+            {%- if policy != blank -%}
+              <a href="{{ policy.url }}" class="sqe-footer__policy-link">{{ policy.title }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+<style>
+  #sqe-footer-{{ section.id }} {
+    background-color: var(--footer-bg, #1F3A5F);
+    color: var(--footer-text, #ffffff);
+    font-family: 'Source Sans 3', 'Source Sans Pro', 'Inter', sans-serif;
+  }
+
+  #sqe-footer-{{ section.id }} .sqe-footer__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 24px 30px;
+  }
+
+  /* === TOP GRID === */
+  #sqe-footer-{{ section.id }} .sqe-footer__top {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(auto-fit, minmax(160px, 1fr));
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+
+  /* === BRAND COLUMN === */
+  #sqe-footer-{{ section.id }} .sqe-footer__logo {
+    display: block;
+    margin-bottom: 16px;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__shop-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--footer-text);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 16px;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__description {
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.8;
+    margin: 0 0 20px 0;
+    max-width: 300px;
+  }
+
+  /* === SOCIAL ICONS === */
+  #sqe-footer-{{ section.id }} .sqe-footer__social {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    color: var(--footer-text);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__social-link:hover {
+    background: var(--footer-accent, #F2B705);
+    color: var(--footer-bg, #1F3A5F);
+    transform: translateY(-2px);
+  }
+
+  /* === NAV COLUMNS === */
+  #sqe-footer-{{ section.id }} .sqe-footer__column-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0 0 16px 0;
+    color: var(--footer-text);
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__nav-list li {
+    margin-bottom: 10px;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__nav-link {
+    font-size: 14px;
+    color: var(--footer-text);
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__nav-link:hover {
+    opacity: 1;
+    color: var(--footer-accent, #F2B705);
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__text-content {
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  /* === NEWSLETTER === */
+  #sqe-footer-{{ section.id }} .sqe-footer__newsletter-text {
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.8;
+    margin: 0 0 16px 0;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__newsletter-form {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__newsletter-input {
+    flex: 1;
+    padding: 12px 14px;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: var(--footer-text);
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__newsletter-input::placeholder {
+    color: rgba(255,255,255,0.5);
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__newsletter-btn {
+    padding: 12px 16px;
+    background: var(--footer-accent, #F2B705);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--footer-bg, #1F3A5F);
+    transition: opacity 0.2s ease;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__newsletter-btn:hover {
+    opacity: 0.85;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__form-error {
+    color: #ff6b6b;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__form-success {
+    color: #69db7c;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  /* === BOTTOM BAR === */
+  #sqe-footer-{{ section.id }} .sqe-footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 24px;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__copyright {
+    font-size: 13px;
+    opacity: 0.6;
+    margin: 0;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__policies {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__policy-link {
+    font-size: 13px;
+    color: var(--footer-text);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+  #sqe-footer-{{ section.id }} .sqe-footer__policy-link:hover {
+    opacity: 1;
+  }
+
+  /* ===== TABLET (max-width: 768px) ===== */
+  @media (max-width: 768px) {
+    #sqe-footer-{{ section.id }} .sqe-footer__inner {
+      padding: 40px 20px 24px;
+    }
+
+    #sqe-footer-{{ section.id }} .sqe-footer__top {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    #sqe-footer-{{ section.id }} .sqe-footer__brand {
+      grid-column: 1 / -1;
+    }
+
+    #sqe-footer-{{ section.id }} .sqe-footer__newsletter {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* ===== MOBILE (max-width: 480px) ===== */
+  @media (max-width: 480px) {
+    #sqe-footer-{{ section.id }} .sqe-footer__inner {
+      padding: 32px 16px 20px;
+    }
+
+    #sqe-footer-{{ section.id }} .sqe-footer__top {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    #sqe-footer-{{ section.id }} .sqe-footer__description {
+      max-width: 100%;
+    }
+
+    #sqe-footer-{{ section.id }} .sqe-footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    #sqe-footer-{{ section.id }} .sqe-footer__policies {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SQE Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#1F3A5F"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Links, Buttons)",
+      "default": "#F2B705"
+    },
+    {
+      "type": "range",
+      "id": "logo_size",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Size",
+      "default": 120
+    },
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "textarea",
+      "id": "company_description",
+      "label": "Company Description",
+      "default": "Independent solar PV quality inspection and technical consulting services across the UK."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show Social Icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show Newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "Stay Updated"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Newsletter Text",
+      "default": "Subscribe for the latest solar quality insights."
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Name",
+      "default": "Solar Quality Experts"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Show Policy Links",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_column",
+      "name": "Navigation Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "column_title",
+          "label": "Column Title",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "text_column",
+      "name": "Text Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "column_title",
+          "label": "Column Title",
+          "default": "Contact"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Content",
+          "default": "<p>info@example.com<br>+44 123 456 7890</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SQE Footer",
+      "blocks": [
+        {
+          "type": "link_column",
+          "settings": {
+            "column_title": "Services"
+          }
+        },
+        {
+          "type": "link_column",
+          "settings": {
+            "column_title": "Company"
+          }
+        },
+        {
+          "type": "text_column",
+          "settings": {
+            "column_title": "Contact",
+            "text": "<p>info@example.com<br>+44 123 456 7890</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
